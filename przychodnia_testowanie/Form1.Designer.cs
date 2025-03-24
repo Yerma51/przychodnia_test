@@ -48,7 +48,6 @@
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
             this.miejcowosc_textBox = new System.Windows.Forms.TextBox();
             this.kodPocztowy_textBox = new System.Windows.Forms.TextBox();
             this.ulica_textBox = new System.Windows.Forms.TextBox();
@@ -241,16 +240,6 @@
             this.label13.TabIndex = 19;
             this.label13.Text = "Ulica";
             // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label14.Location = new System.Drawing.Point(508, 25);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(268, 32);
-            this.label14.TabIndex = 20;
-            this.label14.Text = "Adres zamieszkania";
-            // 
             // miejcowosc_textBox
             // 
             this.miejcowosc_textBox.Location = new System.Drawing.Point(530, 113);
@@ -297,7 +286,6 @@
             this.Controls.Add(this.ulica_textBox);
             this.Controls.Add(this.kodPocztowy_textBox);
             this.Controls.Add(this.miejcowosc_textBox);
-            this.Controls.Add(this.label14);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.label11);
@@ -348,7 +336,6 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.Label label14;
         private System.Windows.Forms.TextBox miejcowosc_textBox;
         private System.Windows.Forms.TextBox kodPocztowy_textBox;
         private System.Windows.Forms.TextBox ulica_textBox;
