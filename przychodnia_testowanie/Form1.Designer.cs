@@ -42,13 +42,11 @@
             this.mail_textBox = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.numerTelefonu_textBox = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
             this.miejcowosc_textBox = new System.Windows.Forms.TextBox();
             this.kodPocztowy_textBox = new System.Windows.Forms.TextBox();
             this.ulica_textBox = new System.Windows.Forms.TextBox();
@@ -181,16 +179,6 @@
             this.numerTelefonu_textBox.Size = new System.Drawing.Size(197, 22);
             this.numerTelefonu_textBox.TabIndex = 13;
             // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label8.Location = new System.Drawing.Point(80, 25);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(231, 32);
-            this.label8.TabIndex = 14;
-            this.label8.Text = "Dane personalne";
-            // 
             // label9
             // 
             this.label9.AutoSize = true;
@@ -241,16 +229,6 @@
             this.label13.TabIndex = 19;
             this.label13.Text = "Ulica";
             // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label14.Location = new System.Drawing.Point(508, 25);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(268, 32);
-            this.label14.TabIndex = 20;
-            this.label14.Text = "Adres zamieszkania";
-            // 
             // miejcowosc_textBox
             // 
             this.miejcowosc_textBox.Location = new System.Drawing.Point(530, 113);
@@ -297,13 +275,11 @@
             this.Controls.Add(this.ulica_textBox);
             this.Controls.Add(this.kodPocztowy_textBox);
             this.Controls.Add(this.miejcowosc_textBox);
-            this.Controls.Add(this.label14);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.label9);
-            this.Controls.Add(this.label8);
             this.Controls.Add(this.numerTelefonu_textBox);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.mail_textBox);
@@ -342,13 +318,11 @@
         private System.Windows.Forms.TextBox mail_textBox;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox numerTelefonu_textBox;
-        private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.Label label14;
         private System.Windows.Forms.TextBox miejcowosc_textBox;
         private System.Windows.Forms.TextBox kodPocztowy_textBox;
         private System.Windows.Forms.TextBox ulica_textBox;
