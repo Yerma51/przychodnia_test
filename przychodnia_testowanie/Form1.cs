@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace przychodnia_testowanie
 {
-    public partial class Form1 : Form
+    public partial class Form_Edycja_profilu : Form
     {
-        public Form1()
+        public Form_Edycja_profilu()
         {
             InitializeComponent();
         }
@@ -43,6 +43,11 @@ namespace przychodnia_testowanie
         }
 
         private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label16_login_Click(object sender, EventArgs e)
         {
 
         }
