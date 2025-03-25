@@ -62,19 +62,41 @@ namespace przychodnia_testowanie
         } 
         private void button1_zapisz_Click(object sender, EventArgs e)
         {
-            użytkownik.Login = txb_login.Text;
-            użytkownik.Imię = imie_textBox.Text;
-            użytkownik.Nazwisko = nazwisko_textBox.Text;
+            if (string.IsNullOrWhiteSpace(txb_login.Text) ||
+                string.IsNullOrWhiteSpace(imie_textBox.Text) ||
+                string.IsNullOrWhiteSpace(nazwisko_textBox.Text) ||
+                string.IsNullOrWhiteSpace(miejcowosc_textBox.Text) ||
+                string.IsNullOrWhiteSpace(kodPocztowy_textBox.Text) ||
+                string.IsNullOrWhiteSpace(numerPosesji_textBox.Text) ||
+                string.IsNullOrWhiteSpace(pesel_textBox.Text) ||
+                string.IsNullOrWhiteSpace(mail_textBox.Text) ||
+                string.IsNullOrWhiteSpace(numerTelefonu_textBox.Text) ||
+                plec_comboBox.SelectedItem == null)
+            {
+                MessageBox.Show("Wszystkie pola oznaczone jako wymagane muszą być wypełnione!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            użytkownik.Login = txb_login.Text.Trim();
+            użytkownik.Imię = imie_textBox.Text.Trim();
+            użytkownik.Nazwisko = nazwisko_textBox.Text.Trim();
             użytkownik.Płec = plec_comboBox.SelectedItem.ToString();
             użytkownik.Data_urodzenia = dataUrodzenia_dateTimePicker.Value;
-            użytkownik.Pesel = pesel_textBox.Text;
-            użytkownik.Adres_email = mail_textBox.Text;
-            użytkownik.Miejscowość = miejcowosc_textBox.Text;
-            użytkownik.Ulica = ulica_textBox.Text;
-            użytkownik.Numer_pos = numerPosesji_textBox.Text;
-            użytkownik.Numer_lokalu = numerLokalu_textBox.Text;
-            użytkownik.Kod_pocztowy = kodPocztowy_textBox.Text;
-            użytkownik.Numer_telefonu = numerTelefonu_textBox.Text;
+            użytkownik.Pesel = pesel_textBox.Text.Trim();
+            użytkownik.Adres_email = mail_textBox.Text.Trim();
+            użytkownik.Miejscowość = miejcowosc_textBox.Text.Trim();
+            użytkownik.Ulica = ulica_textBox.Text.Trim();
+            użytkownik.Numer_pos = numerPosesji_textBox.Text.Trim();
+            użytkownik.Numer_lokalu = numerLokalu_textBox.Text.Trim();
+            użytkownik.Kod_pocztowy = kodPocztowy_textBox.Text.Trim();
+            użytkownik.Numer_telefonu = numerTelefonu_textBox.Text.Trim();
+
+           
+           
+
+            
+            this.DialogResult = DialogResult.OK;
+            this.Close();
 
         }
 

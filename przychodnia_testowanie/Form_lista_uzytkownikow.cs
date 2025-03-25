@@ -42,6 +42,8 @@ namespace przychodnia_testowanie
             Użytkownik.Użytkownicy.Add(nowy_uzytkownik);
             refresh();
 
+            MessageBox.Show("Użytkownik został dodany pomyślnie!", "Sukces", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
         }
 
 

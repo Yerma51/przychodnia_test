@@ -98,7 +98,7 @@
             // 
             this.btn_lista.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(167)))), ((int)(((byte)(204)))));
             this.btn_lista.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.btn_lista.Location = new System.Drawing.Point(917, 20);
+            this.btn_lista.Location = new System.Drawing.Point(930, 12);
             this.btn_lista.Name = "btn_lista";
             this.btn_lista.Size = new System.Drawing.Size(147, 44);
             this.btn_lista.TabIndex = 89;
@@ -400,8 +400,10 @@
             this.Controls.Add(this.nazwisko_textBox);
             this.Controls.Add(this.imie_textBox);
             this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "Form_Edycja_profilu";
-            this.Text = "Form_Edycja_profilu";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Edycja użytkownika";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

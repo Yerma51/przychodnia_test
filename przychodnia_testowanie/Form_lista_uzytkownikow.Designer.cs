@@ -64,7 +64,7 @@
             this.btn_nowy_użytkow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(167)))), ((int)(((byte)(204)))));
             this.btn_nowy_użytkow.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.btn_nowy_użytkow.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.btn_nowy_użytkow.Location = new System.Drawing.Point(924, 7);
+            this.btn_nowy_użytkow.Location = new System.Drawing.Point(940, 12);
             this.btn_nowy_użytkow.Name = "btn_nowy_użytkow";
             this.btn_nowy_użytkow.Size = new System.Drawing.Size(147, 44);
             this.btn_nowy_użytkow.TabIndex = 6;
@@ -131,6 +131,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(227)))), ((int)(((byte)(235)))), ((int)(((byte)(242)))));
             this.BackgroundImage = global::przychodnia_testowanie.Properties.Resources.Lista_uzytkowników__3_;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1168, 791);
@@ -142,6 +143,7 @@
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "Form_lista_uzytkownikow";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form_lista_użytkow";
             ((System.ComponentModel.ISupportInitialize)(this.dtGrdVw_lista_uż)).EndInit();
             this.ResumeLayout(false);
