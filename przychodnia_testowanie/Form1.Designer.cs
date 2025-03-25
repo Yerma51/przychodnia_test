@@ -28,8 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.nazwisko_textBox = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.pesel_textBox = new System.Windows.Forms.TextBox();
             this.dataUrodzenia_dateTimePicker = new System.Windows.Forms.DateTimePicker();
@@ -41,25 +39,6 @@
             this.label7 = new System.Windows.Forms.Label();
             this.numerTelefonu_textBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
-            // 
-            // nazwisko_textBox
-            // 
-            this.nazwisko_textBox.Location = new System.Drawing.Point(86, 183);
-            this.nazwisko_textBox.Name = "nazwisko_textBox";
-            this.nazwisko_textBox.Size = new System.Drawing.Size(200, 22);
-            this.nazwisko_textBox.TabIndex = 2;
-            this.nazwisko_textBox.TextChanged += new System.EventHandler(this.nazwisko_textBox_TextChanged);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label2.Location = new System.Drawing.Point(84, 155);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(96, 25);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Nazwisko";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // label3
             // 
@@ -165,8 +144,6 @@
             this.Controls.Add(this.dataUrodzenia_dateTimePicker);
             this.Controls.Add(this.pesel_textBox);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.nazwisko_textBox);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -176,8 +153,6 @@
         }
 
         #endregion
-        private System.Windows.Forms.TextBox nazwisko_textBox;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox pesel_textBox;
         private System.Windows.Forms.DateTimePicker dataUrodzenia_dateTimePicker;
