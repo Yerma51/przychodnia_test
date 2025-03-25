@@ -63,6 +63,16 @@ namespace przychodnia_testowanie.Properties {
         /// <summary>
         ///   Wyszukuje zlokalizowany zasób typu System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Lista_uzytkowników__3_ {
+            get {
+                object obj = ResourceManager.GetObject("Lista uzytkowników (3)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Wyszukuje zlokalizowany zasób typu System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Profil {
             get {
                 object obj = ResourceManager.GetObject("Profil", resourceCulture);

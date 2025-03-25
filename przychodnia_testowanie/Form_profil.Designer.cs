@@ -87,6 +87,7 @@
             this.btn_lista.TabIndex = 58;
             this.btn_lista.Text = "Lista użytkowników";
             this.btn_lista.UseVisualStyleBackColor = false;
+            this.btn_lista.Click += new System.EventHandler(this.btn_lista_Click);
             // 
             // button1_zapisz
             // 
@@ -101,6 +102,7 @@
             this.button1_zapisz.TabIndex = 57;
             this.button1_zapisz.Text = "Zapisz";
             this.button1_zapisz.UseVisualStyleBackColor = false;
+            this.button1_zapisz.Click += new System.EventHandler(this.button1_zapisz_Click);
             // 
             // numerLokalu_textBox
             // 
@@ -336,6 +338,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::przychodnia_testowanie.Properties.Resources.Profil1;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1168, 791);
             this.Controls.Add(this.txb_login);
             this.Controls.Add(this.label16_login);
@@ -367,8 +370,11 @@
             this.Controls.Add(this.nazwisko_textBox);
             this.Controls.Add(this.imie_textBox);
             this.Controls.Add(this.label1);
+            this.DoubleBuffered = true;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "Form_profil";
             this.Text = "Form_profil";
+            this.Load += new System.EventHandler(this.Form_profil_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
