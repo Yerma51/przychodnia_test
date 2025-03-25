@@ -28,8 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
-            this.imie_textBox = new System.Windows.Forms.TextBox();
             this.nazwisko_textBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -43,24 +41,6 @@
             this.label7 = new System.Windows.Forms.Label();
             this.numerTelefonu_textBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(84, 85);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(48, 25);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Imię";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
-            // 
-            // imie_textBox
-            // 
-            this.imie_textBox.Location = new System.Drawing.Point(86, 113);
-            this.imie_textBox.Name = "imie_textBox";
-            this.imie_textBox.Size = new System.Drawing.Size(200, 22);
-            this.imie_textBox.TabIndex = 1;
             // 
             // nazwisko_textBox
             // 
@@ -187,8 +167,6 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.nazwisko_textBox);
-            this.Controls.Add(this.imie_textBox);
-            this.Controls.Add(this.label1);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -198,9 +176,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox imie_textBox;
         private System.Windows.Forms.TextBox nazwisko_textBox;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
