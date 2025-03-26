@@ -73,7 +73,7 @@ CREATE TABLE `patients` (
   `postcode` varchar(10) NOT NULL,
   `street` varchar(20) NOT NULL,
   `house_number` int(10) UNSIGNED NOT NULL,
-  `apartament_number` int(10) UNSIGNED NOT NULL,
+  `apartment_number` int(10) UNSIGNED NOT NULL,
   `name` varchar(40) NOT NULL,
   `lastname` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
