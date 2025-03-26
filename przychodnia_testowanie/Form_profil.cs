@@ -62,6 +62,44 @@ namespace przychodnia_testowanie
         } 
         private void button1_zapisz_Click(object sender, EventArgs e)
         {
+            List<Użytkownik> usersList = Użytkownik.Użytkownicy; // Получаем список пользователей
+
+            // Проверка логина
+            if (!Validator.IsValidLogin(txb_login.Text, usersList))
+            {
+                MessageBox.Show("Login jest nieprawidłowy lub już istnieje!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // Проверка email
+            if (!Validator.IsValidEmail(mail_textBox.Text))
+            {
+                MessageBox.Show("Nieprawidłowy adres e-mail!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            if (!Validator.IsUniqueEmail(mail_textBox.Text, usersList))
+            {
+                MessageBox.Show("Podany adres e-mail już istnieje!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // Проверка номера телефона
+            if (!Validator.IsValidPhoneNumber(numerTelefonu_textBox.Text))
+            {
+                MessageBox.Show("Numer telefonu musi zawierać dokładnie 9 cyfr!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            //pesel
+          /*  if (!Validator.IsValidPESEL(pesel_textBox.Text, plec_comboBox.SelectedItem.ToString()))
+            {
+                MessageBox.Show("Numer PESEL jest nieprawidłowy!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            if (!Validator.IsUniquePESEL(pesel_textBox.Text, usersList))
+            {
+                MessageBox.Show("Podany numer PESEL już istnieje!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }*/
             if (string.IsNullOrWhiteSpace(txb_login.Text) ||
                 string.IsNullOrWhiteSpace(imie_textBox.Text) ||
                 string.IsNullOrWhiteSpace(nazwisko_textBox.Text) ||
