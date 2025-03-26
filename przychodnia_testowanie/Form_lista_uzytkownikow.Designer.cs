@@ -42,9 +42,10 @@
             // 
             // btn_wyszukiwarka
             // 
-            this.btn_wyszukiwarka.Location = new System.Drawing.Point(786, 231);
+            this.btn_wyszukiwarka.Location = new System.Drawing.Point(590, 188);
+            this.btn_wyszukiwarka.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btn_wyszukiwarka.Name = "btn_wyszukiwarka";
-            this.btn_wyszukiwarka.Size = new System.Drawing.Size(65, 22);
+            this.btn_wyszukiwarka.Size = new System.Drawing.Size(49, 18);
             this.btn_wyszukiwarka.TabIndex = 8;
             this.btn_wyszukiwarka.Text = "Szukaj";
             this.btn_wyszukiwarka.UseVisualStyleBackColor = true;
@@ -53,9 +54,10 @@
             // 
             this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(227)))), ((int)(((byte)(235)))), ((int)(((byte)(242)))));
             this.label1.Font = new System.Drawing.Font("Mongolian Baiti", 22.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(415, 110);
+            this.label1.Location = new System.Drawing.Point(311, 89);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(344, 45);
+            this.label1.Size = new System.Drawing.Size(258, 37);
             this.label1.TabIndex = 7;
             this.label1.Text = "Lista użytkowników ";
             // 
@@ -64,9 +66,10 @@
             this.btn_nowy_użytkow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(167)))), ((int)(((byte)(204)))));
             this.btn_nowy_użytkow.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.btn_nowy_użytkow.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.btn_nowy_użytkow.Location = new System.Drawing.Point(940, 12);
+            this.btn_nowy_użytkow.Location = new System.Drawing.Point(705, 10);
+            this.btn_nowy_użytkow.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btn_nowy_użytkow.Name = "btn_nowy_użytkow";
-            this.btn_nowy_użytkow.Size = new System.Drawing.Size(147, 44);
+            this.btn_nowy_użytkow.Size = new System.Drawing.Size(110, 36);
             this.btn_nowy_użytkow.TabIndex = 6;
             this.btn_nowy_użytkow.Text = "Dodaj użytkownika";
             this.btn_nowy_użytkow.UseVisualStyleBackColor = false;
@@ -76,9 +79,10 @@
             // 
             this.txb_search.Cursor = System.Windows.Forms.Cursors.Help;
             this.txb_search.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(167)))), ((int)(((byte)(202)))), ((int)(((byte)(224)))));
-            this.txb_search.Location = new System.Drawing.Point(422, 231);
+            this.txb_search.Location = new System.Drawing.Point(316, 188);
+            this.txb_search.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txb_search.Name = "txb_search";
-            this.txb_search.Size = new System.Drawing.Size(337, 22);
+            this.txb_search.Size = new System.Drawing.Size(254, 20);
             this.txb_search.TabIndex = 5;
             this.txb_search.Text = "Wyszukaj użytkownika...";
             // 
@@ -91,13 +95,15 @@
             this.Column2,
             this.Column3,
             this.Column4});
-            this.dtGrdVw_lista_uż.Location = new System.Drawing.Point(39, 391);
+            this.dtGrdVw_lista_uż.Location = new System.Drawing.Point(29, 318);
+            this.dtGrdVw_lista_uż.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.dtGrdVw_lista_uż.Name = "dtGrdVw_lista_uż";
             this.dtGrdVw_lista_uż.RowHeadersVisible = false;
             this.dtGrdVw_lista_uż.RowHeadersWidth = 51;
             this.dtGrdVw_lista_uż.RowTemplate.Height = 24;
-            this.dtGrdVw_lista_uż.Size = new System.Drawing.Size(1094, 377);
+            this.dtGrdVw_lista_uż.Size = new System.Drawing.Size(820, 306);
             this.dtGrdVw_lista_uż.TabIndex = 9;
+            this.dtGrdVw_lista_uż.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtGrdVw_lista_uż_CellContentClick);
             // 
             // Column1
             // 
@@ -129,12 +135,12 @@
             // 
             // Form_lista_uzytkownikow
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(227)))), ((int)(((byte)(235)))), ((int)(((byte)(242)))));
             this.BackgroundImage = global::przychodnia_testowanie.Properties.Resources.Lista_uzytkowników__3_;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(1168, 791);
+            this.ClientSize = new System.Drawing.Size(876, 643);
             this.Controls.Add(this.dtGrdVw_lista_uż);
             this.Controls.Add(this.btn_wyszukiwarka);
             this.Controls.Add(this.label1);
@@ -142,6 +148,7 @@
             this.Controls.Add(this.txb_search);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "Form_lista_uzytkownikow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form_lista_użytkow";

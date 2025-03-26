@@ -46,7 +46,9 @@ namespace przychodnia_testowanie
 
         }
 
+        private void dtGrdVw_lista_uż_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
 
-
+        }
     }
 }
