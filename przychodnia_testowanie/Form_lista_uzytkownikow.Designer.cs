@@ -109,7 +109,7 @@
             this.btn_edycja_użytkownika.TabIndex = 10;
             this.btn_edycja_użytkownika.Text = "Edytuj uzytkownika";
             this.btn_edycja_użytkownika.UseVisualStyleBackColor = false;
-            this.btn_edycja_użytkownika.Click += new System.EventHandler(this.btn_edycja_użytkownika_Click);
+     
             // 
             // Form_lista_uzytkownikow
             // 
