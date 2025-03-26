@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace przychodnia_testowanie
 {
-    internal class Użytkownik
+    public class Użytkownik
     {
         public string Login { get; set; }
         public string Imię { get; set; }

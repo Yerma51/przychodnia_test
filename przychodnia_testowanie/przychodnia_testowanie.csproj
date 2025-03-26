@@ -116,6 +116,7 @@
     <Compile Include="Form_profil.Designer.cs">
       <DependentUpon>Form_profil.cs</DependentUpon>
     </Compile>
+    <Compile Include="Laczenie_z_baza_danych.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="User.cs" />
