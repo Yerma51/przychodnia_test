@@ -90,7 +90,7 @@ namespace przychodnia_testowanie
                 return;
             }
             //pesel
-          /*  if (!Validator.IsValidPESEL(pesel_textBox.Text, plec_comboBox.SelectedItem.ToString()))
+           if (!Validator.IsValidPESEL(pesel_textBox.Text, plec_comboBox.SelectedItem.ToString()))
             {
                 MessageBox.Show("Numer PESEL jest nieprawidłowy!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -99,7 +99,7 @@ namespace przychodnia_testowanie
             {
                 MessageBox.Show("Podany numer PESEL już istnieje!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
-            }*/
+            }
             if (string.IsNullOrWhiteSpace(txb_login.Text) ||
                 string.IsNullOrWhiteSpace(imie_textBox.Text) ||
                 string.IsNullOrWhiteSpace(nazwisko_textBox.Text) ||
