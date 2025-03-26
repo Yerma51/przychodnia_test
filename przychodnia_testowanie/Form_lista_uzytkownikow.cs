@@ -125,5 +125,22 @@ namespace przychodnia_testowanie
             new MySqlParameter("@szukany", szukany));
             dtGrdVw_lista_uż.DataSource = result;
         }
+
+       /* private void btn_edycja_użytkownika_Click(object sender, EventArgs e)
+        {
+            if (dtGrdVw_lista_uż.SelectedRows.Count < 1)
+                return;
+
+            int index = dtGrdVw_lista_uż.Rows.IndexOf(dtGrdVw_lista_uż.SelectedRows[0]);
+            //Pobranie indeksu pierwszego wybranego wiersza z DataGridView.
+
+            Użytkownik użytkownik_do_edycji = (Użytkownik)dtGrdVw_lista_uż.SelectedRows[0].Tag;
+            Form_profil form = new Form_profil(użytkownik_do_edycji);
+            form.ShowDialog();
+            //Wyświetlenie formularza w trybie dialogowym.Użytkownik może edytować dane naprawy w formularzu.
+            refresh();
+
+            dtGrdVw_lista_uż.Rows[index].Selected = true;
+        }*/
     }
 }

@@ -10,29 +10,29 @@ namespace Testy_przychodnia
 {
     public class Testy_user
     {
-        // Проверка логина
+        // Sprawdazanie loginu
         private bool IsLoginValid(string login)
         {
             return !string.IsNullOrWhiteSpace(login);
         }
 
-        // Проверка PESEL
+        // Spradzanie PESEL
         private bool IsPeselValid(string pesel)
         {
             if (pesel.Length != 11 || !pesel.All(char.IsDigit))
                 return false;
 
-            // Проверяем дату рождения (первые 6 цифр)
+            //  Sprawdzamy date urodzenia (pierwsze 6 cyfr)
             string birthDate = pesel.Substring(0, 6);
             if (!DateTime.TryParseExact(birthDate, new[] { "yyMMdd" }, null, System.Globalization.DateTimeStyles.None, out _))
                 return false;
 
-            // Проверка пола (10-я цифра: четная - женщина, нечетная - мужчина)
+            // Sprawdzanie płci (10-ta cyfra: parzysta - kobieta, nieparzysta - mężczyzna) 
             int genderDigit = int.Parse(pesel[9].ToString());
             if (genderDigit < 0 || genderDigit > 9)
                 return false;
 
-            // Примитивная проверка контрольной цифры
+            // Sprawdzanie cyfry kontrolnej
             int[] weights = { 1, 3, 7, 9, 1, 3, 7, 9, 1, 3 };
             int controlSum = pesel.Take(10).Select((c, i) => (c - '0') * weights[i]).Sum();
             int controlDigit = (10 - (controlSum % 10)) % 10;
@@ -40,7 +40,7 @@ namespace Testy_przychodnia
             return controlDigit == pesel[10] - '0';
         }
 
-        // Проверка email
+        // sprawdzenie email
         private bool IsEmailValid(string email)
         {
             if (string.IsNullOrWhiteSpace(email)) return false;
@@ -49,13 +49,13 @@ namespace Testy_przychodnia
             return Regex.IsMatch(email, emailPattern) && email.Length <= 255;
         }
 
-        // Проверка номера телефона
+        // Sprawdzenie numeru telefonu
         private bool IsPhoneNumberValid(string phoneNumber)
         {
             return phoneNumber.Length == 9 && phoneNumber.All(char.IsDigit);
         }
 
-        // Тесты логина
+        // login
         [Fact]
         public void Login_ShouldBeInvalid_WhenEmpty()
         {
@@ -68,7 +68,7 @@ namespace Testy_przychodnia
             Assert.True(IsLoginValid("User123"));
         }
 
-        // Тесты PESEL
+        // Testy PESEL
         [Fact]
         public void Pesel_ShouldBeInvalid_WhenTooShort()
         {
@@ -78,22 +78,22 @@ namespace Testy_przychodnia
         [Fact]
         public void Pesel_ShouldBeInvalid_WhenWrongControlDigit()
         {
-            Assert.False(IsPeselValid("44051401358")); // Некорректная контрольная цифра
+            Assert.False(IsPeselValid("44051401358")); // Niepoprawna cyfra kontrolna
         }
 
         [Fact]
         public void Pesel_ShouldBeValid_ForMale()
         {
-            Assert.True(IsPeselValid("44051401359")); // Мужчина (нечетная 10-я цифра)
+            Assert.True(IsPeselValid("44051401359")); // Mężczyzna (nieparzysta 10-ta cyfra)
         }
 
         [Fact]
         public void Pesel_ShouldBeValid_ForFemale()
         {
-            Assert.True(IsPeselValid("44051401460")); // Женщина (четная 10-я цифра)
+            Assert.True(IsPeselValid("44051401460")); // Kobieta (parzysta 10-ta cyfra)
         }
 
-        // Тесты email
+        // Testy email
         [Fact]
         public void Email_ShouldBeInvalid_WhenMissingAtSymbol()
         {
