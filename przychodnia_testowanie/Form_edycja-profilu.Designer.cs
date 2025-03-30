@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
+            this.btn_anuluj = new System.Windows.Forms.Button();
             this.txb_login = new System.Windows.Forms.TextBox();
             this.label16_login = new System.Windows.Forms.Label();
             this.btn_lista = new System.Windows.Forms.Button();
@@ -61,19 +61,20 @@
             this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // button1
+            // btn_anuluj
             // 
-            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(167)))), ((int)(((byte)(204)))), ((int)(((byte)(109)))));
-            this.button1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button1.ForeColor = System.Drawing.Color.Black;
-            this.button1.Location = new System.Drawing.Point(863, 673);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(172, 55);
-            this.button1.TabIndex = 92;
-            this.button1.Text = "Anuluj";
-            this.button1.UseVisualStyleBackColor = false;
+            this.btn_anuluj.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(167)))), ((int)(((byte)(204)))), ((int)(((byte)(109)))));
+            this.btn_anuluj.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btn_anuluj.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btn_anuluj.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btn_anuluj.ForeColor = System.Drawing.Color.Black;
+            this.btn_anuluj.Location = new System.Drawing.Point(863, 673);
+            this.btn_anuluj.Name = "btn_anuluj";
+            this.btn_anuluj.Size = new System.Drawing.Size(172, 55);
+            this.btn_anuluj.TabIndex = 92;
+            this.btn_anuluj.Text = "Anuluj";
+            this.btn_anuluj.UseVisualStyleBackColor = false;
+            this.btn_anuluj.Click += new System.EventHandler(this.btn_anuluj_Click);
             // 
             // txb_login
             // 
@@ -92,7 +93,6 @@
             this.label16_login.Size = new System.Drawing.Size(65, 25);
             this.label16_login.TabIndex = 90;
             this.label16_login.Text = "Login ";
-            this.label16_login.Click += new System.EventHandler(this.label16_login_Click);
             // 
             // btn_lista
             // 
@@ -104,13 +104,11 @@
             this.btn_lista.TabIndex = 89;
             this.btn_lista.Text = "Lista użytkowników";
             this.btn_lista.UseVisualStyleBackColor = false;
-            this.btn_lista.Click += new System.EventHandler(this.btn_lista_Click);
             // 
             // button1_zapisz
             // 
             this.button1_zapisz.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(167)))), ((int)(((byte)(204)))), ((int)(((byte)(109)))));
             this.button1_zapisz.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button1_zapisz.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.button1_zapisz.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.button1_zapisz.ForeColor = System.Drawing.Color.Black;
             this.button1_zapisz.Location = new System.Drawing.Point(644, 673);
@@ -119,6 +117,7 @@
             this.button1_zapisz.TabIndex = 88;
             this.button1_zapisz.Text = "Zapisz";
             this.button1_zapisz.UseVisualStyleBackColor = false;
+            this.button1_zapisz.Click += new System.EventHandler(this.button1_zapisz_Click);
             // 
             // numerLokalu_textBox
             // 
@@ -369,8 +368,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(237)))), ((int)(((byte)(234)))), ((int)(((byte)(229)))));
             this.BackgroundImage = global::przychodnia_testowanie.Properties.Resources.Profil;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1168, 791);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btn_anuluj);
             this.Controls.Add(this.txb_login);
             this.Controls.Add(this.label16_login);
             this.Controls.Add(this.btn_lista);
@@ -401,11 +401,11 @@
             this.Controls.Add(this.nazwisko_textBox);
             this.Controls.Add(this.imie_textBox);
             this.Controls.Add(this.label1);
+            this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "Form_Edycja_profilu";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Edycja użytkownika";
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -413,7 +413,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btn_anuluj;
         private System.Windows.Forms.TextBox txb_login;
         private System.Windows.Forms.Label label16_login;
         private System.Windows.Forms.Button btn_lista;

@@ -113,7 +113,7 @@ namespace Testy_przychodnia
             Assert.False(IsEmailValid(longEmail));
         }
 
-        // Тесты номера телефона
+        // Testy numera telefonu
         [Fact]
         public void PhoneNumber_ShouldBeInvalid_WhenTooShort()
         {

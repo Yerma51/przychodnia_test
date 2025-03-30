@@ -14,6 +14,7 @@ namespace przychodnia_testowanie
     {
         Użytkownik użytkownik;
         //Pole przechowujące obiekt Użytkownik, który będzie edytowany.
+       
         internal Form_profil(Użytkownik użytkownik)
         {
             InitializeComponent();
@@ -26,7 +27,10 @@ namespace przychodnia_testowanie
             plec_comboBox.DropDownStyle = ComboBoxStyle.DropDownList;
 
 
-            plec_comboBox.SelectedIndex = 2;
+            if (plec_comboBox.Items.Count > 0)
+            {
+                plec_comboBox.SelectedIndex = 0;
+            }
         }
 
        
@@ -40,7 +44,6 @@ namespace przychodnia_testowanie
                 plec_comboBox.SelectedItem = użytkownik.Płec;
                 dataUrodzenia_dateTimePicker.MinDate = new DateTime(1900, 1, 1);
                 dataUrodzenia_dateTimePicker.MaxDate = DateTime.Today;
-                // Sprawdzenie, czy data naprawy mieści się w zakresie
                 if (użytkownik.Data_urodzenia < dataUrodzenia_dateTimePicker.MinDate || użytkownik.Data_urodzenia > dataUrodzenia_dateTimePicker.MaxDate)
                 {
                     dataUrodzenia_dateTimePicker.Value = DateTime.Today;
@@ -62,44 +65,9 @@ namespace przychodnia_testowanie
         } 
         private void button1_zapisz_Click(object sender, EventArgs e)
         {
-            List<Użytkownik> usersList = Użytkownik.Użytkownicy; // Получаем список пользователей
+            List<Użytkownik> usersList = Użytkownik.Użytkownicy;
 
-            // Проверка логина
-            if (!Validator.IsValidLogin(txb_login.Text, usersList))
-            {
-                MessageBox.Show("Login jest nieprawidłowy lub już istnieje!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            // Проверка email
-            if (!Validator.IsValidEmail(mail_textBox.Text))
-            {
-                MessageBox.Show("Nieprawidłowy adres e-mail!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            if (!Validator.IsUniqueEmail(mail_textBox.Text, usersList))
-            {
-                MessageBox.Show("Podany adres e-mail już istnieje!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            // Проверка номера телефона
-            if (!Validator.IsValidPhoneNumber(numerTelefonu_textBox.Text))
-            {
-                MessageBox.Show("Numer telefonu musi zawierać dokładnie 9 cyfr!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            //pesel
-           if (!Validator.IsValidPESEL(pesel_textBox.Text, plec_comboBox.SelectedItem.ToString()))
-            {
-                MessageBox.Show("Numer PESEL jest nieprawidłowy!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            if (!Validator.IsUniquePESEL(pesel_textBox.Text, usersList))
-            {
-                MessageBox.Show("Podany numer PESEL już istnieje!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
+            // Sprawdzenie wymaganych pól
             if (string.IsNullOrWhiteSpace(txb_login.Text) ||
                 string.IsNullOrWhiteSpace(imie_textBox.Text) ||
                 string.IsNullOrWhiteSpace(nazwisko_textBox.Text) ||
@@ -109,12 +77,57 @@ namespace przychodnia_testowanie
                 string.IsNullOrWhiteSpace(pesel_textBox.Text) ||
                 string.IsNullOrWhiteSpace(mail_textBox.Text) ||
                 string.IsNullOrWhiteSpace(numerTelefonu_textBox.Text) ||
-                plec_comboBox.SelectedItem == null)
+                plec_comboBox.SelectedItem == null) // Płeć jest polem wymaganym
             {
-                MessageBox.Show("Wszystkie pola oznaczone jako wymagane muszą być wypełnione!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Wypełnij wszystkie wymagane pola", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return; // Nie zamykamy formularza
+            }
+
+            // Sprawdzenie poprawności adresu e-mail
+            if (!Validator.IsValidEmail(mail_textBox.Text))
+            {
+                MessageBox.Show("Nieprawidłowy adres e-mail!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
+
+
+            // Sprawdzenie unikalności adresu e-mail
+            if (!Validator.IsUniqueEmail(mail_textBox.Text, usersList))
+            {
+                MessageBox.Show("Podany adres e-mail już istnieje!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // Sprawdzenie unikalności pesel
+            if (!Validator.IsUniquePESEL(pesel_textBox.Text, usersList))
+            {
+                MessageBox.Show("Podany adres e-mail już istnieje!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // Sprawdzenie poprawności numeru kodu pocztowege
+            if (!Validator.IsValidPostalCode(kodPocztowy_textBox.Text))
+            {
+                MessageBox.Show("Proszę wpisac kod pocztowy w postaci 00-000", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // Sprawdzenie poprawności numeru telefonu
+            if (!Validator.IsValidPhoneNumber(numerTelefonu_textBox.Text))
+            {
+                MessageBox.Show("Numer telefonu musi zawierać dokładnie 9 cyfr!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // Sprawdzenie poprawności numeru PESEL
+            if (!Validator.IsValidPESEL(pesel_textBox.Text, plec_comboBox.SelectedItem.ToString()))
+            {
+                MessageBox.Show("Numer PESEL jest nieprawidłowy!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // Jeśli wszystkie walidacje zostały zaliczone, zapisujemy dane i zamykamy formularz
             użytkownik.Login = txb_login.Text.Trim();
             użytkownik.Imię = imie_textBox.Text.Trim();
             użytkownik.Nazwisko = nazwisko_textBox.Text.Trim();
@@ -129,10 +142,7 @@ namespace przychodnia_testowanie
             użytkownik.Kod_pocztowy = kodPocztowy_textBox.Text.Trim();
             użytkownik.Numer_telefonu = numerTelefonu_textBox.Text.Trim();
 
-           
-           
-
-            
+            // Zamykamy formularz po zapisaniu danych
             this.DialogResult = DialogResult.OK;
             this.Close();
 

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_lista_uzytkownikow));
             this.btn_wyszukiwarka = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.btn_nowy_użytkow = new System.Windows.Forms.Button();
@@ -60,7 +61,7 @@
             // 
             // btn_nowy_użytkow
             // 
-            this.btn_nowy_użytkow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(167)))), ((int)(((byte)(204)))));
+            this.btn_nowy_użytkow.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.btn_nowy_użytkow.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.btn_nowy_użytkow.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.btn_nowy_użytkow.Location = new System.Drawing.Point(940, 12);
@@ -81,8 +82,6 @@
             this.txb_search.Name = "txb_search";
             this.txb_search.Size = new System.Drawing.Size(337, 22);
             this.txb_search.TabIndex = 5;
-            this.txb_search.Text = "Wyszukaj użytkownika...";
-            this.txb_search.TextChanged += new System.EventHandler(this.txb_search_TextChanged);
             // 
             // dtGrdVw_lista_uż
             // 
@@ -95,11 +94,10 @@
             this.dtGrdVw_lista_uż.RowTemplate.Height = 24;
             this.dtGrdVw_lista_uż.Size = new System.Drawing.Size(1093, 377);
             this.dtGrdVw_lista_uż.TabIndex = 9;
-            this.dtGrdVw_lista_uż.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtGrdVw_lista_uż_CellContentClick);
             // 
             // btn_edycja_użytkownika
             // 
-            this.btn_edycja_użytkownika.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(167)))), ((int)(((byte)(204)))));
+            this.btn_edycja_użytkownika.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.btn_edycja_użytkownika.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.btn_edycja_użytkownika.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.btn_edycja_użytkownika.Location = new System.Drawing.Point(693, 12);
@@ -109,14 +107,14 @@
             this.btn_edycja_użytkownika.TabIndex = 10;
             this.btn_edycja_użytkownika.Text = "Edytuj uzytkownika";
             this.btn_edycja_użytkownika.UseVisualStyleBackColor = false;
-     
+            this.btn_edycja_użytkownika.Click += new System.EventHandler(this.btn_edycja_użytkownika_Click);
             // 
             // Form_lista_uzytkownikow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(227)))), ((int)(((byte)(235)))), ((int)(((byte)(242)))));
-            this.BackgroundImage = global::przychodnia_testowanie.Properties.Resources.Lista_uzytkowników__3_;
+            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1168, 791);
             this.Controls.Add(this.btn_edycja_użytkownika);

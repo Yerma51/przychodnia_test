@@ -93,7 +93,6 @@
             // 
             this.button1_zapisz.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(167)))), ((int)(((byte)(204)))), ((int)(((byte)(109)))));
             this.button1_zapisz.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button1_zapisz.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.button1_zapisz.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.button1_zapisz.ForeColor = System.Drawing.Color.Black;
             this.button1_zapisz.Location = new System.Drawing.Point(674, 681);

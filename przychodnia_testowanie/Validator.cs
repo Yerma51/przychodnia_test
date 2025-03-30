@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace przychodnia_testowanie
 {
-    internal  class Validator
+    internal class Validator
     {
+        // Sprawdzanie poprawności adresu e-mail
         public static bool IsValidEmail(string email)
         {
             if (string.IsNullOrWhiteSpace(email) || email.Length > 255)
@@ -18,58 +19,64 @@ namespace przychodnia_testowanie
             return Regex.IsMatch(email, pattern);
         }
 
-        // Проверка на уникальность email
+        // Sprawdzanie unikalności adresu e-mail
         public static bool IsUniqueEmail(string email, List<Użytkownik> usersList)
         {
             return !usersList.Any(user => user.Adres_email == email);
         }
 
-        // Валидация номера телефона (должно быть ровно 9 цифр)
+        // Walidacja numeru telefonu (musi zawierać dokładnie 9 cyfr)
         public static bool IsValidPhoneNumber(string phone)
         {
             return Regex.IsMatch(phone, @"^\d{9}$");
         }
 
-        // Валидация логина (не пустой + уникальный)
+        // Walidacja loginu (pole nie może być puste i musi być unikalne)
         public static bool IsValidLogin(string login, List<Użytkownik> usersList)
         {
             if (string.IsNullOrWhiteSpace(login)) return false;
             return !usersList.Any(user => user.Login == login);
         }
 
+        // Walidacja numeru PESEL
         public static bool IsValidPESEL(string pesel, string gender)
         {
             if (!Regex.IsMatch(pesel, @"^\d{11}$"))
                 return false;
 
-            // Проверка даты рождения
-            string year = pesel.Substring(0, 2);
-            string month = pesel.Substring(2, 2);
-            string day = pesel.Substring(4, 2);
+            // Sprawdzanie daty urodzenia
+            string yearPart = pesel.Substring(0, 2);
+            string monthPart = pesel.Substring(2, 2);
+            string dayPart = pesel.Substring(4, 2);
 
-            int fullYear = GetFullYear(year, month);
-            int fullMonth = GetRealMonth(month);
-            int fullDay = int.Parse(day);
+            int fullYear = GetFullYear(yearPart, monthPart);
+            int fullMonth = GetRealMonth(monthPart);
+            int fullDay;
+
+            if (!int.TryParse(dayPart, out fullDay) || fullDay < 1 || fullMonth < 1 || fullMonth > 12)
+                return false;
 
             if (!IsValidDate(fullYear, fullMonth, fullDay))
                 return false;
 
-            // Проверка пола (предпоследняя цифра)
+            DateTime birthDate = new DateTime(fullYear, fullMonth, fullDay);
+            if (birthDate > DateTime.Now)
+                return false;
+
             int genderDigit = int.Parse(pesel[9].ToString());
             if ((gender == "Mężczyzna" && genderDigit % 2 == 0) || (gender == "Kobieta" && genderDigit % 2 != 0))
                 return false;
 
-            // Проверка контрольной цифры
             return IsValidControlDigit(pesel);
         }
 
-        // Проверка уникальности PESEL
+        // Sprawdzanie unikalności numeru PESEL
         public static bool IsUniquePESEL(string pesel, List<Użytkownik> usersList)
         {
             return !usersList.Any(user => user.Pesel == pesel);
         }
 
-        // Восстановление полного года из PESEL
+        // Pobieranie pełnego roku na podstawie numeru PESEL
         private static int GetFullYear(string year, string month)
         {
             int y = int.Parse(year);
@@ -82,28 +89,20 @@ namespace przychodnia_testowanie
             return 1900 + y;
         }
 
-        // Преобразование месяца PESEL в настоящий месяц
+        // Konwersja miesiąca z numeru PESEL na rzeczywisty miesiąc
         private static int GetRealMonth(string month)
         {
             int m = int.Parse(month);
             return (m % 20);
         }
 
-        // Проверка корректности даты рождения
+        // Sprawdzanie poprawności daty urodzenia
         private static bool IsValidDate(int year, int month, int day)
         {
-            try
-            {
-                DateTime date = new DateTime(year, month, day);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            return day > 0 && day <= DateTime.DaysInMonth(year, month);
         }
 
-        // Проверка контрольной цифры PESEL
+        // Sprawdzanie cyfry kontrolnej numeru PESEL
         private static bool IsValidControlDigit(string pesel)
         {
             int[] weights = { 1, 3, 7, 9, 1, 3, 7, 9, 1, 3 };
@@ -116,6 +115,13 @@ namespace przychodnia_testowanie
 
             int controlDigit = (10 - (sum % 10)) % 10;
             return controlDigit == int.Parse(pesel[10].ToString());
+        }
+
+        // Walidacja kodu pocztowego (format: 00-000)
+        public static bool IsValidPostalCode(string postalCode)
+        {
+            string pattern = @"^\d{2}-\d{3}$";
+            return Regex.IsMatch(postalCode, pattern);
         }
     }
 }
