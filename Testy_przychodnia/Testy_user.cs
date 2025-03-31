@@ -135,24 +135,17 @@ namespace Testy_przychodnia
 
         // Testy zapomniania i wyszukiwanie zapomnianych
         [Fact]
-        public void AnonymizedUser_ShouldHaveClearedPersonalData()
+        public void AnonymizedUser_ShouldHaveClearedFieldsAndNullStatus()
         {
             // Arrange
             Użytkownik user = new Użytkownik
             {
                 Id = 1,
-                Login = "janek94",
-                Imię = "Jan",
-                Nazwisko = "Kowalski",
-                Płec = "M",
-                Pesel = "94071412345",
-                Adres_email = "janek@example.com",
+                Login = "john",
+                Adres_email = "john@example.com",
                 Numer_telefonu = "123456789",
-                Miejscowość = "Warszawa",
-                Kod_pocztowy = "00-001",
-                Numer_pos = "1",
-                Numer_lokalu = "2",
-                Ulica = "Nowa"
+                Pesel = "94071412345",
+                Imię = "Jan"
             };
 
             // Act – symulujemy zapomnienie
@@ -161,30 +154,37 @@ namespace Testy_przychodnia
             user.Numer_telefonu = "";
             user.Pesel = "";
             user.Imię = "Anonimowy";
-            bool forgotten = true;
+            bool? status = null; // symuluje status = NULL
 
-            // Assert – sprawdzamy, że dane są zamazane
+            // Assert
             Assert.Equal("", user.Login);
             Assert.Equal("", user.Adres_email);
             Assert.Equal("", user.Pesel);
             Assert.Equal("Anonimowy", user.Imię);
-            Assert.True(forgotten);
+            Assert.Null(status);
         }
+
 
         [Fact]
-        public void ForgottenUsersFilter_ShouldReturnOnlyAnonymizedUsers()
+        public void ForgottenUsersFilter_ShouldReturnOnlyUsersWithNullStatus()
         {
-            var users = new List<Użytkownik>
+            // Arrange
+            var users = new List<(Użytkownik user, bool? status)>
             {
-                new Użytkownik { Id = 1, Imię = "Jan", Pesel = "111", Adres_email = "a", Login = "jan", Numer_telefonu = "123", Kod_pocztowy = "00-001" },
-                new Użytkownik { Id = 2, Imię = "Anonimowy", Pesel = "", Adres_email = "", Login = "", Numer_telefonu = "", Kod_pocztowy = "00-002" } // zapomniany
+                (new Użytkownik { Id = 1, Imię = "Jan", Login = "jan", Adres_email = "jan@x.com" }, true),
+                (new Użytkownik { Id = 2, Imię = "Anonimowy", Login = "", Adres_email = "" }, null)
             };
 
-            var zapomniani = users.Where(u => u.Imię == "Anonimowy" && u.Login == "").ToList();
+            // Act – znajdź tylko zapomnianych
+            var forgottenUsers = users
+                .Where(u => u.status == null && u.user.Imię == "Anonimowy" && string.IsNullOrEmpty(u.user.Login))
+                .ToList();
 
-            Assert.Single(zapomniani);
-            Assert.Equal(2, zapomniani[0].Id);
+            // Assert
+            Assert.Single(forgottenUsers);
+            Assert.Equal(2, forgottenUsers[0].user.Id);
         }
+
 
     }
 }
