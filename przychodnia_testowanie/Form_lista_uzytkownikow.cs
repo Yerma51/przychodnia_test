@@ -68,14 +68,7 @@ namespace przychodnia_testowanie
                 dtGrdVw_lista_uż.Columns["status"].Visible = false;
 
         }
-<<<<<<< HEAD
-=======
 
-        public bool AreAllPropertiesSet(Użytkownik uzytkownik)
-        {
-            // Pobieramy wszystkie właściwości obiektu Uzytkownik
-            PropertyInfo[] properties = uzytkownik.GetType().GetProperties();
->>>>>>> 819ba30a6edd244bf03b695aa5b4f3a0f54465ac
 
         /*public bool AreAllPropertiesSet(Użytkownik uzytkownik, out string missingPropertyName)
         {
