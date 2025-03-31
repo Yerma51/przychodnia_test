@@ -68,8 +68,7 @@ namespace przychodnia_testowanie
                 dtGrdVw_lista_uż.Columns["status"].Visible = false;
 
         }
-
-
+        //PropertyInfo[] properties = uzytkownik.GetType().GetProperties();
         /*public bool AreAllPropertiesSet(Użytkownik uzytkownik, out string missingPropertyName)
         {
             PropertyInfo[] properties = uzytkownik.GetType().GetProperties();
@@ -92,7 +91,7 @@ namespace przychodnia_testowanie
         }*/     //walidacja danych (ale lepiej)
 
 
-private void btn_nowy_użytkow_Click(object sender, EventArgs e)
+        private void btn_nowy_użytkow_Click(object sender, EventArgs e)
         {
             Użytkownik nowy_uzytkownik = new Użytkownik();
             Form_profil form = new Form_profil(nowy_uzytkownik);
