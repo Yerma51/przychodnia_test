@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 25, 2025 at 07:34 PM
+-- Generation Time: Apr 01, 2025 at 01:29 AM
 -- Wersja serwera: 10.4.32-MariaDB
 -- Wersja PHP: 8.2.12
 
@@ -78,6 +78,17 @@ CREATE TABLE `patients` (
   `lastname` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Dumping data for table `patients`
+--
+
+INSERT INTO `patients` (`id`, `user_id`, `pesel`, `country`, `city`, `postcode`, `street`, `house_number`, `apartment_number`, `name`, `lastname`) VALUES
+(1, 2, '25232665296', 'Poland', 'Lodz', '91-022', 'Rewolucji', 45, 14, 'Kacper', 'Augustyniak'),
+(4, 5, '25233135444', 'Poland', 'Stoki', '69-690', '', 69, 0, 'Ada', 'Zimoląg'),
+(5, 6, '25240197127', 'Poland', 'Rzeczna', '69-690', '', 69, 0, 'Julia', 'Kubik'),
+(6, 7, '76061221452', 'Poland', 'Dziadowo', '69-690', '', 69, 0, 'Andrzej', 'Kapituła'),
+(7, 8, '00412035951', 'Poland', 'Lodz', '95-050', '', 10, 0, 'Krzysztof', 'Sobolewski');
+
 -- --------------------------------------------------------
 
 --
@@ -139,24 +150,23 @@ CREATE TABLE `specializations` (
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `login` varchar(40) NOT NULL,
-  `password` binary(32) NOT NULL,
   `role` enum('patient','doctor','administrator') NOT NULL,
   `email` varchar(100) NOT NULL,
   `phonenumber` varchar(20) NOT NULL,
   `status` tinyint(1) DEFAULT NULL,
-  `regdate` datetime NOT NULL,
-  `regip` int(10) UNSIGNED NOT NULL,
-  `lastip` int(10) UNSIGNED DEFAULT NULL,
-  `lastlogin` datetime DEFAULT NULL,
-  `lastbrowser` varchar(255) DEFAULT NULL
+  `regdate` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `login`, `password`, `role`, `email`, `phonenumber`, `status`, `regdate`, `regip`, `lastip`, `lastlogin`, `lastbrowser`) VALUES
-(1, 'kacperos', 0xbf70b73c71b9a01d1b47d5f0b208fc92cd1c3b9e4dba67398f67eb4753755671, 'administrator', 'kacperos@o2.pl', '112997998', 1, '2025-03-25 19:04:36', 2130706433, 2130706433, '2025-03-25 19:04:36', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)');
+INSERT INTO `users` (`id`, `login`, `role`, `email`, `phonenumber`, `status`, `regdate`) VALUES
+(2, 'kacperos', 'patient', 'kacperos@o2.pl', '666999666', 1, '2025-03-26 16:46:12'),
+(5, 'Madzia', 'patient', 'Madzia@adzia.pl', '666999666', 1, '2025-03-31 23:59:25'),
+(6, 'loless', 'patient', 'loless@wp.pl', '999666999', 1, '2025-04-01 00:08:04'),
+(7, 'Dziad', 'patient', 'dziad@dziadyga.pl', '999666999', 1, '2025-04-01 00:30:49'),
+(8, 'Gruby', 'patient', 'Sobol@wp.pl', '666999666', 1, '2025-04-01 00:37:30');
 
 -- --------------------------------------------------------
 
@@ -173,7 +183,7 @@ CREATE TABLE `visits` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Indeksy dla zrzutÃ³w tabel
+-- Indeksy dla zrzutów tabel
 --
 
 --
@@ -265,7 +275,7 @@ ALTER TABLE `logs`
 -- AUTO_INCREMENT for table `patients`
 --
 ALTER TABLE `patients`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `prescriptions`
@@ -295,36 +305,69 @@ ALTER TABLE `specializations`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT dla tabeli `visits`
+-- AUTO_INCREMENT for table `visits`
 --
 ALTER TABLE `visits`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `doctors`
+--
 ALTER TABLE `doctors`
-  ADD CONSTRAINT `fk_doctors_users` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`);
+  ADD CONSTRAINT `fk_doctors_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
+--
+-- Constraints for table `doctors_specializations`
+--
 ALTER TABLE `doctors_specializations`
-  ADD CONSTRAINT `fk_doc_spec_doctor` FOREIGN KEY (`doctor_id`) REFERENCES `doctors`(`id`),
-  ADD CONSTRAINT `fk_doc_spec_specialization` FOREIGN KEY (`specialization_id`) REFERENCES `specializations`(`id`);
+  ADD CONSTRAINT `fk_doc_spec_doctor` FOREIGN KEY (`doctor_id`) REFERENCES `doctors` (`id`),
+  ADD CONSTRAINT `fk_doc_spec_specialization` FOREIGN KEY (`specialization_id`) REFERENCES `specializations` (`id`);
 
+--
+-- Constraints for table `logs`
+--
 ALTER TABLE `logs`
-  ADD CONSTRAINT `fk_logs_users` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`);
+  ADD CONSTRAINT `fk_logs_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
+--
+-- Constraints for table `patients`
+--
 ALTER TABLE `patients`
-  ADD CONSTRAINT `fk_patients_users` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`);
+  ADD CONSTRAINT `fk_patients_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
+--
+-- Constraints for table `prescriptions`
+--
 ALTER TABLE `prescriptions`
-  ADD CONSTRAINT `fk_prescriptions_visits` FOREIGN KEY (`visit_id`) REFERENCES `visits`(`id`);
+  ADD CONSTRAINT `fk_prescriptions_visits` FOREIGN KEY (`visit_id`) REFERENCES `visits` (`id`);
 
+--
+-- Constraints for table `restore_password`
+--
 ALTER TABLE `restore_password`
-  ADD CONSTRAINT `fk_restore_password_users` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`);
+  ADD CONSTRAINT `fk_restore_password_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
+--
+-- Constraints for table `sessions`
+--
 ALTER TABLE `sessions`
-  ADD CONSTRAINT `fk_sessions_users` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`);
+  ADD CONSTRAINT `fk_sessions_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
+--
+-- Constraints for table `visits`
+--
 ALTER TABLE `visits`
-  ADD CONSTRAINT `fk_visits_patient` FOREIGN KEY (`patient_id`) REFERENCES `patients`(`id`),
-  ADD CONSTRAINT `fk_visits_doctor` FOREIGN KEY (`doctor_id`) REFERENCES `doctors`(`id`);
+  ADD CONSTRAINT `fk_visits_doctor` FOREIGN KEY (`doctor_id`) REFERENCES `doctors` (`id`),
+  ADD CONSTRAINT `fk_visits_patient` FOREIGN KEY (`patient_id`) REFERENCES `patients` (`id`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

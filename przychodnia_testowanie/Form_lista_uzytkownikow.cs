@@ -25,7 +25,7 @@ namespace przychodnia_testowanie
             refresh();
         }
 
-        static string ComputeSha256Hash(string rawData)
+        /*static string ComputeSha256Hash(string rawData)
         {
             using (SHA256 sha256Hash = SHA256.Create())
             {
@@ -38,7 +38,7 @@ namespace przychodnia_testowanie
                 }
                 return builder.ToString();
             }
-        }
+        }*/         //hashowanie hasła
 
         void refresh()
         {
@@ -68,27 +68,38 @@ namespace przychodnia_testowanie
                 dtGrdVw_lista_uż.Columns["status"].Visible = false;
 
         }
+<<<<<<< HEAD
+=======
 
         public bool AreAllPropertiesSet(Użytkownik uzytkownik)
         {
             // Pobieramy wszystkie właściwości obiektu Uzytkownik
             PropertyInfo[] properties = uzytkownik.GetType().GetProperties();
+>>>>>>> 819ba30a6edd244bf03b695aa5b4f3a0f54465ac
 
+        /*public bool AreAllPropertiesSet(Użytkownik uzytkownik, out string missingPropertyName)
+        {
+            PropertyInfo[] properties = uzytkownik.GetType().GetProperties();
             foreach (var property in properties)
             {
+                if (property.Name == "Numer_lokalu")
+                {
+                    continue;
+                }
                 var value = property.GetValue(uzytkownik);
-
-                // Sprawdzamy, czy wartość właściwości jest null (dla referencyjnych typów) lub pusta (dla stringów)
                 if (value == null || (value is string && string.IsNullOrWhiteSpace((string)value)))
                 {
-                    return false; // Jeśli któraś z właściwości nie jest ustawiona, zwróć false
+                    missingPropertyName = property.Name;
+                    return false;
                 }
             }
 
-            return true; // Wszystkie właściwości są ustawione return false; 
-        }
+            missingPropertyName = null;
+            return true;
+        }*/     //walidacja danych (ale lepiej)
 
-        private void btn_nowy_użytkow_Click(object sender, EventArgs e)
+
+private void btn_nowy_użytkow_Click(object sender, EventArgs e)
         {
             Użytkownik nowy_uzytkownik = new Użytkownik();
             Form_profil form = new Form_profil(nowy_uzytkownik);
@@ -98,40 +109,40 @@ namespace przychodnia_testowanie
                 return;//Sprawdzenie, czy wynik dialogu jest różny od DialogResult.OK. Jeśli tak, metoda kończy działanie (
 
             }
-            if (!AreAllPropertiesSet(nowy_uzytkownik))
+            /*if (!AreAllPropertiesSet(nowy_uzytkownik, out string missingProperty))
             {
-                return;
+                Console.WriteLine($"Nie podano: {missingProperty}");
             }
-            Laczenie_z_baza_danych DBconn = new Laczenie_z_baza_danych();
-            DataTable insertUser = DBconn.ExecuteQuery("INSERT INTO users (id, login, password, role, email, phonenumber, status, regdate) VALUES ( NULL, @login, @password, @role, @email, @phonenumber, @status, NOW())",
+            else
+            {*/
+                // sukces
+                Laczenie_z_baza_danych DBconn = new Laczenie_z_baza_danych();
+                DataTable insertUser = DBconn.ExecuteQuery("INSERT INTO users (id, login, role, email, phonenumber, status, regdate) VALUES ( NULL, @login, @role, @email, @phonenumber, @status, NOW())",
 
-            new MySqlParameter("@login", nowy_uzytkownik.Login),
-            new MySqlParameter("@password", ComputeSha256Hash(nowy_uzytkownik.Login)),
-            new MySqlParameter("@role", "patient"),
-            new MySqlParameter("@email", nowy_uzytkownik.Adres_email),
-            new MySqlParameter("@phonenumber", nowy_uzytkownik.Numer_telefonu),
-            new MySqlParameter("@status", 1));
+                new MySqlParameter("@login", nowy_uzytkownik.Login),               
+                new MySqlParameter("@role", "patient"),
+                new MySqlParameter("@email", nowy_uzytkownik.Adres_email),
+                new MySqlParameter("@phonenumber", nowy_uzytkownik.Numer_telefonu),
+                new MySqlParameter("@status", 1));
 
-            DataTable lastinsertID = DBconn.ExecuteQuery("SELECT LAST_INSERT_ID()");
-            object lastID = lastinsertID.Rows[0][0];
-            DataTable insertPatient = DBconn.ExecuteQuery("INSERT INTO patients (id, user_id, pesel, country, city, postcode, street, house_number, apartment_number, name, lastname) VALUES ( NULL, @user_id, @pesel, 'Poland', @city, @postcode, @street, @house_number, @apartment_number, @name, @lastname)",
+                DataTable lastinsertID = DBconn.ExecuteQuery("SELECT LAST_INSERT_ID()");
+                object lastID = lastinsertID.Rows[0][0];
+                DataTable insertPatient = DBconn.ExecuteQuery("INSERT INTO patients (id, user_id, pesel, country, city, postcode, street, house_number, apartment_number, name, lastname) VALUES ( NULL, @user_id, @pesel, 'Poland', @city, @postcode, @street, @house_number, @apartment_number, @name, @lastname)",
 
-                new MySqlParameter("@user_id", lastID),
-                new MySqlParameter("@pesel", nowy_uzytkownik.Pesel),
-                new MySqlParameter("@city", nowy_uzytkownik.Miejscowość),
-                new MySqlParameter("@postcode", nowy_uzytkownik.Kod_pocztowy),
-                new MySqlParameter("@street", nowy_uzytkownik.Ulica),
-                new MySqlParameter("@house_number", nowy_uzytkownik.Numer_pos),
-                new MySqlParameter("@apartment_number", nowy_uzytkownik.Numer_lokalu),
-                new MySqlParameter("@name", nowy_uzytkownik.Imię),
-                new MySqlParameter("@lastname", nowy_uzytkownik.Nazwisko));
+                    new MySqlParameter("@user_id", lastID),
+                    new MySqlParameter("@pesel", nowy_uzytkownik.Pesel),
+                    new MySqlParameter("@city", nowy_uzytkownik.Miejscowość),
+                    new MySqlParameter("@postcode", nowy_uzytkownik.Kod_pocztowy),
+                    new MySqlParameter("@street", nowy_uzytkownik.Ulica),
+                    new MySqlParameter("@house_number", nowy_uzytkownik.Numer_pos),
+                    new MySqlParameter("@apartment_number", nowy_uzytkownik.Numer_lokalu),
+                    new MySqlParameter("@name", nowy_uzytkownik.Imię),
+                    new MySqlParameter("@lastname", nowy_uzytkownik.Nazwisko));
 
-            refresh();
+                refresh();
 
-            MessageBox.Show("Użytkownik został dodany pomyślnie!", "Sukces", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-
-
+                MessageBox.Show("Użytkownik został dodany pomyślnie!", "Sukces", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //}
         }
 
         private void btn_wyszukiwarka_Click(object sender, EventArgs e)
@@ -152,7 +163,7 @@ namespace przychodnia_testowanie
                 {
                     // Wyszukiwanie po imieniu i nazwisku (w dowolnej kolejności)
                     result = DBconn.ExecuteQuery(
-                        "SELECT u.id, p.name, p.lastname, u.login, u.role, u.email, u.phonenumber, u.regdate, p.pesel, p.country, p.city, p.postcode, p.street, p.house_number, p.apartment_number " +
+                        "SELECT p.name as Imię, p.lastname as Nazwisko, u.login, u.role as Rola, u.email, u.phonenumber as 'Numer Telefonu', u.regdate as 'Data Rejestracji', p.pesel as Pesel, p.country as Kraj, p.city as Miasto, p.postcode as 'Kod pocztowy', p.street as Ulica, p.house_number as 'Numer domu', p.apartment_number as 'Numer apartamentu', u.id " +
                         "FROM users as u " +
                         "JOIN patients as p ON u.id = p.user_id " +
                         "WHERE (p.name LIKE @name AND p.lastname LIKE @lastname) OR (p.name LIKE @lastname AND p.lastname LIKE @name);",
@@ -163,7 +174,7 @@ namespace przychodnia_testowanie
                 {
                     // Wyszukiwanie po imieniu lub nazwisku
                     result = DBconn.ExecuteQuery(
-                        "SELECT u.id, p.name, p.lastname, u.login, u.role, u.email, u.phonenumber, u.regdate, p.pesel, p.country, p.city, p.postcode, p.street, p.house_number, p.apartment_number " +
+                        "SELECT p.name as Imię, p.lastname as Nazwisko, u.login, u.role as Rola, u.email, u.phonenumber as 'Numer Telefonu', u.regdate as 'Data Rejestracji', p.pesel as Pesel, p.country as Kraj, p.city as Miasto, p.postcode as 'Kod pocztowy', p.street as Ulica, p.house_number as 'Numer domu', p.apartment_number as 'Numer apartamentu', u.id " +
                         "FROM users as u " +
                         "JOIN patients as p ON u.id = p.user_id " +
                         "WHERE p.name LIKE @szukany OR p.lastname LIKE @szukany;",
@@ -176,9 +187,8 @@ namespace przychodnia_testowanie
             {
                 // Jeśli pole wyszukiwania jest puste, wyświetlamy całą listę
                 DataTable result = DBconn.ExecuteQuery(
-                    "SELECT u.id, p.name, p.lastname, u.login, u.role, u.email, u.phonenumber, u.regdate, p.pesel, p.country, p.city, p.postcode, p.street, p.house_number, p.apartment_number " +
-                    "FROM users as u " +
-                    "JOIN patients as p ON u.id = p.user_id;");
+                    "SELECT p.name as Imię, p.lastname as Nazwisko, u.login, u.role as Rola, u.email, u.phonenumber as 'Numer Telefonu', u.regdate as 'Data Rejestracji', p.pesel as Pesel, p.country as Kraj, p.city as Miasto, p.postcode as 'Kod pocztowy', p.street as Ulica, p.house_number as 'Numer domu', p.apartment_number as 'Numer apartamentu', u.id FROM users as u JOIN patients as p ON u.id = p.user_id;" 
+                    );
 
                 dtGrdVw_lista_uż.DataSource = result;
             }
