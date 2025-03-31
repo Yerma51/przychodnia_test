@@ -35,6 +35,7 @@
             this.txb_search = new System.Windows.Forms.TextBox();
             this.dtGrdVw_lista_uż = new System.Windows.Forms.DataGridView();
             this.btn_edycja_użytkownika = new System.Windows.Forms.Button();
+            this.btn_zapomnij = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dtGrdVw_lista_uż)).BeginInit();
             this.SuspendLayout();
             // 
@@ -109,6 +110,20 @@
             this.btn_edycja_użytkownika.UseVisualStyleBackColor = false;
             this.btn_edycja_użytkownika.Click += new System.EventHandler(this.btn_edycja_użytkownika_Click);
             // 
+            // btn_zapomnij
+            // 
+            this.btn_zapomnij.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.btn_zapomnij.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.btn_zapomnij.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.btn_zapomnij.Location = new System.Drawing.Point(526, 12);
+            this.btn_zapomnij.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btn_zapomnij.Name = "btn_zapomnij";
+            this.btn_zapomnij.Size = new System.Drawing.Size(147, 44);
+            this.btn_zapomnij.TabIndex = 11;
+            this.btn_zapomnij.Text = "Zapomnij użytkownika";
+            this.btn_zapomnij.UseVisualStyleBackColor = false;
+            this.btn_zapomnij.Click += new System.EventHandler(this.btn_zapomnij_Click);
+            // 
             // Form_lista_uzytkownikow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -117,6 +132,7 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1168, 791);
+            this.Controls.Add(this.btn_zapomnij);
             this.Controls.Add(this.btn_edycja_użytkownika);
             this.Controls.Add(this.dtGrdVw_lista_uż);
             this.Controls.Add(this.btn_wyszukiwarka);
@@ -143,5 +159,6 @@
         private System.Windows.Forms.TextBox txb_search;
         private System.Windows.Forms.DataGridView dtGrdVw_lista_uż;
         private System.Windows.Forms.Button btn_edycja_użytkownika;
+        private System.Windows.Forms.Button btn_zapomnij;
     }
 }

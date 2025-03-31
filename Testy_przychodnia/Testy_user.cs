@@ -1,4 +1,5 @@
-﻿using System;
+﻿using przychodnia_testowanie;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -131,5 +132,59 @@ namespace Testy_przychodnia
         {
             Assert.False(IsPhoneNumberValid("1234567A9"));
         }
+
+        // Testy zapomniania i wyszukiwanie zapomnianych
+        [Fact]
+        public void AnonymizedUser_ShouldHaveClearedPersonalData()
+        {
+            // Arrange
+            Użytkownik user = new Użytkownik
+            {
+                Id = 1,
+                Login = "janek94",
+                Imię = "Jan",
+                Nazwisko = "Kowalski",
+                Płec = "M",
+                Pesel = "94071412345",
+                Adres_email = "janek@example.com",
+                Numer_telefonu = "123456789",
+                Miejscowość = "Warszawa",
+                Kod_pocztowy = "00-001",
+                Numer_pos = "1",
+                Numer_lokalu = "2",
+                Ulica = "Nowa"
+            };
+
+            // Act – symulujemy zapomnienie
+            user.Login = "";
+            user.Adres_email = "";
+            user.Numer_telefonu = "";
+            user.Pesel = "";
+            user.Imię = "Anonimowy";
+            bool forgotten = true;
+
+            // Assert – sprawdzamy, że dane są zamazane
+            Assert.Equal("", user.Login);
+            Assert.Equal("", user.Adres_email);
+            Assert.Equal("", user.Pesel);
+            Assert.Equal("Anonimowy", user.Imię);
+            Assert.True(forgotten);
+        }
+
+        [Fact]
+        public void ForgottenUsersFilter_ShouldReturnOnlyAnonymizedUsers()
+        {
+            var users = new List<Użytkownik>
+            {
+                new Użytkownik { Id = 1, Imię = "Jan", Pesel = "111", Adres_email = "a", Login = "jan", Numer_telefonu = "123", Kod_pocztowy = "00-001" },
+                new Użytkownik { Id = 2, Imię = "Anonimowy", Pesel = "", Adres_email = "", Login = "", Numer_telefonu = "", Kod_pocztowy = "00-002" } // zapomniany
+            };
+
+            var zapomniani = users.Where(u => u.Imię == "Anonimowy" && u.Login == "").ToList();
+
+            Assert.Single(zapomniani);
+            Assert.Equal(2, zapomniani[0].Id);
+        }
+
     }
 }

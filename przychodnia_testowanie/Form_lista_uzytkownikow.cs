@@ -42,9 +42,44 @@ namespace przychodnia_testowanie
 
         void refresh()
         {
-            DataTable result = DBconn.ExecuteQuery("SELECT p.name as Imię, p.lastname as Nazwisko, u.login, u.role as Rola, u.email, u.phonenumber as 'Numer Telefonu', u.regdate as 'Data Rejestracji', p.pesel as Pesel, p.country as Kraj, p.city as Miasto, p.postcode as 'Kod pocztowy', p.street as Ulica, p.house_number as 'Numer domu', p.apartment_number as 'Numer apartamentu', u.id FROM users as u JOIN patients as p ON u.id = p.user_id;");
+            //DataTable result = DBconn.ExecuteQuery("SELECT p.name as Imię, p.lastname as Nazwisko, u.login, u.role as Rola, u.email, u.phonenumber as 'Numer Telefonu', u.regdate as 'Data Rejestracji', p.pesel as Pesel, p.country as Kraj, p.city as Miasto, p.postcode as 'Kod pocztowy', p.street as Ulica, p.house_number as 'Numer domu', p.apartment_number as 'Numer apartamentu', u.id FROM users as u JOIN patients as p ON u.id = p.user_id;");
+            //dtGrdVw_lista_uż.DataSource = result;
+
+            DataTable result = DBconn.ExecuteQuery(
+               "SELECT p.name as Imię, p.lastname as Nazwisko, u.login, u.role as Rola, u.email, u.phonenumber as 'Numer Telefonu', u.regdate as 'Data Rejestracji', p.pesel as Pesel, p.country as Kraj, p.city as Miasto, p.postcode as 'Kod pocztowy', p.street as Ulica, p.house_number as 'Numer domu', p.apartment_number as 'Numer apartamentu', u.id, u.forgotten " +
+               "FROM users as u JOIN patients as p ON u.id = p.user_id;"
+            );
+
             dtGrdVw_lista_uż.DataSource = result;
+
+            // Ukryto kolumnę "forgotten"
+            if (dtGrdVw_lista_uż.Columns.Contains("forgotten"))
+            {
+                dtGrdVw_lista_uż.Columns["forgotten"].Visible = false;
+            }
+
+            // Stylizowano wiersze zapomnianych użytkowników +-
+            foreach (DataGridViewRow row in dtGrdVw_lista_uż.Rows)
+            {
+                if (row.Cells["forgotten"].Value != null &&
+                    row.Cells["forgotten"].Value.ToString() == "1")
+                {
+                    row.DefaultCellStyle.BackColor = Color.LightGray;
+                    row.DefaultCellStyle.ForeColor = Color.DarkGray;
+                    row.DefaultCellStyle.Font = new Font(dtGrdVw_lista_uż.Font, FontStyle.Italic);
+                    row.ReadOnly = true; // Nie pozwala na edycję
+                }
+            }
+
         }
+<<<<<<< HEAD
+=======
+
+        public bool AreAllPropertiesSet(Użytkownik uzytkownik)
+        {
+            // Pobieramy wszystkie właściwości obiektu Uzytkownik
+            PropertyInfo[] properties = uzytkownik.GetType().GetProperties();
+>>>>>>> 819ba30a6edd244bf03b695aa5b4f3a0f54465ac
 
         /*public bool AreAllPropertiesSet(Użytkownik uzytkownik, out string missingPropertyName)
         {
@@ -245,7 +280,44 @@ private void btn_nowy_użytkow_Click(object sender, EventArgs e)
             }
 
         }
+        
+        private void ZapomnijUzytkownika(int userId)
+        {
+            try
+            {
+                DBconn.ExecuteQuery(
+                    "UPDATE users SET login = '', email = '', phonenumber = '', status = 0, forgotten = 1 WHERE id = @id;" +
+                    "UPDATE patients SET name = 'Anonimowy', lastname = '', pesel = '', city = '', postcode = '', street = '', house_number = '', apartment_number = '' WHERE user_id = @id;",
+                    new MySqlParameter("@id", userId)
+                );
 
-       
+                MessageBox.Show("Użytkownik został zapomniany.", "Sukces", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                refresh();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Błąd podczas zapominania użytkownika: " + ex.Message, "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btn_zapomnij_Click(object sender, EventArgs e)
+        {
+
+            if (dtGrdVw_lista_uż.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Wybierz użytkownika do zapomnienia.");
+                return;
+            }
+
+            int userId = Convert.ToInt32(dtGrdVw_lista_uż.SelectedRows[0].Cells["id"].Value);
+
+            DialogResult result = MessageBox.Show("Czy na pewno chcesz zapomnieć tego użytkownika? Operacja jest nieodwracalna.", "Potwierdzenie", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (result == DialogResult.Yes)
+            {
+                ZapomnijUzytkownika(userId);
+            }
+
+
+        }
     }
 }
