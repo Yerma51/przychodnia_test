@@ -72,15 +72,7 @@ namespace przychodnia_testowanie
             }
 
         }
-<<<<<<< HEAD
-=======
-
-        public bool AreAllPropertiesSet(Użytkownik uzytkownik)
-        {
-            // Pobieramy wszystkie właściwości obiektu Uzytkownik
-            PropertyInfo[] properties = uzytkownik.GetType().GetProperties();
->>>>>>> 819ba30a6edd244bf03b695aa5b4f3a0f54465ac
-
+        //PropertyInfo[] properties = uzytkownik.GetType().GetProperties();
         /*public bool AreAllPropertiesSet(Użytkownik uzytkownik, out string missingPropertyName)
         {
             PropertyInfo[] properties = uzytkownik.GetType().GetProperties();
@@ -103,7 +95,7 @@ namespace przychodnia_testowanie
         }*/     //walidacja danych (ale lepiej)
 
 
-private void btn_nowy_użytkow_Click(object sender, EventArgs e)
+        private void btn_nowy_użytkow_Click(object sender, EventArgs e)
         {
             Użytkownik nowy_uzytkownik = new Użytkownik();
             Form_profil form = new Form_profil(nowy_uzytkownik);
