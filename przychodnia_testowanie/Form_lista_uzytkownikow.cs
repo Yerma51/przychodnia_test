@@ -46,8 +46,23 @@ namespace przychodnia_testowanie
             //dtGrdVw_lista_uż.DataSource = result;
 
             string query =
-                 "SELECT p.name as Imię, p.lastname as Nazwisko, u.login, u.role as Rola, u.email, u.phonenumber as 'Numer Telefonu', u.regdate as 'Data Rejestracji', p.pesel as Pesel, p.country as Kraj, p.city as Miasto, p.postcode as 'Kod pocztowy', p.street as Ulica, p.house_number as 'Numer domu', p.apartment_number as 'Numer apartamentu', u.id, u.status " +
-                 "FROM users as u JOIN patients as p ON u.id = p.user_id";
+                 @"SELECT p.name as Imię, p.lastname as Nazwisko, u.login, u.role as Rola, u.email, u.phonenumber as 'Numer Telefonu', u.regdate as 'Data Rejestracji', p.pesel as Pesel,
+                        CASE
+                            WHEN SUBSTRING(p.pesel, 3, 2) BETWEEN 21 AND 32 THEN CONCAT('20', SUBSTRING(p.pesel, 1, 2)) 
+                            WHEN SUBSTRING(p.pesel, 3, 2) BETWEEN 41 AND 52 THEN CONCAT('21', SUBSTRING(p.pesel, 1, 2))
+                            ELSE CONCAT('19', SUBSTRING(PESEL, 1, 2)) 
+
+                            END AS 'Rok Urodzenia', 
+                        CASE
+                            WHEN SUBSTRING(p.pesel, 3, 2) BETWEEN 21 AND 32 THEN SUBSTRING(p.pesel, 3, 2) -20
+                            WHEN SUBSTRING(p.pesel, 3, 2) BETWEEN 41 AND 52 THEN SUBSTRING(p.pesel, 3, 2) -40
+                            ELSE SUBSTRING(p.pesel, 3, 2) 
+
+                            END AS 'Miesiąc Urodzenia',SUBSTRING(p.pesel, 5, 2) AS 'Dzień Urodzenia',
+                 IF (SUBSTRING(p.pesel, 10, 1) % 2 = 0, 'K', 'M') AS Płeć,
+                 p.country as Kraj, p.city as Miasto, p.postcode as 'Kod pocztowy', p.street as Ulica, p.house_number as 'Numer domu', p.apartment_number as 'Numer apartamentu', u.id, u.status
+                 FROM users as u 
+                 JOIN patients as p ON u.id = p.user_id";
 
             DataTable result = DBconn.ExecuteQuery(query);
             dtGrdVw_lista_uż.DataSource = result;
@@ -153,12 +168,29 @@ namespace przychodnia_testowanie
 
                 if (searchParts.Length == 2)
                 {
+                   
                     // Wyszukiwanie po imieniu i nazwisku (w dowolnej kolejności)
                     result = DBconn.ExecuteQuery(
-                        "SELECT p.name as Imię, p.lastname as Nazwisko, u.login, u.role as Rola, u.email, u.phonenumber as 'Numer Telefonu', u.regdate as 'Data Rejestracji', p.pesel as Pesel, p.country as Kraj, p.city as Miasto, p.postcode as 'Kod pocztowy', p.street as Ulica, p.house_number as 'Numer domu', p.apartment_number as 'Numer apartamentu', u.id " +
-                        "FROM users as u " +
-                        "JOIN patients as p ON u.id = p.user_id " +
-                        "WHERE (p.name LIKE @name AND p.lastname LIKE @lastname) OR (p.name LIKE @lastname AND p.lastname LIKE @name);",
+                        @"SELECT p.name as Imię, p.lastname as Nazwisko, u.login, u.role as Rola, u.email, u.phonenumber as 'Numer Telefonu', u.regdate as 'Data Rejestracji', p.pesel as Pesel,
+
+                        CASE 
+                            WHEN SUBSTRING(p.pesel, 3, 2) BETWEEN 21 AND 32 THEN CONCAT('20', SUBSTRING(p.pesel, 1, 2)) 
+                            WHEN SUBSTRING(p.pesel, 3, 2) BETWEEN 41 AND 52 THEN CONCAT('21', SUBSTRING(p.pesel, 1, 2))
+                            ELSE CONCAT('19', SUBSTRING(PESEL, 1, 2)) 
+
+                            END AS 'Rok Urodzenia', 
+                        CASE 
+                            WHEN SUBSTRING(p.pesel, 3, 2) BETWEEN 21 AND 32 THEN SUBSTRING(p.pesel, 3, 2) - 20
+                            WHEN SUBSTRING(p.pesel, 3, 2) BETWEEN 41 AND 52 THEN SUBSTRING(p.pesel, 3, 2) - 40 
+                            ELSE SUBSTRING(p.pesel, 3, 2) 
+
+                            END AS 'Miesiąc Urodzenia',SUBSTRING(p.pesel, 5, 2) AS 'Dzień Urodzenia',
+
+                        IF (SUBSTRING(p.pesel, 10, 1) % 2 = 0, 'K', 'M') AS Płeć,
+                        p.country as Kraj, p.city as Miasto, p.postcode as 'Kod pocztowy', p.street as Ulica, p.house_number as 'Numer domu', p.apartment_number as 'Numer apartamentu', u.id  
+                        FROM users as u
+                        JOIN patients as p ON u.id = p.user_id
+                        WHERE (p.name LIKE @name AND p.lastname LIKE @lastname) OR (p.name LIKE @lastname AND p.lastname LIKE @name)",
                         new MySqlParameter("@name", "%" + searchName + "%"),
                         new MySqlParameter("@lastname", "%" + searchLastname + "%"));
                 }
@@ -166,10 +198,24 @@ namespace przychodnia_testowanie
                 {
                     // Wyszukiwanie po imieniu lub nazwisku
                     result = DBconn.ExecuteQuery(
-                        "SELECT p.name as Imię, p.lastname as Nazwisko, u.login, u.role as Rola, u.email, u.phonenumber as 'Numer Telefonu', u.regdate as 'Data Rejestracji', p.pesel as Pesel, p.country as Kraj, p.city as Miasto, p.postcode as 'Kod pocztowy', p.street as Ulica, p.house_number as 'Numer domu', p.apartment_number as 'Numer apartamentu', u.id " +
-                        "FROM users as u " +
-                        "JOIN patients as p ON u.id = p.user_id " +
-                        "WHERE p.name LIKE @szukany OR p.lastname LIKE @szukany;",
+                        @"SELECT p.name as Imię, p.lastname as Nazwisko, u.login, u.role as Rola, u.email, u.phonenumber as 'Numer Telefonu', u.regdate as 'Data Rejestracji', p.pesel as Pesel,
+                        CASE
+                            WHEN SUBSTRING(p.pesel, 3, 2) BETWEEN 21 AND 32 THEN CONCAT('20', SUBSTRING(p.pesel, 1, 2))
+                            WHEN SUBSTRING(p.pesel, 3, 2) BETWEEN 41 AND 52 THEN CONCAT('21', SUBSTRING(p.pesel, 1, 2))
+                            ELSE CONCAT('19', SUBSTRING(PESEL, 1, 2))
+
+                            END AS 'Rok Urodzenia',
+                        CASE
+                            WHEN SUBSTRING(p.pesel, 3, 2) BETWEEN 21 AND 32 THEN SUBSTRING(p.pesel, 3, 2) - 20
+                            WHEN SUBSTRING(p.pesel, 3, 2) BETWEEN 41 AND 52 THEN SUBSTRING(p.pesel, 3, 2) - 40
+                            ELSE SUBSTRING(p.pesel, 3, 2)
+
+                            END AS 'Miesiąc Urodzenia', SUBSTRING(p.pesel, 5, 2) AS 'Dzień Urodzenia',
+                        IF (SUBSTRING(p.pesel, 10, 1) % 2 = 0, 'K', 'M') AS Płeć,
+                        p.country as Kraj, p.city as Miasto, p.postcode as 'Kod pocztowy', p.street as Ulica, p.house_number as 'Numer domu', p.apartment_number as 'Numer apartamentu', u.id 
+                        FROM users as u 
+                        JOIN patients as p ON u.id = p.user_id 
+                        WHERE p.name LIKE @szukany OR p.lastname LIKE @szukany;",
                         new MySqlParameter("@szukany", "%" + szukany + "%"));
                 }
 
@@ -179,7 +225,23 @@ namespace przychodnia_testowanie
             {
                 // Jeśli pole wyszukiwania jest puste, wyświetlamy całą listę
                 DataTable result = DBconn.ExecuteQuery(
-                    "SELECT p.name as Imię, p.lastname as Nazwisko, u.login, u.role as Rola, u.email, u.phonenumber as 'Numer Telefonu', u.regdate as 'Data Rejestracji', p.pesel as Pesel, p.country as Kraj, p.city as Miasto, p.postcode as 'Kod pocztowy', p.street as Ulica, p.house_number as 'Numer domu', p.apartment_number as 'Numer apartamentu', u.id FROM users as u JOIN patients as p ON u.id = p.user_id;" 
+                    @"SELECT p.name as Imię, p.lastname as Nazwisko, u.login, u.role as Rola, u.email, u.phonenumber as 'Numer Telefonu', u.regdate as 'Data Rejestracji', p.pesel as Pesel,
+                        CASE
+                            WHEN SUBSTRING(p.pesel, 3, 2) BETWEEN 21 AND 32 THEN CONCAT('20', SUBSTRING(p.pesel, 1, 2))
+                            WHEN SUBSTRING(p.pesel, 3, 2) BETWEEN 41 AND 52 THEN CONCAT('21', SUBSTRING(p.pesel, 1, 2))
+                            ELSE CONCAT('19', SUBSTRING(PESEL, 1, 2))
+
+                            END AS 'Rok Urodzenia',
+                        CASE
+                            WHEN SUBSTRING(p.pesel, 3, 2) BETWEEN 21 AND 32 THEN SUBSTRING(p.pesel, 3, 2) - 20
+                            WHEN SUBSTRING(p.pesel, 3, 2) BETWEEN 41 AND 52 THEN SUBSTRING(p.pesel, 3, 2) - 40
+                            ELSE SUBSTRING(p.pesel, 3, 2)
+
+                            END AS 'Miesiąc Urodzenia', SUBSTRING(p.pesel, 5, 2) AS 'Dzień Urodzenia',
+                    IF (SUBSTRING(p.pesel, 10, 1) % 2 = 0, 'K', 'M') AS Płeć,    
+                    p.country as Kraj, p.city as Miasto, p.postcode as 'Kod pocztowy', p.street as Ulica, p.house_number as 'Numer domu', p.apartment_number as 'Numer apartamentu', u.id 
+                    FROM users as u 
+                    JOIN patients as p ON u.id = p.user_id;"
                     );
 
                 dtGrdVw_lista_uż.DataSource = result;
