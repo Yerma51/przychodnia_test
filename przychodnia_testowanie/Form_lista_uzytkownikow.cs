@@ -336,7 +336,7 @@ namespace przychodnia_testowanie
             try
             {
                 DBconn.ExecuteQuery(
-                    "UPDATE users SET login = '', email = '', phonenumber = '', regip = 0, lastip = 0, lastbrowser = '', lastlogin = NULL, status = NULL WHERE id = @id;" +
+                    "UPDATE users SET login = '', email = '', phonenumber = '', status = NULL WHERE id = @id;" +
                     "UPDATE patients SET name = 'Anonimowy', lastname = '', pesel = '', city = '', postcode = '', street = '', house_number = '', apartment_number = '' WHERE user_id = @id;",
                     new MySqlParameter("@id", userId)
                 );
