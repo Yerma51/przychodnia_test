@@ -16,7 +16,7 @@ namespace przychodnia_testowanie
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form_lista_uzytkownikow());
+            Application.Run(new Form_strona_glowna());
         }
     }
 }

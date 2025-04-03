@@ -151,7 +151,16 @@ namespace przychodnia_testowanie
         private void btn_lista_Click(object sender, EventArgs e)
         {
             (new Form_lista_uzytkownikow()).ShowDialog();
+            this.Close();
             //wyświetlić ten formularz w trybie modalnym.
+        }
+
+        private void btn_anuluj_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Dane nie zostały zapisane", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            (new Form_lista_uzytkownikow()).ShowDialog();
+            this.Close();
+
         }
     }
 }

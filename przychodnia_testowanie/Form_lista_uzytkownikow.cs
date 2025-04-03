@@ -108,22 +108,32 @@ namespace przychodnia_testowanie
 
         private void btn_nowy_użytkow_Click(object sender, EventArgs e)
         {
+            this.Hide();
+
             Użytkownik nowy_uzytkownik = new Użytkownik();
             Form_profil form = new Form_profil(nowy_uzytkownik);
-            DialogResult result = form.ShowDialog();
-            if (result != DialogResult.OK)
-            {
-                return;//Sprawdzenie, czy wynik dialogu jest różny od DialogResult.OK. Jeśli tak, metoda kończy działanie (
 
+            DialogResult result = form.ShowDialog();
+            if (result == DialogResult.OK) // Jeśli użytkownik został pomyślnie dodany
+            {
+                Form_lista_uzytkownikow formLista = new Form_lista_uzytkownikow();
+                formLista.Show(); // Otwieramy zaktualizowaną listę użytkowników.
             }
+            else
+            {
+                this.Show(); // Jeśli użytkownik nie został dodany, wracamy do listy użytkowników.
+            }
+
+
+
             /*if (!AreAllPropertiesSet(nowy_uzytkownik, out string missingProperty))
             {
                 Console.WriteLine($"Nie podano: {missingProperty}");
             }
             else
             {*/
-                // sukces
-                Laczenie_z_baza_danych DBconn = new Laczenie_z_baza_danych();
+            // sukces
+            Laczenie_z_baza_danych DBconn = new Laczenie_z_baza_danych();
                 DataTable insertUser = DBconn.ExecuteQuery("INSERT INTO users (id, login, role, email, phonenumber, status, regdate) VALUES ( NULL, @login, @role, @email, @phonenumber, @status, NOW())",
 
                 new MySqlParameter("@login", nowy_uzytkownik.Login),               
@@ -152,105 +162,133 @@ namespace przychodnia_testowanie
             //}
         }
 
+
+
         private void btn_wyszukiwarka_Click(object sender, EventArgs e)
         {
             string szukany = txb_search.Text.Trim();
 
-            // Jeśli pole wyszukiwania nie jest puste
-            if (!string.IsNullOrWhiteSpace(szukany))
+            // Sprawdzamy, czy użytkownik nie pozostawił pola z tekstem-podpowiedzią
+            if (string.IsNullOrWhiteSpace(szukany) || szukany == "Podaj imię, nazwisko lub login")
             {
-                // Podział wpisanej frazy na części (imię i nazwisko)
-                string[] searchParts = szukany.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                string searchName = searchParts.Length > 0 ? searchParts[0] : "";
-                string searchLastname = searchParts.Length > 1 ? searchParts[1] : "";
+                MessageBox.Show("Proszę podać imię, nazwisko lub login do wyszukiwania.", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
-                DataTable result;
+            // Dzielimy tekst na imię i nazwisko
+            string[] searchParts = szukany.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            string searchName = searchParts.Length > 0 ? searchParts[0] : "";
+            string searchLastname = searchParts.Length > 1 ? searchParts[1] : "";
 
-                if (searchParts.Length == 2)
-                {
-                   
-                    // Wyszukiwanie po imieniu i nazwisku (w dowolnej kolejności)
-                    result = DBconn.ExecuteQuery(
-                        @"SELECT p.name as Imię, p.lastname as Nazwisko, u.login, u.role as Rola, u.email, u.phonenumber as 'Numer Telefonu', u.regdate as 'Data Rejestracji', p.pesel as Pesel,
+            DataTable result;
 
-                        CASE 
-                            WHEN SUBSTRING(p.pesel, 3, 2) BETWEEN 21 AND 32 THEN CONCAT('20', SUBSTRING(p.pesel, 1, 2)) 
-                            WHEN SUBSTRING(p.pesel, 3, 2) BETWEEN 41 AND 52 THEN CONCAT('21', SUBSTRING(p.pesel, 1, 2))
-                            ELSE CONCAT('19', SUBSTRING(PESEL, 1, 2)) 
-
-                            END AS 'Rok Urodzenia', 
-                        CASE 
-                            WHEN SUBSTRING(p.pesel, 3, 2) BETWEEN 21 AND 32 THEN SUBSTRING(p.pesel, 3, 2) - 20
-                            WHEN SUBSTRING(p.pesel, 3, 2) BETWEEN 41 AND 52 THEN SUBSTRING(p.pesel, 3, 2) - 40 
-                            ELSE SUBSTRING(p.pesel, 3, 2) 
-
-                            END AS 'Miesiąc Urodzenia',SUBSTRING(p.pesel, 5, 2) AS 'Dzień Urodzenia',
-
-                        IF (SUBSTRING(p.pesel, 10, 1) % 2 = 0, 'K', 'M') AS Płeć,
-                        p.country as Kraj, p.city as Miasto, p.postcode as 'Kod pocztowy', p.street as Ulica, p.house_number as 'Numer domu', p.apartment_number as 'Numer apartamentu', u.id  
-                        FROM users as u
-                        JOIN patients as p ON u.id = p.user_id
-                        WHERE (p.name LIKE @name AND p.lastname LIKE @lastname) OR (p.name LIKE @lastname AND p.lastname LIKE @name)",
-                        new MySqlParameter("@name", "%" + searchName + "%"),
-                        new MySqlParameter("@lastname", "%" + searchLastname + "%"));
-                }
-                else
-                {
-                    // Wyszukiwanie po imieniu lub nazwisku
-                    result = DBconn.ExecuteQuery(
-                        @"SELECT p.name as Imię, p.lastname as Nazwisko, u.login, u.role as Rola, u.email, u.phonenumber as 'Numer Telefonu', u.regdate as 'Data Rejestracji', p.pesel as Pesel,
-                        CASE
-                            WHEN SUBSTRING(p.pesel, 3, 2) BETWEEN 21 AND 32 THEN CONCAT('20', SUBSTRING(p.pesel, 1, 2))
-                            WHEN SUBSTRING(p.pesel, 3, 2) BETWEEN 41 AND 52 THEN CONCAT('21', SUBSTRING(p.pesel, 1, 2))
-                            ELSE CONCAT('19', SUBSTRING(PESEL, 1, 2))
-
-                            END AS 'Rok Urodzenia',
-                        CASE
-                            WHEN SUBSTRING(p.pesel, 3, 2) BETWEEN 21 AND 32 THEN SUBSTRING(p.pesel, 3, 2) - 20
-                            WHEN SUBSTRING(p.pesel, 3, 2) BETWEEN 41 AND 52 THEN SUBSTRING(p.pesel, 3, 2) - 40
-                            ELSE SUBSTRING(p.pesel, 3, 2)
-
-                            END AS 'Miesiąc Urodzenia', SUBSTRING(p.pesel, 5, 2) AS 'Dzień Urodzenia',
-                        IF (SUBSTRING(p.pesel, 10, 1) % 2 = 0, 'K', 'M') AS Płeć,
-                        p.country as Kraj, p.city as Miasto, p.postcode as 'Kod pocztowy', p.street as Ulica, p.house_number as 'Numer domu', p.apartment_number as 'Numer apartamentu', u.id 
-                        FROM users as u 
-                        JOIN patients as p ON u.id = p.user_id 
-                        WHERE p.name LIKE @szukany OR p.lastname LIKE @szukany;",
-                        new MySqlParameter("@szukany", "%" + szukany + "%"));
-                }
-
-                dtGrdVw_lista_uż.DataSource = result;
+            if (searchParts.Length == 2)
+            {
+                result = DBconn.ExecuteQuery(
+                    @"SELECT p.name as Imię, p.lastname as Nazwisko, u.login, u.role as Rola, u.email, u.phonenumber as 'Numer Telefonu', u.regdate as 'Data Rejestracji', p.pesel as Pesel,
+             CASE 
+                 WHEN SUBSTRING(p.pesel, 3, 2) BETWEEN 21 AND 32 THEN CONCAT('20', SUBSTRING(p.pesel, 1, 2)) 
+                 WHEN SUBSTRING(p.pesel, 3, 2) BETWEEN 41 AND 52 THEN CONCAT('21', SUBSTRING(p.pesel, 1, 2))
+                 ELSE CONCAT('19', SUBSTRING(PESEL, 1, 2)) 
+             END AS 'Rok Urodzenia', 
+             CASE 
+                 WHEN SUBSTRING(p.pesel, 3, 2) BETWEEN 21 AND 32 THEN SUBSTRING(p.pesel, 3, 2) - 20
+                 WHEN SUBSTRING(p.pesel, 3, 2) BETWEEN 41 AND 52 THEN SUBSTRING(p.pesel, 3, 2) - 40 
+                 ELSE SUBSTRING(p.pesel, 3, 2) 
+             END AS 'Miesiąc Urodzenia', SUBSTRING(p.pesel, 5, 2) AS 'Dzień Urodzenia',
+             IF (SUBSTRING(p.pesel, 10, 1) % 2 = 0, 'K', 'M') AS Płeć,
+             p.country as Kraj, p.city as Miasto, p.postcode as 'Kod pocztowy', p.street as Ulica, p.house_number as 'Numer domu', p.apartment_number as 'Numer apartamentu', u.id  
+             FROM users as u
+             JOIN patients as p ON u.id = p.user_id
+             WHERE (p.name LIKE @name AND p.lastname LIKE @lastname) OR (p.name LIKE @lastname AND p.lastname LIKE @name)",
+                    new MySqlParameter("@name", "%" + searchName + "%"),
+                    new MySqlParameter("@lastname", "%" + searchLastname + "%"));
             }
             else
             {
-                // Jeśli pole wyszukiwania jest puste, wyświetlamy całą listę
-                DataTable result = DBconn.ExecuteQuery(
-                    @"SELECT p.name as Imię, p.lastname as Nazwisko, u.login, u.role as Rola, u.email, u.phonenumber as 'Numer Telefonu', u.regdate as 'Data Rejestracji', p.pesel as Pesel,
-                        CASE
-                            WHEN SUBSTRING(p.pesel, 3, 2) BETWEEN 21 AND 32 THEN CONCAT('20', SUBSTRING(p.pesel, 1, 2))
-                            WHEN SUBSTRING(p.pesel, 3, 2) BETWEEN 41 AND 52 THEN CONCAT('21', SUBSTRING(p.pesel, 1, 2))
-                            ELSE CONCAT('19', SUBSTRING(PESEL, 1, 2))
-
-                            END AS 'Rok Urodzenia',
-                        CASE
-                            WHEN SUBSTRING(p.pesel, 3, 2) BETWEEN 21 AND 32 THEN SUBSTRING(p.pesel, 3, 2) - 20
-                            WHEN SUBSTRING(p.pesel, 3, 2) BETWEEN 41 AND 52 THEN SUBSTRING(p.pesel, 3, 2) - 40
-                            ELSE SUBSTRING(p.pesel, 3, 2)
-
-                            END AS 'Miesiąc Urodzenia', SUBSTRING(p.pesel, 5, 2) AS 'Dzień Urodzenia',
-                    IF (SUBSTRING(p.pesel, 10, 1) % 2 = 0, 'K', 'M') AS Płeć,    
-                    p.country as Kraj, p.city as Miasto, p.postcode as 'Kod pocztowy', p.street as Ulica, p.house_number as 'Numer domu', p.apartment_number as 'Numer apartamentu', u.id 
-                    FROM users as u 
-                    JOIN patients as p ON u.id = p.user_id;"
-                    );
-
-                dtGrdVw_lista_uż.DataSource = result;
+                result = DBconn.ExecuteQuery(
+                    @"SELECT p.name as Imię, p.lastname as Nazwisko, u.login, u.role as Rola, u.email, u.phonenumber as 'Numer Telefonu', 
+             u.regdate as 'Data Rejestracji', p.pesel as Pesel,
+             CASE
+                 WHEN SUBSTRING(p.pesel, 3, 2) BETWEEN 21 AND 32 THEN CONCAT('20', SUBSTRING(p.pesel, 1, 2))
+                 WHEN SUBSTRING(p.pesel, 3, 2) BETWEEN 41 AND 52 THEN CONCAT('21', SUBSTRING(p.pesel, 1, 2))
+                 ELSE CONCAT('19', SUBSTRING(p.pesel, 1, 2))
+             END AS 'Rok Urodzenia',
+             CASE
+                 WHEN SUBSTRING(p.pesel, 3, 2) BETWEEN 21 AND 32 THEN SUBSTRING(p.pesel, 3, 2) - 20
+                 WHEN SUBSTRING(p.pesel, 3, 2) BETWEEN 41 AND 52 THEN SUBSTRING(p.pesel, 3, 2) - 40
+                 ELSE SUBSTRING(p.pesel, 3, 2)
+             END AS 'Miesiąc Urodzenia', 
+             SUBSTRING(p.pesel, 5, 2) AS 'Dzień Urodzenia',
+             IF (SUBSTRING(p.pesel, 10, 1) % 2 = 0, 'K', 'M') AS Płeć,
+             p.country as Kraj, p.city as Miasto, p.postcode as 'Kod pocztowy', 
+             p.street as Ulica, p.house_number as 'Numer domu', p.apartment_number as 'Numer apartamentu', u.id 
+             FROM users as u 
+             JOIN patients as p ON u.id = p.user_id 
+             WHERE p.name LIKE @szukany OR p.lastname LIKE @szukany OR u.login LIKE @szukany;",
+                    new MySqlParameter("@szukany", "%" + szukany + "%"));
             }
+
+            dtGrdVw_lista_uż.DataSource = result; 
         }
 
 
 
+        private void anuluj_wyszukiwarka_Click(object sender, EventArgs e)
+        {
+            // Czyszczenie pola wyszukiwania, ale pozostawienie tekstu-podpowiedzi
+            txb_search.Text = "Podaj imię, nazwisko lub login";
+            txb_search.ForeColor = Color.Silver;
 
+            // Pełna lista użytkowników
+            DataTable result = DBconn.ExecuteQuery(
+                @"SELECT p.name as Imię, p.lastname as Nazwisko, u.login, u.role as Rola, u.email, u.phonenumber as 'Numer Telefonu', u.regdate as 'Data Rejestracji', p.pesel as Pesel,
+             CASE
+                 WHEN SUBSTRING(p.pesel, 3, 2) BETWEEN 21 AND 32 THEN CONCAT('20', SUBSTRING(p.pesel, 1, 2))
+                 WHEN SUBSTRING(p.pesel, 3, 2) BETWEEN 41 AND 52 THEN CONCAT('21', SUBSTRING(p.pesel, 1, 2))
+                 ELSE CONCAT('19', SUBSTRING(PESEL, 1, 2))
+             END AS 'Rok Urodzenia',
+             CASE
+                 WHEN SUBSTRING(p.pesel, 3, 2) BETWEEN 21 AND 32 THEN SUBSTRING(p.pesel, 3, 2) - 20
+                 WHEN SUBSTRING(p.pesel, 3, 2) BETWEEN 41 AND 52 THEN SUBSTRING(p.pesel, 3, 2) - 40
+                 ELSE SUBSTRING(p.pesel, 3, 2)
+             END AS 'Miesiąc Urodzenia', SUBSTRING(p.pesel, 5, 2) AS 'Dzień Urodzenia',
+             IF (SUBSTRING(p.pesel, 10, 1) % 2 = 0, 'K', 'M') AS Płeć,    
+             p.country as Kraj, p.city as Miasto, p.postcode as 'Kod pocztowy', p.street as Ulica, p.house_number as 'Numer domu', p.apartment_number as 'Numer apartamentu', u.id 
+             FROM users as u 
+             JOIN patients as p ON u.id = p.user_id;"
+            );
+
+            dtGrdVw_lista_uż.DataSource = result;
+        }
+
+        //Podpowiedź do wyszukiwania
+        private void txb_search_Leave(object sender, EventArgs e)
+        {
+            if (txb_search.Text == "")
+            {
+                txb_search.Text = "Podaj imię, nazwisko lub login";
+                txb_search.ForeColor = Color.Silver;
+            }
+        }
+        private void txb_search_Enter(object sender, EventArgs e)
+        {
+            if (txb_search.Text == "Podaj imię, nazwisko lub login")
+            {
+                txb_search.Text = "";
+                txb_search.ForeColor = Color.Black;
+            }
+        }
+       
+        //Żeby nie było automatycznego ustawienia kursora
+        private void Form_lista_uzytkownikow_Shown(object sender, EventArgs e)
+        {
+            ActiveControl = null;
+        }
+
+
+
+       
 
 
 
@@ -381,5 +419,11 @@ namespace przychodnia_testowanie
             }
         }
 
+        private void btn_strona_główna_Click(object sender, EventArgs e)
+        {
+            Form_strona_glowna form = new Form_strona_glowna();
+            form.Show();
+            this.Hide();
+        }
     }
 }

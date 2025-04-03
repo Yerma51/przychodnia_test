@@ -36,15 +36,17 @@
             this.dtGrdVw_lista_uż = new System.Windows.Forms.DataGridView();
             this.btn_edycja_użytkownika = new System.Windows.Forms.Button();
             this.btn_zapomnij = new System.Windows.Forms.Button();
+            this.anuluj_wyszukiwarka = new System.Windows.Forms.Button();
+            this.btn_strona_główna = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dtGrdVw_lista_uż)).BeginInit();
             this.SuspendLayout();
             // 
             // btn_wyszukiwarka
             // 
-            this.btn_wyszukiwarka.Location = new System.Drawing.Point(787, 231);
+            this.btn_wyszukiwarka.Location = new System.Drawing.Point(780, 231);
             this.btn_wyszukiwarka.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btn_wyszukiwarka.Name = "btn_wyszukiwarka";
-            this.btn_wyszukiwarka.Size = new System.Drawing.Size(65, 25);
+            this.btn_wyszukiwarka.Size = new System.Drawing.Size(79, 25);
             this.btn_wyszukiwarka.TabIndex = 8;
             this.btn_wyszukiwarka.Text = "Szukaj";
             this.btn_wyszukiwarka.UseVisualStyleBackColor = true;
@@ -77,12 +79,15 @@
             // txb_search
             // 
             this.txb_search.Cursor = System.Windows.Forms.Cursors.Help;
-            this.txb_search.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.txb_search.ForeColor = System.Drawing.Color.Black;
             this.txb_search.Location = new System.Drawing.Point(421, 231);
             this.txb_search.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txb_search.Name = "txb_search";
             this.txb_search.Size = new System.Drawing.Size(337, 22);
             this.txb_search.TabIndex = 5;
+            this.txb_search.Text = "Podaj imię, nazwisko lub login";
+            this.txb_search.Enter += new System.EventHandler(this.txb_search_Enter);
+            this.txb_search.Leave += new System.EventHandler(this.txb_search_Leave);
             // 
             // dtGrdVw_lista_uż
             // 
@@ -91,6 +96,7 @@
             this.dtGrdVw_lista_uż.Location = new System.Drawing.Point(39, 391);
             this.dtGrdVw_lista_uż.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dtGrdVw_lista_uż.Name = "dtGrdVw_lista_uż";
+            this.dtGrdVw_lista_uż.ReadOnly = true;
             this.dtGrdVw_lista_uż.RowHeadersWidth = 51;
             this.dtGrdVw_lista_uż.RowTemplate.Height = 24;
             this.dtGrdVw_lista_uż.Size = new System.Drawing.Size(1093, 377);
@@ -124,6 +130,30 @@
             this.btn_zapomnij.UseVisualStyleBackColor = false;
             this.btn_zapomnij.Click += new System.EventHandler(this.btn_zapomnij_Click);
             // 
+            // anuluj_wyszukiwarka
+            // 
+            this.anuluj_wyszukiwarka.Location = new System.Drawing.Point(780, 265);
+            this.anuluj_wyszukiwarka.Name = "anuluj_wyszukiwarka";
+            this.anuluj_wyszukiwarka.Size = new System.Drawing.Size(79, 25);
+            this.anuluj_wyszukiwarka.TabIndex = 12;
+            this.anuluj_wyszukiwarka.Text = "Wyczyść";
+            this.anuluj_wyszukiwarka.UseVisualStyleBackColor = true;
+            this.anuluj_wyszukiwarka.Click += new System.EventHandler(this.anuluj_wyszukiwarka_Click);
+            // 
+            // btn_strona_główna
+            // 
+            this.btn_strona_główna.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.btn_strona_główna.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.btn_strona_główna.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.btn_strona_główna.Location = new System.Drawing.Point(39, 11);
+            this.btn_strona_główna.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btn_strona_główna.Name = "btn_strona_główna";
+            this.btn_strona_główna.Size = new System.Drawing.Size(147, 44);
+            this.btn_strona_główna.TabIndex = 13;
+            this.btn_strona_główna.Text = "Strona główna";
+            this.btn_strona_główna.UseVisualStyleBackColor = false;
+            this.btn_strona_główna.Click += new System.EventHandler(this.btn_strona_główna_Click);
+            // 
             // Form_lista_uzytkownikow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -132,6 +162,8 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1168, 791);
+            this.Controls.Add(this.btn_strona_główna);
+            this.Controls.Add(this.anuluj_wyszukiwarka);
             this.Controls.Add(this.btn_zapomnij);
             this.Controls.Add(this.btn_edycja_użytkownika);
             this.Controls.Add(this.dtGrdVw_lista_uż);
@@ -140,11 +172,13 @@
             this.Controls.Add(this.btn_nowy_użytkow);
             this.Controls.Add(this.txb_search);
             this.DoubleBuffered = true;
+            this.ForeColor = System.Drawing.Color.Black;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Form_lista_uzytkownikow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Form_lista_użytkow";
+            this.Text = "Lista użytkowników";
+            this.Shown += new System.EventHandler(this.Form_lista_uzytkownikow_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.dtGrdVw_lista_uż)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -160,5 +194,7 @@
         private System.Windows.Forms.DataGridView dtGrdVw_lista_uż;
         private System.Windows.Forms.Button btn_edycja_użytkownika;
         private System.Windows.Forms.Button btn_zapomnij;
+        private System.Windows.Forms.Button anuluj_wyszukiwarka;
+        private System.Windows.Forms.Button btn_strona_główna;
     }
 }

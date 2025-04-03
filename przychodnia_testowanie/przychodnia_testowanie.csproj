@@ -116,6 +116,12 @@
     <Compile Include="Form_profil.Designer.cs">
       <DependentUpon>Form_profil.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form_strona_glowna.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_strona_glowna.Designer.cs">
+      <DependentUpon>Form_strona_glowna.cs</DependentUpon>
+    </Compile>
     <Compile Include="Laczenie_z_baza_danych.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -130,6 +136,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form_profil.resx">
       <DependentUpon>Form_profil.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_strona_glowna.resx">
+      <DependentUpon>Form_strona_glowna.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

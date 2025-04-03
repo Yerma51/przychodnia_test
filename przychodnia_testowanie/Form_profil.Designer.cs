@@ -58,6 +58,7 @@
             this.nazwisko_textBox = new System.Windows.Forms.TextBox();
             this.imie_textBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.btn_anuluj = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txb_login
@@ -95,9 +96,9 @@
             this.button1_zapisz.Cursor = System.Windows.Forms.Cursors.Hand;
             this.button1_zapisz.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.button1_zapisz.ForeColor = System.Drawing.Color.Black;
-            this.button1_zapisz.Location = new System.Drawing.Point(674, 681);
+            this.button1_zapisz.Location = new System.Drawing.Point(648, 681);
             this.button1_zapisz.Name = "button1_zapisz";
-            this.button1_zapisz.Size = new System.Drawing.Size(346, 55);
+            this.button1_zapisz.Size = new System.Drawing.Size(195, 55);
             this.button1_zapisz.TabIndex = 57;
             this.button1_zapisz.Text = "Zapisz";
             this.button1_zapisz.UseVisualStyleBackColor = false;
@@ -257,8 +258,7 @@
             this.plec_comboBox.FormattingEnabled = true;
             this.plec_comboBox.Items.AddRange(new object[] {
             "Kobieta",
-            "Mężczyzna",
-            "Inny"});
+            "Mężczyzna"});
             this.plec_comboBox.Location = new System.Drawing.Point(105, 476);
             this.plec_comboBox.Name = "plec_comboBox";
             this.plec_comboBox.Size = new System.Drawing.Size(200, 24);
@@ -332,6 +332,20 @@
             this.label1.TabIndex = 31;
             this.label1.Text = "Imię*";
             // 
+            // btn_anuluj
+            // 
+            this.btn_anuluj.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(167)))), ((int)(((byte)(204)))), ((int)(((byte)(109)))));
+            this.btn_anuluj.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btn_anuluj.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btn_anuluj.ForeColor = System.Drawing.Color.Black;
+            this.btn_anuluj.Location = new System.Drawing.Point(849, 681);
+            this.btn_anuluj.Name = "btn_anuluj";
+            this.btn_anuluj.Size = new System.Drawing.Size(195, 55);
+            this.btn_anuluj.TabIndex = 62;
+            this.btn_anuluj.Text = "Anuluj";
+            this.btn_anuluj.UseVisualStyleBackColor = false;
+            this.btn_anuluj.Click += new System.EventHandler(this.btn_anuluj_Click);
+            // 
             // Form_profil
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -340,6 +354,7 @@
             this.BackgroundImage = global::przychodnia_testowanie.Properties.Resources.Profil1;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1168, 791);
+            this.Controls.Add(this.btn_anuluj);
             this.Controls.Add(this.txb_login);
             this.Controls.Add(this.label16_login);
             this.Controls.Add(this.btn_lista);
@@ -413,5 +428,6 @@
         private System.Windows.Forms.TextBox nazwisko_textBox;
         private System.Windows.Forms.TextBox imie_textBox;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btn_anuluj;
     }
 }

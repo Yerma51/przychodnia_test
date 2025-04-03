@@ -283,8 +283,7 @@
             this.plec_comboBox.FormattingEnabled = true;
             this.plec_comboBox.Items.AddRange(new object[] {
             "Kobieta",
-            "Mężczyzna",
-            "Inny"});
+            "Mężczyzna"});
             this.plec_comboBox.Location = new System.Drawing.Point(108, 477);
             this.plec_comboBox.Name = "plec_comboBox";
             this.plec_comboBox.Size = new System.Drawing.Size(200, 24);
