@@ -104,6 +104,7 @@
             this.btn_lista.TabIndex = 89;
             this.btn_lista.Text = "Lista użytkowników";
             this.btn_lista.UseVisualStyleBackColor = false;
+            this.btn_lista.Click += new System.EventHandler(this.btn_lista_Click);
             // 
             // button1_zapisz
             // 

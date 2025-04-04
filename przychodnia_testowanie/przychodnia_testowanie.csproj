@@ -110,6 +110,12 @@
     <Compile Include="Form_lista_uzytkownikow.Designer.cs">
       <DependentUpon>Form_lista_uzytkownikow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form_podglad_danych.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_podglad_danych.Designer.cs">
+      <DependentUpon>Form_podglad_danych.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_profil.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -133,6 +139,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form_edycja-profilu.resx">
       <DependentUpon>Form_edycja-profilu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_podglad_danych.resx">
+      <DependentUpon>Form_podglad_danych.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form_profil.resx">
       <DependentUpon>Form_profil.cs</DependentUpon>

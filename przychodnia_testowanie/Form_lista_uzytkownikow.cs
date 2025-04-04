@@ -134,31 +134,31 @@ namespace przychodnia_testowanie
             {*/
             // sukces
             Laczenie_z_baza_danych DBconn = new Laczenie_z_baza_danych();
-                DataTable insertUser = DBconn.ExecuteQuery("INSERT INTO users (id, login, role, email, phonenumber, status, regdate) VALUES ( NULL, @login, @role, @email, @phonenumber, @status, NOW())",
+            DataTable insertUser = DBconn.ExecuteQuery("INSERT INTO users (id, login, role, email, phonenumber, status, regdate) VALUES ( NULL, @login, @role, @email, @phonenumber, @status, NOW())",
 
-                new MySqlParameter("@login", nowy_uzytkownik.Login),               
-                new MySqlParameter("@role", "patient"),
-                new MySqlParameter("@email", nowy_uzytkownik.Adres_email),
-                new MySqlParameter("@phonenumber", nowy_uzytkownik.Numer_telefonu),
-                new MySqlParameter("@status", 1));
+            new MySqlParameter("@login", nowy_uzytkownik.Login),
+            new MySqlParameter("@role", "patient"),
+            new MySqlParameter("@email", nowy_uzytkownik.Adres_email),
+            new MySqlParameter("@phonenumber", nowy_uzytkownik.Numer_telefonu),
+            new MySqlParameter("@status", 1));
 
-                DataTable lastinsertID = DBconn.ExecuteQuery("SELECT LAST_INSERT_ID()");
-                object lastID = lastinsertID.Rows[0][0];
-                DataTable insertPatient = DBconn.ExecuteQuery("INSERT INTO patients (id, user_id, pesel, country, city, postcode, street, house_number, apartment_number, name, lastname) VALUES ( NULL, @user_id, @pesel, 'Poland', @city, @postcode, @street, @house_number, @apartment_number, @name, @lastname)",
+            DataTable lastinsertID = DBconn.ExecuteQuery("SELECT LAST_INSERT_ID()");
+            object lastID = lastinsertID.Rows[0][0];
+            DataTable insertPatient = DBconn.ExecuteQuery("INSERT INTO patients (id, user_id, pesel, country, city, postcode, street, house_number, apartment_number, name, lastname) VALUES ( NULL, @user_id, @pesel, 'Poland', @city, @postcode, @street, @house_number, @apartment_number, @name, @lastname)",
 
-                    new MySqlParameter("@user_id", lastID),
-                    new MySqlParameter("@pesel", nowy_uzytkownik.Pesel),
-                    new MySqlParameter("@city", nowy_uzytkownik.Miejscowość),
-                    new MySqlParameter("@postcode", nowy_uzytkownik.Kod_pocztowy),
-                    new MySqlParameter("@street", nowy_uzytkownik.Ulica),
-                    new MySqlParameter("@house_number", nowy_uzytkownik.Numer_pos),
-                    new MySqlParameter("@apartment_number", nowy_uzytkownik.Numer_lokalu),
-                    new MySqlParameter("@name", nowy_uzytkownik.Imię),
-                    new MySqlParameter("@lastname", nowy_uzytkownik.Nazwisko));
+                new MySqlParameter("@user_id", lastID),
+                new MySqlParameter("@pesel", nowy_uzytkownik.Pesel),
+                new MySqlParameter("@city", nowy_uzytkownik.Miejscowość),
+                new MySqlParameter("@postcode", nowy_uzytkownik.Kod_pocztowy),
+                new MySqlParameter("@street", nowy_uzytkownik.Ulica),
+                new MySqlParameter("@house_number", nowy_uzytkownik.Numer_pos),
+                new MySqlParameter("@apartment_number", nowy_uzytkownik.Numer_lokalu),
+                new MySqlParameter("@name", nowy_uzytkownik.Imię),
+                new MySqlParameter("@lastname", nowy_uzytkownik.Nazwisko));
 
-                refresh();
+            refresh();
 
-                MessageBox.Show("Użytkownik został dodany pomyślnie!", "Sukces", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Użytkownik został dodany pomyślnie!", "Sukces", MessageBoxButtons.OK, MessageBoxIcon.Information);
             //}
         }
 
@@ -229,7 +229,7 @@ namespace przychodnia_testowanie
                     new MySqlParameter("@szukany", "%" + szukany + "%"));
             }
 
-            dtGrdVw_lista_uż.DataSource = result; 
+            dtGrdVw_lista_uż.DataSource = result;
         }
 
 
@@ -279,7 +279,7 @@ namespace przychodnia_testowanie
                 txb_search.ForeColor = Color.Black;
             }
         }
-       
+
         //Żeby nie było automatycznego ustawienia kursora
         private void Form_lista_uzytkownikow_Shown(object sender, EventArgs e)
         {
@@ -288,7 +288,7 @@ namespace przychodnia_testowanie
 
 
 
-       
+
 
 
 
@@ -425,5 +425,53 @@ namespace przychodnia_testowanie
             form.Show();
             this.Hide();
         }
+
+
+
+        private void btn_podglad_danych_Click(object sender, EventArgs e)
+        {
+            if (dtGrdVw_lista_uż.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Proszę wybrać użytkownika do podglądu!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // Pobieramy ID wybranego użytkownika
+            int userId = Convert.ToInt32(dtGrdVw_lista_uż.SelectedRows[0].Cells["id"].Value);
+
+            // Pobieramy dane użytkownika z bazy danych
+            DataTable userData = DBconn.ExecuteQuery("SELECT u.id, u.login, u.email, u.phonenumber, p.name, p.lastname, p.pesel, p.city, p.postcode, p.street, p.house_number, p.apartment_number FROM users u JOIN patients p ON u.id = p.user_id WHERE u.id = @id",
+                new MySqlParameter("@id", userId));
+
+            if (userData.Rows.Count == 0)
+            {
+                MessageBox.Show("Nie znaleziono danych użytkownika!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // Tworzymy obiekt z danymi użytkownika
+            DataRow row = userData.Rows[0];
+            Użytkownik selectedUser = new Użytkownik
+            {
+                Id = Convert.ToInt32(row["id"]),
+                Login = row["login"].ToString(),
+                Adres_email = row["email"].ToString(),
+                Numer_telefonu = row["phonenumber"].ToString(),
+                Imię = row["name"].ToString(),
+                Nazwisko = row["lastname"].ToString(),
+                Pesel = row["pesel"].ToString(),
+                Miejscowość = row["city"].ToString(),
+                Kod_pocztowy = row["postcode"].ToString(),
+                Ulica = row["street"].ToString(),
+                Numer_pos = row["house_number"].ToString(),
+                Numer_lokalu = row["apartment_number"].ToString()
+            };
+
+            // Otwieramy formularz podgladu i przekazujemy do niego dane
+            Form_podglad_danych podgladForm = new Form_podglad_danych(selectedUser);
+            DialogResult result = podgladForm.ShowDialog();
+
+        }
     }
 }
+

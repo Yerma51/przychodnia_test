@@ -38,6 +38,7 @@
             this.btn_zapomnij = new System.Windows.Forms.Button();
             this.anuluj_wyszukiwarka = new System.Windows.Forms.Button();
             this.btn_strona_główna = new System.Windows.Forms.Button();
+            this.btn_podglad_danych = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dtGrdVw_lista_uż)).BeginInit();
             this.SuspendLayout();
             // 
@@ -154,6 +155,20 @@
             this.btn_strona_główna.UseVisualStyleBackColor = false;
             this.btn_strona_główna.Click += new System.EventHandler(this.btn_strona_główna_Click);
             // 
+            // btn_podglad_danych
+            // 
+            this.btn_podglad_danych.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.btn_podglad_danych.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.btn_podglad_danych.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.btn_podglad_danych.Location = new System.Drawing.Point(326, 12);
+            this.btn_podglad_danych.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btn_podglad_danych.Name = "btn_podglad_danych";
+            this.btn_podglad_danych.Size = new System.Drawing.Size(147, 44);
+            this.btn_podglad_danych.TabIndex = 14;
+            this.btn_podglad_danych.Text = "Podgląd danych";
+            this.btn_podglad_danych.UseVisualStyleBackColor = false;
+            this.btn_podglad_danych.Click += new System.EventHandler(this.btn_podglad_danych_Click);
+            // 
             // Form_lista_uzytkownikow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -162,6 +177,7 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1168, 791);
+            this.Controls.Add(this.btn_podglad_danych);
             this.Controls.Add(this.btn_strona_główna);
             this.Controls.Add(this.anuluj_wyszukiwarka);
             this.Controls.Add(this.btn_zapomnij);
@@ -196,5 +212,6 @@
         private System.Windows.Forms.Button btn_zapomnij;
         private System.Windows.Forms.Button anuluj_wyszukiwarka;
         private System.Windows.Forms.Button btn_strona_główna;
+        private System.Windows.Forms.Button btn_podglad_danych;
     }
 }

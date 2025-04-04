@@ -125,5 +125,10 @@ namespace przychodnia_testowanie
 
             }
         }
+
+        private void btn_lista_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
