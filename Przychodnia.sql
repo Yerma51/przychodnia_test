@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 08, 2025 at 06:28 PM
+-- Generation Time: Apr 08, 2025 at 09:08 PM
 -- Wersja serwera: 10.4.32-MariaDB
 -- Wersja PHP: 8.2.12
 
@@ -180,11 +180,11 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `login`, `role`, `email`, `phonenumber`, `status`, `regdate`) VALUES
-(2, 'kacperos', 'patient', 'kacperos@o2.pl', '666999666', 1, '2025-03-26 16:46:12'),
-(5, 'Madzia', 'patient', 'Madzia@adzia.pl', '666999666', 1, '2025-03-31 23:59:25'),
-(6, 'loless', 'patient', 'loless@wp.pl', '999666999', 1, '2025-04-01 00:08:04'),
+(2, 'kacperos', 'patient', 'kacperos@o2.pl', '887 867 084', 1, '2025-03-26 16:46:12'),
+(5, 'Madzia', 'patient', 'Madzia@adzia.pl', '393 342 168', 1, '2025-03-31 23:59:25'),
+(6, 'loless', 'patient', 'loless@wp.pl', '930 251 813', 1, '2025-04-01 00:08:04'),
 (7, '', 'patient', '', '', NULL, '2025-04-01 00:30:49'),
-(8, 'Gruby', 'patient', 'Sobol@wp.pl', '666999666', 1, '2025-04-01 00:37:30');
+(8, 'Gruby', 'patient', 'Sobol@wp.pl', '938 601 302', 1, '2025-04-01 00:37:30');
 
 -- --------------------------------------------------------
 
@@ -237,6 +237,7 @@ ALTER TABLE `logs`
 --
 ALTER TABLE `patients`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `pesel` (`pesel`),
   ADD KEY `user_id` (`user_id`,`city`);
 
 --
@@ -270,7 +271,10 @@ ALTER TABLE `specializations`
 -- Indeksy dla tabeli `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `login` (`login`),
+  ADD UNIQUE KEY `email` (`email`,`phonenumber`),
+  ADD UNIQUE KEY `phonenumber` (`phonenumber`);
 
 --
 -- Indeksy dla tabeli `visits`
