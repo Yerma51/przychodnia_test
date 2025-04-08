@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 01, 2025 at 01:29 AM
+-- Generation Time: Apr 08, 2025 at 06:28 PM
 -- Wersja serwera: 10.4.32-MariaDB
 -- Wersja PHP: 8.2.12
 
@@ -47,6 +47,23 @@ CREATE TABLE `doctors_specializations` (
 -- --------------------------------------------------------
 
 --
+-- Struktura tabeli dla tabeli `forgotten_users`
+--
+
+CREATE TABLE `forgotten_users` (
+  `id` int(11) NOT NULL,
+  `random_name` varchar(40) NOT NULL,
+  `random_lastname` varchar(50) NOT NULL,
+  `random_pesel` char(11) NOT NULL,
+  `birth_date` date NOT NULL,
+  `gender` tinyint(1) NOT NULL,
+  `forget_date` datetime NOT NULL,
+  `forgotten_by` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Struktura tabeli dla tabeli `logs`
 --
 
@@ -68,12 +85,14 @@ CREATE TABLE `patients` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `pesel` char(11) NOT NULL,
+  `birth_date` date NOT NULL,
+  `gender` tinyint(1) NOT NULL,
   `country` varchar(50) NOT NULL,
   `city` varchar(50) NOT NULL,
   `postcode` varchar(10) NOT NULL,
   `street` varchar(20) NOT NULL,
   `house_number` int(10) UNSIGNED NOT NULL,
-  `apartment_number` int(10) UNSIGNED NOT NULL,
+  `apartment_number` int(10) UNSIGNED DEFAULT NULL,
   `name` varchar(40) NOT NULL,
   `lastname` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -82,12 +101,11 @@ CREATE TABLE `patients` (
 -- Dumping data for table `patients`
 --
 
-INSERT INTO `patients` (`id`, `user_id`, `pesel`, `country`, `city`, `postcode`, `street`, `house_number`, `apartment_number`, `name`, `lastname`) VALUES
-(1, 2, '25232665296', 'Poland', 'Lodz', '91-022', 'Rewolucji', 45, 14, 'Kacper', 'Augustyniak'),
-(4, 5, '25233135444', 'Poland', 'Stoki', '69-690', '', 69, 0, 'Ada', 'Zimoląg'),
-(5, 6, '25240197127', 'Poland', 'Rzeczna', '69-690', '', 69, 0, 'Julia', 'Kubik'),
-(6, 7, '76061221452', 'Poland', 'Dziadowo', '69-690', '', 69, 0, 'Andrzej', 'Kapituła'),
-(7, 8, '00412035951', 'Poland', 'Lodz', '95-050', '', 10, 0, 'Krzysztof', 'Sobolewski');
+INSERT INTO `patients` (`id`, `user_id`, `pesel`, `birth_date`, `gender`, `country`, `city`, `postcode`, `street`, `house_number`, `apartment_number`, `name`, `lastname`) VALUES
+(1, 2, '25232665296', '2025-03-26', 0, 'Poland', 'Łódź', '91-022', 'Rewolucji', 45, 14, 'Kacper', 'Augustyniak'),
+(4, 5, '25233135444', '2025-03-31', 0, 'Poland', 'Konstantynów Łódzki', '69-690', '', 69, 0, 'Ada', 'Zimoląg'),
+(5, 6, '25240197127', '2025-04-01', 0, 'Poland', 'Pabianice', '69-690', '', 69, 0, 'Julia', 'Kubik'),
+(7, 8, '00412035951', '2100-01-20', 0, 'Poland', 'Łódź', '95-050', '', 10, 0, 'Krzysztof', 'Sobolewski');
 
 -- --------------------------------------------------------
 
@@ -165,7 +183,7 @@ INSERT INTO `users` (`id`, `login`, `role`, `email`, `phonenumber`, `status`, `r
 (2, 'kacperos', 'patient', 'kacperos@o2.pl', '666999666', 1, '2025-03-26 16:46:12'),
 (5, 'Madzia', 'patient', 'Madzia@adzia.pl', '666999666', 1, '2025-03-31 23:59:25'),
 (6, 'loless', 'patient', 'loless@wp.pl', '999666999', 1, '2025-04-01 00:08:04'),
-(7, 'Dziad', 'patient', 'dziad@dziadyga.pl', '999666999', 1, '2025-04-01 00:30:49'),
+(7, '', 'patient', '', '', NULL, '2025-04-01 00:30:49'),
 (8, 'Gruby', 'patient', 'Sobol@wp.pl', '666999666', 1, '2025-04-01 00:37:30');
 
 -- --------------------------------------------------------
@@ -199,6 +217,13 @@ ALTER TABLE `doctors`
 ALTER TABLE `doctors_specializations`
   ADD KEY `specialization_id` (`specialization_id`),
   ADD KEY `doctor_id` (`doctor_id`);
+
+--
+-- Indeksy dla tabeli `forgotten_users`
+--
+ALTER TABLE `forgotten_users`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `forgotten_by` (`forgotten_by`);
 
 --
 -- Indeksy dla tabeli `logs`
@@ -266,6 +291,12 @@ ALTER TABLE `doctors`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `forgotten_users`
+--
+ALTER TABLE `forgotten_users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `logs`
 --
 ALTER TABLE `logs`
@@ -329,6 +360,12 @@ ALTER TABLE `doctors`
 ALTER TABLE `doctors_specializations`
   ADD CONSTRAINT `fk_doc_spec_doctor` FOREIGN KEY (`doctor_id`) REFERENCES `doctors` (`id`),
   ADD CONSTRAINT `fk_doc_spec_specialization` FOREIGN KEY (`specialization_id`) REFERENCES `specializations` (`id`);
+
+--
+-- Constraints for table `forgotten_users`
+--
+ALTER TABLE `forgotten_users`
+  ADD CONSTRAINT `forgotten_by` FOREIGN KEY (`forgotten_by`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Constraints for table `logs`
