@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 08, 2025 at 09:08 PM
+-- Generation Time: Apr 08, 2025 at 10:38 PM
 -- Wersja serwera: 10.4.32-MariaDB
 -- Wersja PHP: 8.2.12
 
@@ -105,7 +105,8 @@ INSERT INTO `patients` (`id`, `user_id`, `pesel`, `birth_date`, `gender`, `count
 (1, 2, '25232665296', '2025-03-26', 0, 'Poland', 'Łódź', '91-022', 'Rewolucji', 45, 14, 'Kacper', 'Augustyniak'),
 (4, 5, '25233135444', '2025-03-31', 0, 'Poland', 'Konstantynów Łódzki', '69-690', '', 69, 0, 'Ada', 'Zimoląg'),
 (5, 6, '25240197127', '2025-04-01', 0, 'Poland', 'Pabianice', '69-690', '', 69, 0, 'Julia', 'Kubik'),
-(7, 8, '00412035951', '2100-01-20', 0, 'Poland', 'Łódź', '95-050', '', 10, 0, 'Krzysztof', 'Sobolewski');
+(7, 8, '00412035951', '2100-01-20', 0, 'Poland', 'Łódź', '95-050', '', 10, 0, 'Krzysztof', 'Sobolewski'),
+(9, 10, '25240129715', '0000-00-00', 0, 'Poland', 'Łódź', '91-042', 'Limanowskiego', 14, 3, 'Kacper', 'Augustyniak');
 
 -- --------------------------------------------------------
 
@@ -184,7 +185,8 @@ INSERT INTO `users` (`id`, `login`, `role`, `email`, `phonenumber`, `status`, `r
 (5, 'Madzia', 'patient', 'Madzia@adzia.pl', '393 342 168', 1, '2025-03-31 23:59:25'),
 (6, 'loless', 'patient', 'loless@wp.pl', '930 251 813', 1, '2025-04-01 00:08:04'),
 (7, '', 'patient', '', '', NULL, '2025-04-01 00:30:49'),
-(8, 'Gruby', 'patient', 'Sobol@wp.pl', '938 601 302', 1, '2025-04-01 00:37:30');
+(8, 'Gruby', 'patient', 'Sobol@wp.pl', '938 601 302', 1, '2025-04-01 00:37:30'),
+(10, 'kacperos2', 'patient', 'kacperos927@o2.pl', '737605978', 1, '2025-04-08 22:23:40');
 
 -- --------------------------------------------------------
 
@@ -273,8 +275,8 @@ ALTER TABLE `specializations`
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `login` (`login`),
-  ADD UNIQUE KEY `email` (`email`,`phonenumber`),
-  ADD UNIQUE KEY `phonenumber` (`phonenumber`);
+  ADD UNIQUE KEY `phonenumber` (`phonenumber`),
+  ADD UNIQUE KEY `unique_email` (`email`);
 
 --
 -- Indeksy dla tabeli `visits`
@@ -310,7 +312,7 @@ ALTER TABLE `logs`
 -- AUTO_INCREMENT for table `patients`
 --
 ALTER TABLE `patients`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `prescriptions`
@@ -340,7 +342,7 @@ ALTER TABLE `specializations`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `visits`
