@@ -26,7 +26,9 @@ namespace przychodnia_testowanie
 
         private void btn_zapom_Click(object sender, EventArgs e)
         {
-
+            Form_lista_zapomnianych zapForm = new Form_lista_zapomnianych();
+            zapForm.Show();
+            this.Hide();
         }
     }
 }

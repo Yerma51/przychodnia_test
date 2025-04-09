@@ -237,17 +237,6 @@ namespace przychodnia_testowanie
         }
 
 
-
-
-
-
-
-
-
-
-
-
-
         private void btn_edycja_użytkownika_Click(object sender, EventArgs e)
         {
             if (dtGrdVw_lista_uż.SelectedRows.Count == 0)
@@ -323,13 +312,58 @@ namespace przychodnia_testowanie
         {
             try
             {
+                Random rng = new Random();
+                string randomName = "Anonim" + rng.Next(1000, 9999);
+                string randomLastname = "User" + rng.Next(1000, 9999);
+
+                DateTime today = DateTime.Today;
+                DateTime birthDate;
+                do
+                {
+                    birthDate = new DateTime(rng.Next(1950, today.Year + 1), rng.Next(1, 13), 1);
+                    int maxDay = DateTime.DaysInMonth(birthDate.Year, birthDate.Month);
+                    birthDate = new DateTime(birthDate.Year, birthDate.Month, rng.Next(1, maxDay + 1));
+                } while (birthDate > today);
+
+                int gender = rng.Next(2); // 0 = M, 1 = K
+                DateTime forgetDate = DateTime.Now;
+
+                string anonymLogin = "anonim_" + Guid.NewGuid().ToString("N").Substring(0, 8);
+                string anonymEmail = $"anonim_{Guid.NewGuid().ToString("N").Substring(0, 8)}@example.com";
+                string anonymPhone = "000" + rng.Next(1000000, 9999999).ToString();
+
+                string randomPesel = GeneratePesel(birthDate, gender);
+
+                DataTable loginData = DBconn.ExecuteQuery("SELECT login FROM users WHERE id = @id", new MySqlParameter("@id", userId));
+                string login = loginData.Rows.Count > 0 ? loginData.Rows[0]["login"].ToString() : "brak";
+
                 DBconn.ExecuteQuery(
-                    "UPDATE users SET login = '', email = '', phonenumber = '', status = NULL WHERE id = @id;" +
-                    "UPDATE patients SET name = 'Anonimowy', lastname = '', pesel = '', city = '', postcode = '', street = '', house_number = '', apartment_number = '' WHERE user_id = @id;",
+                    @"INSERT INTO forgotten_users (login, random_name, random_lastname, random_pesel, birth_date, gender, forget_date)
+              VALUES (@login, @name, @lastname, @pesel, @birthdate, @gender, @forgetdate)",
+                    new MySqlParameter("@login", login),
+                    new MySqlParameter("@name", randomName),
+                    new MySqlParameter("@lastname", randomLastname),
+                    new MySqlParameter("@pesel", randomPesel),
+                    new MySqlParameter("@birthdate", birthDate),
+                    new MySqlParameter("@gender", gender),
+                    new MySqlParameter("@forgetdate", forgetDate)
+                );
+
+                DBconn.ExecuteQuery(
+                    @"DELETE FROM patients WHERE user_id = @id;
+
+              UPDATE users 
+              SET login = @anonimLogin, email = @anonimEmail, phonenumber = @anonimPhone, status = NULL, role = NULL 
+              WHERE id = @id;",
+                    new MySqlParameter("@anonimLogin", anonymLogin),
+                    new MySqlParameter("@anonimEmail", anonymEmail),
+                    new MySqlParameter("@anonimPhone", anonymPhone),
                     new MySqlParameter("@id", userId)
                 );
 
-                MessageBox.Show("Użytkownik został zapomniany zgodnie z RODO.", "Sukces", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Użytkownik został zapomniany. Dane zostały usunięte, a konto zdezaktywowane.",
+                                "Sukces", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
                 refresh();
             }
             catch (Exception ex)
@@ -337,6 +371,56 @@ namespace przychodnia_testowanie
                 MessageBox.Show("Błąd podczas zapominania użytkownika: " + ex.Message, "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private string GeneratePesel(DateTime birthDate, int gender)
+        {
+            string year = birthDate.Year.ToString().Substring(2, 2);
+            int month = birthDate.Month;
+            int day = birthDate.Day;
+
+            if (birthDate.Year >= 2000 && birthDate.Year < 2100)
+            {
+                month += 20;
+            }
+            else if (birthDate.Year >= 2100 && birthDate.Year < 2200)
+            {
+                month += 40;
+            }
+            else if (birthDate.Year >= 2200 && birthDate.Year < 2300)
+            {
+                month += 60;
+            }
+            else if (birthDate.Year >= 1800 && birthDate.Year < 1900)
+            {
+                month += 80;
+            }
+
+            string monthStr = month.ToString("D2");
+            string dayStr = day.ToString("D2");
+            string serial = new Random().Next(1000, 9999).ToString();
+
+
+            int genderDigit = gender == 0 ? new Random().Next(1, 10) | 1 : new Random().Next(0, 10) & ~1;
+            string peselWithoutControl = year + monthStr + dayStr + serial + genderDigit;
+
+            int[] weights = { 1, 3, 7, 9, 1, 3, 7, 9, 1, 3 };
+            int sum = 0;
+            for (int i = 0; i < 10; i++)
+            {
+                sum += weights[i] * int.Parse(peselWithoutControl[i].ToString());
+            }
+            int controlDigit = (10 - (sum % 10)) % 10;
+
+            return peselWithoutControl + controlDigit;
+        }
+
+
+
+
+
+
+
+
 
         private void btn_zapomnij_Click(object sender, EventArgs e)
         {
@@ -352,12 +436,12 @@ namespace przychodnia_testowanie
             // Sprawdź, czy użytkownik już zapomniany
             if (status == DBNull.Value)
             {
-                MessageBox.Show("Ten użytkownik już został zapomniany.", "Informacja", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Użytkownik został zapomniany. Wszystkie dane zostały usunięte, a dostęp do systemu został zablokowany.", "Informacja", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
             DialogResult result = MessageBox.Show(
-                "Czy na pewno chcesz zapomnieć tego użytkownika? Operacja jest nieodwracalna.",
+                "Czy na pewno chcesz zapomnieć tego użytkownika? Wszystkie dane wrażliwe zostaną usunięte i zastąpione losowymi danymi.",
                 "Potwierdzenie",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Warning
