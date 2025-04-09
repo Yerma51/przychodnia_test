@@ -74,25 +74,23 @@
             // 
             // txb_search
             // 
-            this.txb_search.Cursor = System.Windows.Forms.Cursors.Help;
-            this.txb_search.ForeColor = System.Drawing.Color.Black;
-            this.txb_search.Location = new System.Drawing.Point(399, 151);
-            this.txb_search.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.txb_search.Location = new System.Drawing.Point(439, 153);
             this.txb_search.Name = "txb_search";
-            this.txb_search.Size = new System.Drawing.Size(337, 22);
-            this.txb_search.TabIndex = 14;
-            this.txb_search.Text = "Podaj login";
-            this.txb_search.TextChanged += new System.EventHandler(this.txb_search_TextChanged);
-            // 
-            // Form_lista_zapomnianych
-            // 
-            this.ClientSize = new System.Drawing.Size(1168, 791);
+            this.txb_search.Size = new System.Drawing.Size(297, 22);
+            this.txb_search.TabIndex = 20;
+        this.txb_search.Enter += new System.EventHandler(this.txb_search_Enter);
+        this.txb_search.Leave += new System.EventHandler(this.txb_search_Leave);
+
+        // 
+        // Form_lista_zapomnianych
+        // 
+        this.ClientSize = new System.Drawing.Size(1168, 791);
+            this.Controls.Add(this.txb_search);
             this.Controls.Add(this.btn_strona_glowna);
             this.Controls.Add(this.anuluj_wyszukiwarka);
             this.Controls.Add(this.dtGrdVw_lista_uż);
             this.Controls.Add(this.btn_wyszukiwarka);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.txb_search);
             this.Name = "Form_lista_zapomnianych";
             this.Text = "Lista zapomnianych użytkowników";
             ((System.ComponentModel.ISupportInitialize)(this.dtGrdVw_lista_uż)).EndInit();
@@ -106,4 +104,5 @@
     private System.Windows.Forms.Button btn_wyszukiwarka;
     private System.Windows.Forms.Label label1;
     private System.Windows.Forms.TextBox txb_search;
+
 }
