@@ -16,16 +16,22 @@ namespace przychodnia_testowanie
     public partial class Form_Edycja_profilu : Form
     {
         Użytkownik użytkownik1;
-       
+
         public Form_Edycja_profilu(Użytkownik użytkownik)
         {
             InitializeComponent();
+            ZaładujUżytkownikówZBazy(); // <-- Вот это добавляем!
+
             użytkownik1 = użytkownik;
+
+
+
 
             txb_login.Text = użytkownik1.Login;
             imie_textBox.Text = użytkownik1.Imię;
             nazwisko_textBox.Text = użytkownik1.Nazwisko;
             plec_comboBox.SelectedItem = użytkownik1.Płec;
+            użytkownik1.PlecInt = użytkownik1.Płec == "Mężczyzna" ? 1 : 0;
             dataUrodzenia_dateTimePicker.MinDate = new DateTime(1900, 1, 1);
             dataUrodzenia_dateTimePicker.MaxDate = DateTime.Today;
             if (użytkownik1.Data_urodzenia < dataUrodzenia_dateTimePicker.MinDate || użytkownik1.Data_urodzenia > dataUrodzenia_dateTimePicker.MaxDate)
@@ -49,54 +55,86 @@ namespace przychodnia_testowanie
 
         private bool ValidateForm()
         {
-            // Sprawdzamy, czy wszystkie wymagane pola są wypełnione
+            List<Użytkownik> usersList = Użytkownik.Użytkownicy;
+
+            // Sprawdzenie wymaganych pól
             if (string.IsNullOrWhiteSpace(txb_login.Text) ||
                 string.IsNullOrWhiteSpace(imie_textBox.Text) ||
                 string.IsNullOrWhiteSpace(nazwisko_textBox.Text) ||
+                string.IsNullOrWhiteSpace(miejcowosc_textBox.Text) ||
+                string.IsNullOrWhiteSpace(kodPocztowy_textBox.Text) ||
+                string.IsNullOrWhiteSpace(numerPosesji_textBox.Text) ||
+                string.IsNullOrWhiteSpace(pesel_textBox.Text) ||
                 string.IsNullOrWhiteSpace(mail_textBox.Text) ||
                 string.IsNullOrWhiteSpace(numerTelefonu_textBox.Text) ||
-                string.IsNullOrWhiteSpace(pesel_textBox.Text) ||
-                string.IsNullOrWhiteSpace(kodPocztowy_textBox.Text))
+                plec_comboBox.SelectedItem == null) // Płeć jest polem wymaganym
             {
-                MessageBox.Show("Wszystkie pola muszą być wypełnione.", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Wypełnij wszystkie wymagane pola", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
 
-            // Walidacja numeru telefonu (9 cyfr)
-            string phoneNumber = numerTelefonu_textBox.Text.Trim();
-            if (!Regex.IsMatch(phoneNumber, @"^\d{9}$"))
+            //login
+            if (!Validator.IsValidLogin(txb_login.Text, usersList, użytkownik1))
             {
-                MessageBox.Show("Numer telefonu musi zawierać dokładnie 9 cyfr.", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Podany login już istnieje!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
-            // Walidacja e-maila (musi zawierać znak "@" i kropkę)
-            string email = mail_textBox.Text.Trim();
-            if (!Regex.IsMatch(email, @"^[^@]+@[^@]+\.[^@]+$"))
+            // Sprawdzenie poprawności adresu e-mail
+            if (!Validator.IsValidEmail(mail_textBox.Text))
             {
-                MessageBox.Show("Adres e-mail jest niepoprawny.", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Nieprawidłowy adres e-mail!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
-            // Walidacja PESEL (11 cyfr)
-            string pesel = pesel_textBox.Text.Trim();
-            if (!Regex.IsMatch(pesel, @"^\d{11}$"))
+            // Sprawdzenie unikalności adresu e-mail
+            if (!Validator.IsUniqueEmail(mail_textBox.Text, usersList, użytkownik1))
             {
-                MessageBox.Show("PESEL musi zawierać dokładnie 11 cyfr.", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Podany adres e-mail już istnieje!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
-            // Walidacja kodu pocztowego (format "**-***")
-            string postcode = kodPocztowy_textBox.Text.Trim();
-            if (!Regex.IsMatch(postcode, @"^\d{2}-\d{3}$"))
+            // Sprawdzenie unikalności PESEL       
+
+            if (!Validator.CzyUnikalnyPesel(pesel_textBox.Text, usersList, użytkownik1))
             {
-                MessageBox.Show("Kod pocztowy musi być w formacie **-***.", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Użytkownik z takim PESEL już istnieje.");
+                return false;
+            }
+
+
+            // Sprawdzenie poprawności kodu pocztowego
+            if (!Validator.IsValidPostalCode(kodPocztowy_textBox.Text))
+            {
+                MessageBox.Show("Proszę wpisać kod pocztowy w formacie 00-000", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            // Sprawdzenie poprawności numeru telefonu
+            if (!Validator.IsValidPhoneNumber(numerTelefonu_textBox.Text))
+            {
+                MessageBox.Show("Numer telefonu musi zawierać dokładnie 9 cyfr!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            // Sprawdzenie poprawności numeru PESEL
+            if (!Validator.IsValidPESEL(pesel_textBox.Text, plec_comboBox.SelectedItem.ToString()))
+            {
+                MessageBox.Show("Numer PESEL jest nieprawidłowy!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            // Sprawdzenie zgodności daty urodzenia z PESEL
+            if (!Validator.DoesBirthDateMatchPESEL(pesel_textBox.Text, dataUrodzenia_dateTimePicker.Value))
+            {
+                MessageBox.Show("Data urodzenia nie zgadza się z numerem PESEL!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
             return true;
         }
-       private void btn_anuluj_Click(object sender, EventArgs e)
+
+        private void btn_anuluj_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
             Close();
@@ -104,13 +142,17 @@ namespace przychodnia_testowanie
 
         private void button1_zapisz_Click(object sender, EventArgs e)
         {
+            List<Użytkownik> usersList = Użytkownik.PobierzWszystkichUżytkownikówZBazy();
+
             if (ValidateForm())
             {
                 użytkownik1.Login = txb_login.Text;
                 użytkownik1.Imię = imie_textBox.Text;
                 użytkownik1.Nazwisko = nazwisko_textBox.Text;
                 użytkownik1.Płec = plec_comboBox.SelectedItem.ToString();
-                użytkownik1 .Data_urodzenia = dataUrodzenia_dateTimePicker.Value;
+                użytkownik1.PlecInt = użytkownik1.Płec == "Mężczyzna" ? 1 : 0;
+
+                użytkownik1.Data_urodzenia = dataUrodzenia_dateTimePicker.Value;
                 użytkownik1.Pesel = pesel_textBox.Text;
                 użytkownik1.Adres_email = mail_textBox.Text;
                 użytkownik1.Miejscowość = miejcowosc_textBox.Text;
@@ -124,11 +166,58 @@ namespace przychodnia_testowanie
                 Close();
 
             }
+
         }
 
         private void btn_lista_Click(object sender, EventArgs e)
         {
-
+            this.DialogResult = DialogResult.Cancel;
+            this.Close();
         }
+
+        private void ZaładujUżytkownikówZBazy()
+        {
+            DataTable dt = new Laczenie_z_baza_danych().ExecuteQuery(
+                "SELECT u.id, u.login, u.email, u.phonenumber, p.name, p.lastname, p.pesel, p.city, p.postcode, p.street, p.house_number, p.apartment_number, p.gender, p.birth_date FROM users u JOIN patients p ON u.id = p.user_id"
+            );
+
+            Użytkownik.Użytkownicy.Clear(); // Чтобы избежать дублей
+
+            foreach (DataRow row in dt.Rows)
+            {
+                DateTime dataUrodzenia;
+                string rawDate = row["birth_date"].ToString();
+
+                // Безопасная конвертация даты
+                if (!string.IsNullOrEmpty(rawDate) && DateTime.TryParse(rawDate, out dataUrodzenia))
+                {
+                    // OK
+                }
+                else
+                {
+                    dataUrodzenia = DateTime.Today; // Значение по умолчанию
+                }
+
+                Użytkownik.Użytkownicy.Add(new Użytkownik
+                {
+                    Id = Convert.ToInt32(row["id"]),
+                    Login = row["login"].ToString(),
+                    Adres_email = row["email"].ToString(),
+                    Numer_telefonu = row["phonenumber"].ToString(),
+                    Imię = row["name"].ToString(),
+                    Nazwisko = row["lastname"].ToString(),
+                    Pesel = row["pesel"].ToString(),
+                    Miejscowość = row["city"].ToString(),
+                    Kod_pocztowy = row["postcode"].ToString(),
+                    Ulica = row["street"].ToString(),
+                    Numer_pos = row["house_number"].ToString(),
+                    Numer_lokalu = row["apartment_number"].ToString(),
+                    Płec = row["gender"].ToString(),
+                    Data_urodzenia = dataUrodzenia
+                });
+            }
+        }
+
+
     }
 }

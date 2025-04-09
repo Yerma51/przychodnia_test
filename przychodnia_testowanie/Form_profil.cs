@@ -14,7 +14,7 @@ namespace przychodnia_testowanie
     {
         Użytkownik użytkownik;
         //Pole przechowujące obiekt Użytkownik, który będzie edytowany.
-       
+
         internal Form_profil(Użytkownik użytkownik)
         {
             InitializeComponent();
@@ -24,16 +24,15 @@ namespace przychodnia_testowanie
 
         void InitializePłeć()
         {
+            plec_comboBox.Items.Clear();
+            plec_comboBox.Items.Add("Mężczyzna");
+            plec_comboBox.Items.Add("Kobieta");
             plec_comboBox.DropDownStyle = ComboBoxStyle.DropDownList;
 
-
-            if (plec_comboBox.Items.Count > 0)
-            {
-                plec_comboBox.SelectedIndex = 0;
-            }
+            plec_comboBox.SelectedIndex = 0;
         }
 
-       
+
 
         private void Form_profil_Load(object sender, EventArgs e)
         {
@@ -42,6 +41,7 @@ namespace przychodnia_testowanie
                 imie_textBox.Text = użytkownik.Imię;
                 nazwisko_textBox.Text = użytkownik.Nazwisko;
                 plec_comboBox.SelectedItem = użytkownik.Płec;
+
                 dataUrodzenia_dateTimePicker.MinDate = new DateTime(1900, 1, 1);
                 dataUrodzenia_dateTimePicker.MaxDate = DateTime.Today;
                 if (użytkownik.Data_urodzenia < dataUrodzenia_dateTimePicker.MinDate || użytkownik.Data_urodzenia > dataUrodzenia_dateTimePicker.MaxDate)
@@ -62,7 +62,7 @@ namespace przychodnia_testowanie
                 kodPocztowy_textBox.Text = użytkownik.Kod_pocztowy;
                 numerTelefonu_textBox.Text = użytkownik.Numer_telefonu;
             }
-        } 
+        }
         private void button1_zapisz_Click(object sender, EventArgs e)
         {
             List<Użytkownik> usersList = Użytkownik.Użytkownicy;
@@ -93,18 +93,40 @@ namespace przychodnia_testowanie
 
 
             // Sprawdzenie unikalności adresu e-mail
-            if (!Validator.IsUniqueEmail(mail_textBox.Text, usersList))
+            /*if (!Validator.IsUniqueEmail(mail_textBox.Text, usersList))
             {
                 MessageBox.Show("Podany adres e-mail już istnieje!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
-            }
+            }*/
 
             // Sprawdzenie unikalności pesel
-            if (!Validator.IsUniquePESEL(pesel_textBox.Text, usersList))
-            {
-                MessageBox.Show("Podany adres e-mail już istnieje!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
+            /*  if (!Validator.IsUniquePESEL(pesel_textBox.Text, usersList))
+              {
+                  MessageBox.Show("Podany adres e-mail już istnieje!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                  return;
+              }*/
+
+            // Проверка уникальности логина
+            /* if (!Validator.IsUniqueLogin(txb_login.Text, usersList))
+             {
+                 MessageBox.Show("Podany login już istnieje!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                 return;
+             }
+
+             // Проверка уникальности email
+             if (!Validator.IsUniqueEmail(mail_textBox.Text, usersList))
+             {
+                 MessageBox.Show("Podany adres e-mail już istnieje!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                 return;
+             }
+
+             // Проверка уникальности PESEL
+             if (!Validator.IsUniquePESEL(pesel_textBox.Text, usersList))
+             {
+                 MessageBox.Show("Podany numer PESEL już istnieje!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                 return;
+             }*/
+
 
             // Sprawdzenie poprawności numeru kodu pocztowege
             if (!Validator.IsValidPostalCode(kodPocztowy_textBox.Text))
@@ -127,11 +149,17 @@ namespace przychodnia_testowanie
                 return;
             }
 
+            if (!Validator.DoesBirthDateMatchPESEL(pesel_textBox.Text, dataUrodzenia_dateTimePicker.Value))
+            {
+                MessageBox.Show("Data urodzenia nie zgadza się z numerem PESEL!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             // Jeśli wszystkie walidacje zostały zaliczone, zapisujemy dane i zamykamy formularz
             użytkownik.Login = txb_login.Text.Trim();
             użytkownik.Imię = imie_textBox.Text.Trim();
             użytkownik.Nazwisko = nazwisko_textBox.Text.Trim();
             użytkownik.Płec = plec_comboBox.SelectedItem.ToString();
+            użytkownik.PlecInt = użytkownik.Płec == "Mężczyzna" ? 1 : 0;
             użytkownik.Data_urodzenia = dataUrodzenia_dateTimePicker.Value;
             użytkownik.Pesel = pesel_textBox.Text.Trim();
             użytkownik.Adres_email = mail_textBox.Text.Trim();
@@ -150,17 +178,17 @@ namespace przychodnia_testowanie
 
         private void btn_lista_Click(object sender, EventArgs e)
         {
-            (new Form_lista_uzytkownikow()).ShowDialog();
+            this.DialogResult = DialogResult.Cancel;
             this.Close();
-            //wyświetlić ten formularz w trybie modalnym.
         }
 
         private void btn_anuluj_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Dane nie zostały zapisane", "Uwaga", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            (new Form_lista_uzytkownikow()).ShowDialog();
+            this.DialogResult = DialogResult.Cancel;
             this.Close();
 
         }
     }
 }
+    

@@ -1,9 +1,11 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace przychodnia_testowanie
 {
@@ -20,10 +22,11 @@ namespace przychodnia_testowanie
         }
 
         // Sprawdzanie unikalności adresu e-mail
-        public static bool IsUniqueEmail(string email, List<Użytkownik> usersList)
+        public static bool IsUniqueEmail(string email, List<Użytkownik> usersList, Użytkownik aktualnyUżytkownik)
         {
-            return !usersList.Any(user => user.Adres_email == email);
+            return !usersList.Any(user => user.Adres_email == email && user.Id != aktualnyUżytkownik.Id);
         }
+
 
         // Walidacja numeru telefonu (musi zawierać dokładnie 9 cyfr)
         public static bool IsValidPhoneNumber(string phone)
@@ -32,11 +35,12 @@ namespace przychodnia_testowanie
         }
 
         // Walidacja loginu (pole nie może być puste i musi być unikalne)
-        public static bool IsValidLogin(string login, List<Użytkownik> usersList)
+        public static bool IsValidLogin(string login, List<Użytkownik> usersList, Użytkownik aktualnyUżytkownik)
         {
             if (string.IsNullOrWhiteSpace(login)) return false;
-            return !usersList.Any(user => user.Login == login);
+            return !usersList.Any(user => user.Login == login && user.Id != aktualnyUżytkownik.Id);
         }
+
 
         // Walidacja numeru PESEL
         public static bool IsValidPESEL(string pesel, string gender)
@@ -71,10 +75,12 @@ namespace przychodnia_testowanie
         }
 
         // Sprawdzanie unikalności numeru PESEL
-        public static bool IsUniquePESEL(string pesel, List<Użytkownik> usersList)
+        public static bool CzyUnikalnyPesel(string pesel, List<Użytkownik> użytkownicy, Użytkownik aktualnyUżytkownik)
         {
-            return !usersList.Any(user => user.Pesel == pesel);
+            return !użytkownicy.Any(u => u.Pesel == pesel && u.Id != aktualnyUżytkownik.Id);
         }
+
+
 
         // Pobieranie pełnego roku na podstawie numeru PESEL
         private static int GetFullYear(string year, string month)
@@ -116,6 +122,52 @@ namespace przychodnia_testowanie
             int controlDigit = (10 - (sum % 10)) % 10;
             return controlDigit == int.Parse(pesel[10].ToString());
         }
+
+        // Porównanie daty urodzenia z PESEL z datą z DateTimePicker
+        public static bool DoesBirthDateMatchPESEL(string pesel, DateTime selectedDate)
+        {
+            if (!Regex.IsMatch(pesel, @"^\d{11}$"))
+                return false;
+
+            string yearPart = pesel.Substring(0, 2);
+            string monthPart = pesel.Substring(2, 2);
+            string dayPart = pesel.Substring(4, 2);
+
+            int fullYear = GetFullYear(yearPart, monthPart);
+            int fullMonth = GetRealMonth(monthPart);
+            int fullDay = int.Parse(dayPart);
+
+            DateTime dateFromPESEL;
+            try
+            {
+                dateFromPESEL = new DateTime(fullYear, fullMonth, fullDay);
+            }
+            catch
+            {
+                return false;
+            }
+
+            return dateFromPESEL.Date == selectedDate.Date;
+        }
+
+
+        public static bool IsUniqueLogin(string login, List<Użytkownik> usersList)
+        {
+            return !usersList.Any(user => user.Login == login);
+        }
+
+        public static bool IsUniqueEmail(string email, List<Użytkownik> usersList)
+        {
+            return !usersList.Any(user => user.Adres_email == email);
+        }
+
+        public static bool IsUniquePESEL(string pesel, List<Użytkownik> usersList)
+        {
+            return !usersList.Any(user => user.Pesel == pesel);
+        }
+
+
+
 
         // Walidacja kodu pocztowego (format: 00-000)
         public static bool IsValidPostalCode(string postalCode)

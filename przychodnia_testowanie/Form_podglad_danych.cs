@@ -17,9 +17,18 @@ namespace przychodnia_testowanie
         public Form_podglad_danych(Użytkownik użytkownik)
         {
             InitializeComponent();
-
-
             użytkownik1 = użytkownik;
+            plec_comboBox.Items.Add("Kobieta");
+            plec_comboBox.Items.Add("Mężczyzna");
+
+            if (użytkownik1.Płec == "1" || użytkownik1.Płec == "Mężczyzna")
+            {
+                plec_comboBox.SelectedItem = "Mężczyzna";
+            }
+            else
+            {
+                plec_comboBox.SelectedItem = "Kobieta";
+            }
 
             login_textBox.Text = użytkownik1.Login;
             imie_textBox.Text = użytkownik1.Imię;
@@ -64,7 +73,7 @@ namespace przychodnia_testowanie
         {
             Form_lista_uzytkownikow form = new Form_lista_uzytkownikow();
             form.Show();
-            this.Hide();
+            this.Close();
         }
     }
 }

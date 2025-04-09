@@ -97,58 +97,59 @@ namespace przychodnia_testowanie
 
         private void btn_nowy_użytkow_Click(object sender, EventArgs e)
         {
-            this.Hide();
-
             Użytkownik nowy_uzytkownik = new Użytkownik();
             Form_profil form = new Form_profil(nowy_uzytkownik);
 
+            this.Hide(); // Скрываем текущую форму
+
             DialogResult result = form.ShowDialog();
-            if (result == DialogResult.OK) // Jeśli użytkownik został pomyślnie dodany
+            int genderValue = 0;
+
+            if (nowy_uzytkownik.Płec == "Mężczyzna")
             {
+                genderValue = 1;
+            }
+
+            if (result == DialogResult.OK)
+            {
+                // Dodajemy użytkownika do bazy dopiero jeśli kliknięto OK
+
+                Laczenie_z_baza_danych DBconn = new Laczenie_z_baza_danych();
+                DataTable insertUser = DBconn.ExecuteQuery("INSERT INTO users (id, login, role, email, phonenumber, status, regdate) VALUES (NULL, @login, @role, @email, @phonenumber, @status, NOW())",
+                    new MySqlParameter("@login", nowy_uzytkownik.Login),
+                    new MySqlParameter("@role", "patient"),
+                    new MySqlParameter("@email", nowy_uzytkownik.Adres_email),
+                    new MySqlParameter("@phonenumber", nowy_uzytkownik.Numer_telefonu),
+                    new MySqlParameter("@status", 1));
+
+                DataTable lastinsertID = DBconn.ExecuteQuery("SELECT LAST_INSERT_ID()");
+                object lastID = lastinsertID.Rows[0][0];
+
+                DataTable insertPatient = DBconn.ExecuteQuery("INSERT INTO patients (id, user_id, pesel, country, city, postcode, street, house_number, apartment_number, name, lastname, gender) VALUES (NULL, @user_id, @pesel, 'Poland', @city, @postcode, @street, @house_number, @apartment_number, @name, @lastname, @gender)",
+                    new MySqlParameter("@user_id", lastID),
+                    new MySqlParameter("@pesel", nowy_uzytkownik.Pesel),
+                    new MySqlParameter("@city", nowy_uzytkownik.Miejscowość),
+                    new MySqlParameter("@postcode", nowy_uzytkownik.Kod_pocztowy),
+                    new MySqlParameter("@street", nowy_uzytkownik.Ulica),
+                    new MySqlParameter("@house_number", nowy_uzytkownik.Numer_pos),
+                    new MySqlParameter("@apartment_number", nowy_uzytkownik.Numer_lokalu),
+                    new MySqlParameter("@name", nowy_uzytkownik.Imię),
+                    new MySqlParameter("@lastname", nowy_uzytkownik.Nazwisko),
+                    new MySqlParameter("@gender", genderValue));
+
+                refresh();
+
+                MessageBox.Show("Użytkownik został dodany pomyślnie!", "Sukces", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
                 Form_lista_uzytkownikow formLista = new Form_lista_uzytkownikow();
-                formLista.Show(); // Otwieramy zaktualizowaną listę użytkowników.
+                formLista.Show();
+
+                this.Close();
             }
             else
             {
-                this.Show(); // Jeśli użytkownik nie został dodany, wracamy do listy użytkowników.
+                this.Show();
             }
-
-
-
-            /*if (!AreAllPropertiesSet(nowy_uzytkownik, out string missingProperty))
-            {
-                Console.WriteLine($"Nie podano: {missingProperty}");
-            }
-            else
-            {*/
-            // sukces
-            Laczenie_z_baza_danych DBconn = new Laczenie_z_baza_danych();
-            DataTable insertUser = DBconn.ExecuteQuery("INSERT INTO users (id, login, role, email, phonenumber, status, regdate) VALUES ( NULL, @login, @role, @email, @phonenumber, @status, NOW())",
-
-            new MySqlParameter("@login", nowy_uzytkownik.Login),
-            new MySqlParameter("@role", "patient"),
-            new MySqlParameter("@email", nowy_uzytkownik.Adres_email),
-            new MySqlParameter("@phonenumber", nowy_uzytkownik.Numer_telefonu),
-            new MySqlParameter("@status", 1));
-
-            DataTable lastinsertID = DBconn.ExecuteQuery("SELECT LAST_INSERT_ID()");
-            object lastID = lastinsertID.Rows[0][0];
-            DataTable insertPatient = DBconn.ExecuteQuery("INSERT INTO patients (id, user_id, pesel, country, city, postcode, street, house_number, apartment_number, name, lastname) VALUES ( NULL, @user_id, @pesel, 'Poland', @city, @postcode, @street, @house_number, @apartment_number, @name, @lastname)",
-
-                new MySqlParameter("@user_id", lastID),
-                new MySqlParameter("@pesel", nowy_uzytkownik.Pesel),
-                new MySqlParameter("@city", nowy_uzytkownik.Miejscowość),
-                new MySqlParameter("@postcode", nowy_uzytkownik.Kod_pocztowy),
-                new MySqlParameter("@street", nowy_uzytkownik.Ulica),
-                new MySqlParameter("@house_number", nowy_uzytkownik.Numer_pos),
-                new MySqlParameter("@apartment_number", nowy_uzytkownik.Numer_lokalu),
-                new MySqlParameter("@name", nowy_uzytkownik.Imię),
-                new MySqlParameter("@lastname", nowy_uzytkownik.Nazwisko));
-
-            refresh();
-
-            MessageBox.Show("Użytkownik został dodany pomyślnie!", "Sukces", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            //}
         }
 
 
@@ -249,7 +250,7 @@ namespace przychodnia_testowanie
             int userId = Convert.ToInt32(dtGrdVw_lista_uż.SelectedRows[0].Cells["id"].Value);
 
             // Pobieramy dane użytkownika z bazy danych
-            DataTable userData = DBconn.ExecuteQuery("SELECT u.id, u.login, u.email, u.phonenumber, p.name, p.lastname, p.pesel, p.city, p.postcode, p.street, p.house_number, p.apartment_number FROM users u JOIN patients p ON u.id = p.user_id WHERE u.id = @id",
+            DataTable userData = DBconn.ExecuteQuery("SELECT u.id, u.login, u.email, u.phonenumber, p.name, p.lastname, p.pesel, p.city, p.postcode, p.street, p.house_number, p.apartment_number, p.gender FROM users u JOIN patients p ON u.id = p.user_id WHERE u.id = @id",
                 new MySqlParameter("@id", userId));
 
             if (userData.Rows.Count == 0)
@@ -273,12 +274,17 @@ namespace przychodnia_testowanie
                 Kod_pocztowy = row["postcode"].ToString(),
                 Ulica = row["street"].ToString(),
                 Numer_pos = row["house_number"].ToString(),
-                Numer_lokalu = row["apartment_number"].ToString()
+                Numer_lokalu = row["apartment_number"].ToString(),
+                Płec = Convert.ToInt32(row["gender"]) == 1 ? "Mężczyzna" : "Kobieta"
             };
 
             // Otwieramy formularz edycji i przekazujemy do niego dane
             Form_Edycja_profilu editForm = new Form_Edycja_profilu(selectedUser);
+            this.Hide();
+
             DialogResult result = editForm.ShowDialog();
+
+            this.Show();
 
             if (result == DialogResult.OK)
             {
@@ -289,7 +295,7 @@ namespace przychodnia_testowanie
                     new MySqlParameter("@phonenumber", selectedUser.Numer_telefonu),
                     new MySqlParameter("@id", selectedUser.Id));
 
-                DBconn.ExecuteQuery("UPDATE patients SET name = @name, lastname = @lastname, pesel = @pesel, city = @city, postcode = @postcode, street = @street, house_number = @house_number, apartment_number = @apartment_number WHERE user_id = @user_id",
+                DBconn.ExecuteQuery("UPDATE patients SET name = @name, lastname = @lastname, pesel = @pesel, city = @city, postcode = @postcode, street = @street, house_number = @house_number, apartment_number = @apartment_number, gender = @gender WHERE user_id = @user_id",
                     new MySqlParameter("@name", selectedUser.Imię),
                     new MySqlParameter("@lastname", selectedUser.Nazwisko),
                     new MySqlParameter("@pesel", selectedUser.Pesel),
@@ -298,6 +304,7 @@ namespace przychodnia_testowanie
                     new MySqlParameter("@street", selectedUser.Ulica),
                     new MySqlParameter("@house_number", selectedUser.Numer_pos),
                     new MySqlParameter("@apartment_number", selectedUser.Numer_lokalu),
+                    new MySqlParameter("@gender", selectedUser.PlecInt),
                     new MySqlParameter("@user_id", selectedUser.Id));
 
                 // Po zaktualizowaniu danych, odświeżamy DataGridView
@@ -474,7 +481,7 @@ namespace przychodnia_testowanie
             int userId = Convert.ToInt32(dtGrdVw_lista_uż.SelectedRows[0].Cells["id"].Value);
 
             // Pobieramy dane użytkownika z bazy danych
-            DataTable userData = DBconn.ExecuteQuery("SELECT u.id, u.login, u.email, u.phonenumber, p.name, p.lastname, p.pesel, p.city, p.postcode, p.street, p.house_number, p.apartment_number FROM users u JOIN patients p ON u.id = p.user_id WHERE u.id = @id",
+            DataTable userData = DBconn.ExecuteQuery("SELECT u.id, u.login, u.email, u.phonenumber, p.name, p.lastname, p.pesel, p.city, p.postcode, p.street, p.house_number, p.apartment_number, p.gender FROM users u JOIN patients p ON u.id = p.user_id WHERE u.id = @id",
                 new MySqlParameter("@id", userId));
 
             if (userData.Rows.Count == 0)
@@ -498,13 +505,14 @@ namespace przychodnia_testowanie
                 Kod_pocztowy = row["postcode"].ToString(),
                 Ulica = row["street"].ToString(),
                 Numer_pos = row["house_number"].ToString(),
-                Numer_lokalu = row["apartment_number"].ToString()
+                Numer_lokalu = row["apartment_number"].ToString(),
+                Płec = Convert.ToInt32(row["gender"]) == 1 ? "Mężczyzna" : "Kobieta"
             };
 
             // Otwieramy formularz podgladu i przekazujemy do niego dane
             Form_podglad_danych podgladForm = new Form_podglad_danych(selectedUser);
-            DialogResult result = podgladForm.ShowDialog();
-
+            this.Close();
+            podgladForm.Show();
         }
     }
 }
