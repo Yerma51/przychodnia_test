@@ -20,7 +20,7 @@ namespace przychodnia_testowanie
         public Form_Edycja_profilu(Użytkownik użytkownik)
         {
             InitializeComponent();
-            ZaładujUżytkownikówZBazy(); // <-- Вот это добавляем!
+            ZaładujUżytkownikówZBazy(); 
 
             użytkownik1 = użytkownik;
 
@@ -181,21 +181,20 @@ namespace przychodnia_testowanie
                 "SELECT u.id, u.login, u.email, u.phonenumber, p.name, p.lastname, p.pesel, p.city, p.postcode, p.street, p.house_number, p.apartment_number, p.gender, p.birth_date FROM users u JOIN patients p ON u.id = p.user_id"
             );
 
-            Użytkownik.Użytkownicy.Clear(); // Чтобы избежать дублей
+            Użytkownik.Użytkownicy.Clear(); // Żeby nie było dublikatów
 
             foreach (DataRow row in dt.Rows)
             {
                 DateTime dataUrodzenia;
                 string rawDate = row["birth_date"].ToString();
 
-                // Безопасная конвертация даты
                 if (!string.IsNullOrEmpty(rawDate) && DateTime.TryParse(rawDate, out dataUrodzenia))
                 {
-                    // OK
+                    
                 }
                 else
                 {
-                    dataUrodzenia = DateTime.Today; // Значение по умолчанию
+                    dataUrodzenia = DateTime.Today; 
                 }
 
                 Użytkownik.Użytkownicy.Add(new Użytkownik

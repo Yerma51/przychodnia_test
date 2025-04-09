@@ -65,7 +65,8 @@ namespace przychodnia_testowanie
             ulica_textBox.ReadOnly = true;
             numerPosesji_textBox.ReadOnly = true;
             numerLokalu_textBox.ReadOnly = true;
-
+            plec_comboBox.Enabled = false;
+            dataUrodzenia_dateTimePicker.Enabled = false;
 
         }
 

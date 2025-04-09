@@ -106,21 +106,18 @@ namespace przychodnia_testowanie
                   return;
               }*/
 
-            // Проверка уникальности логина
             /* if (!Validator.IsUniqueLogin(txb_login.Text, usersList))
              {
                  MessageBox.Show("Podany login już istnieje!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
                  return;
              }
 
-             // Проверка уникальности email
              if (!Validator.IsUniqueEmail(mail_textBox.Text, usersList))
              {
                  MessageBox.Show("Podany adres e-mail już istnieje!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
                  return;
              }
 
-             // Проверка уникальности PESEL
              if (!Validator.IsUniquePESEL(pesel_textBox.Text, usersList))
              {
                  MessageBox.Show("Podany numer PESEL już istnieje!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
