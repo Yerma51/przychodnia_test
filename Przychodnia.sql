@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 09, 2025 at 04:48 PM
+-- Generation Time: Apr 09, 2025 at 06:38 PM
 -- Wersja serwera: 10.4.32-MariaDB
 -- Wersja PHP: 8.2.12
 
@@ -106,8 +106,8 @@ INSERT INTO `patients` (`id`, `user_id`, `pesel`, `birth_date`, `gender`, `count
 (1, 2, '65041724445', '2025-03-26', 0, 'Poland', 'Gdańsk', '80-175', 'Leśna', 7, 0, 'Elżbieta', 'Krawczyk'),
 (5, 6, '79112342973', '2025-04-01', 1, 'Poland', 'Poznań', '60-123', '', 45, 10, 'Michał', 'Nowak'),
 (7, 8, '88061234567', '2100-01-20', 0, 'Poland', 'Wrocław', '50-301', 'Słoneczna', 18, 4, 'Anna', 'Adamczyk'),
-(9, 10, '91072261389', '0000-00-00', 0, 'Poland', 'Warszawa', '00-125', 'Akacjowa', 8, 12, 'Agata', 'Lewandowska'),
-(11, 12, '92111407829', '0000-00-00', 0, 'Poland', 'Lublin', '20-001', '', 7, 0, 'Aleksandra', 'Mazur');
+(9, 10, '91072261389', '1991-07-22', 0, 'Poland', 'Warszawa', '00-125', 'Akacjowa', 8, 12, 'Agata', 'Lewandowska'),
+(11, 12, '92111407829', '1992-11-14', 0, 'Poland', 'Lublin', '20-001', '', 7, 0, 'Aleksandra', 'Mazur');
 
 -- --------------------------------------------------------
 
