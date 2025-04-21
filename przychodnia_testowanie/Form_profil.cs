@@ -36,7 +36,9 @@ namespace przychodnia_testowanie
 
         private void Form_profil_Load(object sender, EventArgs e)
         {
-            {
+            ZaładujUżytkownikówZBazy();
+
+
                 txb_login.Text = użytkownik.Login;
                 imie_textBox.Text = użytkownik.Imię;
                 nazwisko_textBox.Text = użytkownik.Nazwisko;
@@ -61,7 +63,7 @@ namespace przychodnia_testowanie
                 numerLokalu_textBox.Text = użytkownik.Numer_lokalu;
                 kodPocztowy_textBox.Text = użytkownik.Kod_pocztowy;
                 numerTelefonu_textBox.Text = użytkownik.Numer_telefonu;
-            }
+            
         }
         private void button1_zapisz_Click(object sender, EventArgs e)
         {
@@ -90,6 +92,26 @@ namespace przychodnia_testowanie
                 return;
             }
 
+            // Sprawdzenie unikalności loginu
+            if (!Validator.IsValidLogin(txb_login.Text, usersList, null)) // null, bo это новый użytkownik
+            {
+                MessageBox.Show("Podany login już istnieje!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // Sprawdzenie unikalności email
+            if (!Validator.IsUniqueEmail(mail_textBox.Text, usersList, null))
+            {
+                MessageBox.Show("Podany adres e-mail już istnieje!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // Sprawdzenie unikalności PESEL
+            if (!Validator.CzyUnikalnyPesel(pesel_textBox.Text, usersList, null))
+            {
+                MessageBox.Show("Podany numer PESEL już istnieje!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
 
             // Sprawdzenie unikalności adresu e-mail
@@ -172,6 +194,47 @@ namespace przychodnia_testowanie
             this.Close();
 
         }
+        private void ZaładujUżytkownikówZBazy()
+        {
+            DataTable dt = new Laczenie_z_baza_danych().ExecuteQuery(
+                "SELECT u.id, u.login, u.email, u.phonenumber, p.name, p.lastname, p.pesel, p.city, p.postcode, p.street, p.house_number, p.apartment_number, p.gender, p.birth_date FROM users u JOIN patients p ON u.id = p.user_id"
+            );
+
+            Użytkownik.Użytkownicy.Clear();
+
+            foreach (DataRow row in dt.Rows)
+            {
+                DateTime dataUrodzenia;
+                string rawDate = row["birth_date"].ToString();
+
+                if (!string.IsNullOrEmpty(rawDate) && DateTime.TryParse(rawDate, out dataUrodzenia))
+                {
+                }
+                else
+                {
+                    dataUrodzenia = DateTime.Today;
+                }
+
+                Użytkownik.Użytkownicy.Add(new Użytkownik
+                {
+                    Id = Convert.ToInt32(row["id"]),
+                    Login = row["login"].ToString(),
+                    Adres_email = row["email"].ToString(),
+                    Numer_telefonu = row["phonenumber"].ToString(),
+                    Imię = row["name"].ToString(),
+                    Nazwisko = row["lastname"].ToString(),
+                    Pesel = row["pesel"].ToString(),
+                    Miejscowość = row["city"].ToString(),
+                    Kod_pocztowy = row["postcode"].ToString(),
+                    Ulica = row["street"].ToString(),
+                    Numer_pos = row["house_number"].ToString(),
+                    Numer_lokalu = row["apartment_number"].ToString(),
+                    Płec = row["gender"].ToString(),
+                    Data_urodzenia = dataUrodzenia
+                });
+            }
+        }
+
 
         private void btn_lista_Click(object sender, EventArgs e)
         {

@@ -24,8 +24,12 @@ namespace przychodnia_testowanie
         // Sprawdzanie unikalności adresu e-mail
         public static bool IsUniqueEmail(string email, List<Użytkownik> usersList, Użytkownik aktualnyUżytkownik)
         {
-            return !usersList.Any(user => user.Adres_email == email && user.Id != aktualnyUżytkownik.Id);
+            return !usersList.Any(user =>
+                user.Adres_email == email &&
+                (aktualnyUżytkownik == null || user.Id != aktualnyUżytkownik.Id)
+            );
         }
+
 
 
         // Walidacja numeru telefonu (musi zawierać dokładnie 9 cyfr)
@@ -35,11 +39,17 @@ namespace przychodnia_testowanie
         }
 
         // Walidacja loginu (pole nie może być puste i musi być unikalne)
+       
         public static bool IsValidLogin(string login, List<Użytkownik> usersList, Użytkownik aktualnyUżytkownik)
         {
             if (string.IsNullOrWhiteSpace(login)) return false;
-            return !usersList.Any(user => user.Login == login && user.Id != aktualnyUżytkownik.Id);
+
+            return !usersList.Any(user =>
+                user.Login == login &&
+                (aktualnyUżytkownik == null || user.Id != aktualnyUżytkownik.Id)
+            );
         }
+
 
 
         // Walidacja numeru PESEL
@@ -77,8 +87,12 @@ namespace przychodnia_testowanie
         // Sprawdzanie unikalności numeru PESEL
         public static bool CzyUnikalnyPesel(string pesel, List<Użytkownik> użytkownicy, Użytkownik aktualnyUżytkownik)
         {
-            return !użytkownicy.Any(u => u.Pesel == pesel && u.Id != aktualnyUżytkownik.Id);
+            return !użytkownicy.Any(u =>
+                u.Pesel == pesel &&
+                (aktualnyUżytkownik == null || u.Id != aktualnyUżytkownik.Id)
+            );
         }
+
 
 
 
