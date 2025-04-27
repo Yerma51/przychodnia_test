@@ -30,5 +30,12 @@ namespace przychodnia_testowanie
             zapForm.Show();
             this.Hide();
         }
+
+        private void btn_uprawn_Click_Click(object sender, EventArgs e)
+        {
+            Form_lista_uprawnien form = new Form_lista_uprawnien();
+            form.Show();
+            this.Hide();
+        }
     }
 }

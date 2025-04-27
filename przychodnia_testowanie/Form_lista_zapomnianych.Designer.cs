@@ -78,13 +78,12 @@
             this.txb_search.Name = "txb_search";
             this.txb_search.Size = new System.Drawing.Size(297, 22);
             this.txb_search.TabIndex = 20;
-        this.txb_search.Enter += new System.EventHandler(this.txb_search_Enter);
-        this.txb_search.Leave += new System.EventHandler(this.txb_search_Leave);
-
-        // 
-        // Form_lista_zapomnianych
-        // 
-        this.ClientSize = new System.Drawing.Size(1168, 791);
+            this.txb_search.Enter += new System.EventHandler(this.txb_search_Enter);
+            this.txb_search.Leave += new System.EventHandler(this.txb_search_Leave);
+            // 
+            // Form_lista_zapomnianych
+            // 
+            this.ClientSize = new System.Drawing.Size(1168, 791);
             this.Controls.Add(this.txb_search);
             this.Controls.Add(this.btn_strona_glowna);
             this.Controls.Add(this.anuluj_wyszukiwarka);

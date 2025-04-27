@@ -39,6 +39,9 @@
             this.anuluj_wyszukiwarka = new System.Windows.Forms.Button();
             this.btn_strona_główna = new System.Windows.Forms.Button();
             this.btn_podglad_danych = new System.Windows.Forms.Button();
+            this.btn_nadaj_uprawnienia = new System.Windows.Forms.Button();
+            this.btn_filtruj_uprawnienia = new System.Windows.Forms.Button();
+            this.btn_wyczysc_filtr = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dtGrdVw_lista_uż)).BeginInit();
             this.SuspendLayout();
             // 
@@ -108,7 +111,7 @@
             this.btn_edycja_użytkownika.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.btn_edycja_użytkownika.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.btn_edycja_użytkownika.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.btn_edycja_użytkownika.Location = new System.Drawing.Point(693, 12);
+            this.btn_edycja_użytkownika.Location = new System.Drawing.Point(744, 12);
             this.btn_edycja_użytkownika.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btn_edycja_użytkownika.Name = "btn_edycja_użytkownika";
             this.btn_edycja_użytkownika.Size = new System.Drawing.Size(147, 44);
@@ -122,7 +125,7 @@
             this.btn_zapomnij.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.btn_zapomnij.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.btn_zapomnij.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.btn_zapomnij.Location = new System.Drawing.Point(526, 12);
+            this.btn_zapomnij.Location = new System.Drawing.Point(591, 12);
             this.btn_zapomnij.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btn_zapomnij.Name = "btn_zapomnij";
             this.btn_zapomnij.Size = new System.Drawing.Size(147, 44);
@@ -160,7 +163,7 @@
             this.btn_podglad_danych.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.btn_podglad_danych.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.btn_podglad_danych.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.btn_podglad_danych.Location = new System.Drawing.Point(326, 12);
+            this.btn_podglad_danych.Location = new System.Drawing.Point(438, 12);
             this.btn_podglad_danych.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btn_podglad_danych.Name = "btn_podglad_danych";
             this.btn_podglad_danych.Size = new System.Drawing.Size(147, 44);
@@ -168,6 +171,41 @@
             this.btn_podglad_danych.Text = "Podgląd danych";
             this.btn_podglad_danych.UseVisualStyleBackColor = false;
             this.btn_podglad_danych.Click += new System.EventHandler(this.btn_podglad_danych_Click);
+            // 
+            // btn_nadaj_uprawnienia
+            // 
+            this.btn_nadaj_uprawnienia.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.btn_nadaj_uprawnienia.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.btn_nadaj_uprawnienia.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.btn_nadaj_uprawnienia.Location = new System.Drawing.Point(285, 12);
+            this.btn_nadaj_uprawnienia.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btn_nadaj_uprawnienia.Name = "btn_nadaj_uprawnienia";
+            this.btn_nadaj_uprawnienia.Size = new System.Drawing.Size(147, 44);
+            this.btn_nadaj_uprawnienia.TabIndex = 15;
+            this.btn_nadaj_uprawnienia.Text = "Nadaj uprawnienia";
+            this.btn_nadaj_uprawnienia.UseVisualStyleBackColor = false;
+            this.btn_nadaj_uprawnienia.Click += new System.EventHandler(this.btn_nadaj_uprawnienia_Click);
+            // 
+            // btn_filtruj_uprawnienia
+            // 
+            this.btn_filtruj_uprawnienia.Location = new System.Drawing.Point(421, 265);
+            this.btn_filtruj_uprawnienia.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btn_filtruj_uprawnienia.Name = "btn_filtruj_uprawnienia";
+            this.btn_filtruj_uprawnienia.Size = new System.Drawing.Size(180, 25);
+            this.btn_filtruj_uprawnienia.TabIndex = 16;
+            this.btn_filtruj_uprawnienia.Text = "Filtruj według uprawnień";
+            this.btn_filtruj_uprawnienia.UseVisualStyleBackColor = true;
+            this.btn_filtruj_uprawnienia.Click += new System.EventHandler(this.btn_filtruj_uprawnienia_Click);
+            // 
+            // btn_wyczysc_filtr
+            // 
+            this.btn_wyczysc_filtr.Location = new System.Drawing.Point(607, 265);
+            this.btn_wyczysc_filtr.Name = "btn_wyczysc_filtr";
+            this.btn_wyczysc_filtr.Size = new System.Drawing.Size(98, 25);
+            this.btn_wyczysc_filtr.TabIndex = 17;
+            this.btn_wyczysc_filtr.Text = "Wyczyść filtr";
+            this.btn_wyczysc_filtr.UseVisualStyleBackColor = true;
+            this.btn_wyczysc_filtr.Click += new System.EventHandler(this.btn_wyczysc_filtr_Click);
             // 
             // Form_lista_uzytkownikow
             // 
@@ -177,6 +215,9 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1168, 791);
+            this.Controls.Add(this.btn_wyczysc_filtr);
+            this.Controls.Add(this.btn_filtruj_uprawnienia);
+            this.Controls.Add(this.btn_nadaj_uprawnienia);
             this.Controls.Add(this.btn_podglad_danych);
             this.Controls.Add(this.btn_strona_główna);
             this.Controls.Add(this.anuluj_wyszukiwarka);
@@ -213,5 +254,8 @@
         private System.Windows.Forms.Button anuluj_wyszukiwarka;
         private System.Windows.Forms.Button btn_strona_główna;
         private System.Windows.Forms.Button btn_podglad_danych;
+        private System.Windows.Forms.Button btn_nadaj_uprawnienia;
+        private System.Windows.Forms.Button btn_filtruj_uprawnienia;
+        private System.Windows.Forms.Button btn_wyczysc_filtr;
     }
 }

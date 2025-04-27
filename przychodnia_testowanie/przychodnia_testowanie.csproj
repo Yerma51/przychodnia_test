@@ -99,6 +99,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Form_filtruj_uprawnienia.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_filtruj_uprawnienia.Designer.cs">
+      <DependentUpon>Form_filtruj_uprawnienia.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form_lista_uprawnien.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_lista_uprawnien.Designer.cs">
+      <DependentUpon>Form_lista_uprawnien.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_lista_zapomnianych.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -116,6 +128,12 @@
     </Compile>
     <Compile Include="Form_lista_uzytkownikow.Designer.cs">
       <DependentUpon>Form_lista_uzytkownikow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form_nadawanie_uprawnien.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_nadawanie_uprawnien.Designer.cs">
+      <DependentUpon>Form_nadawanie_uprawnien.cs</DependentUpon>
     </Compile>
     <Compile Include="Form_podglad_danych.cs">
       <SubType>Form</SubType>
@@ -141,6 +159,12 @@
     <Compile Include="User.cs" />
     <Compile Include="Użytkownik.cs" />
     <Compile Include="Validator.cs" />
+    <EmbeddedResource Include="Form_filtruj_uprawnienia.resx">
+      <DependentUpon>Form_filtruj_uprawnienia.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_lista_uprawnien.resx">
+      <DependentUpon>Form_lista_uprawnien.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form_lista_uzytkownikow.resx">
       <DependentUpon>Form_lista_uzytkownikow.cs</DependentUpon>
     </EmbeddedResource>
@@ -149,6 +173,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form_lista_zapomnianych.resx">
       <DependentUpon>Form_lista_zapomnianych.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_nadawanie_uprawnien.resx">
+      <DependentUpon>Form_nadawanie_uprawnien.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form_podglad_danych.resx">
       <DependentUpon>Form_podglad_danych.cs</DependentUpon>

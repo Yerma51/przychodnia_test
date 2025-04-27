@@ -518,6 +518,72 @@ namespace przychodnia_testowanie
             this.Close();
             podgladForm.Show();
         }
+
+        private void btn_nadaj_uprawnienia_Click(object sender, EventArgs e)
+        {
+            if (dtGrdVw_lista_uż.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Proszę wybrać użytkownika.", "Uwaga", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (dtGrdVw_lista_uż.SelectedRows.Count > 1)
+            {
+                MessageBox.Show("Możesz wybrać tylko jednego użytkownika!", "Uwaga", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            int userId = Convert.ToInt32(dtGrdVw_lista_uż.SelectedRows[0].Cells["id"].Value);
+
+            Form_nadawanie_uprawnien form = new Form_nadawanie_uprawnien(userId);
+            form.ShowDialog();
+        }
+
+        private void btn_filtruj_uprawnienia_Click(object sender, EventArgs e)
+        {
+            Form_filtruj_uprawnienia filtrForm = new Form_filtruj_uprawnienia();
+            if (filtrForm.ShowDialog() == DialogResult.OK)
+            {
+                int permissionId = filtrForm.WybraneUprawnienieId;
+
+                try
+                {
+                    DataTable result = DBconn.ExecuteQuery(
+                        @"SELECT p.name as 'Imię', p.lastname as 'Nazwisko', u.login, p.pesel as 'Pesel', u.status, u.id
+                          FROM users u
+                          JOIN patients p ON u.id = p.user_id
+                          JOIN user_permissions up ON u.id = up.user_id
+                          WHERE up.permission_id = @permissionId;",
+                        new MySqlParameter("@permissionId", permissionId)
+                    );
+
+                    dtGrdVw_lista_uż.DataSource = result;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Błąd podczas filtrowania użytkowników: " + ex.Message, "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void btn_wyczysc_filtr_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string query = @"
+                SELECT p.name as 'Imię', p.lastname as 'Nazwisko', u.login, p.pesel as 'Pesel', u.status, u.id
+                FROM users u
+                JOIN patients p ON u.id = p.user_id
+                WHERE u.status IS NOT NULL;";
+
+                DataTable result = DBconn.ExecuteQuery(query);
+                dtGrdVw_lista_uż.DataSource = result;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Błąd podczas czyszczenia filtru: " + ex.Message, "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }
 
