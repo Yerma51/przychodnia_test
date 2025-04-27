@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 27, 2025 at 04:44 PM
+-- Generation Time: Apr 27, 2025 at 07:14 PM
 -- Wersja serwera: 10.4.32-MariaDB
 -- Wersja PHP: 8.2.12
 
@@ -47,6 +47,24 @@ CREATE TABLE `doctors_specializations` (
 -- --------------------------------------------------------
 
 --
+-- Struktura tabeli dla tabeli `forgotten_users`
+--
+
+CREATE TABLE `forgotten_users` (
+  `id` int(11) NOT NULL,
+  `random_name` varchar(40) NOT NULL,
+  `random_lastname` varchar(50) NOT NULL,
+  `random_pesel` char(11) NOT NULL,
+  `birth_date` date NOT NULL,
+  `gender` tinyint(1) NOT NULL,
+  `forget_date` datetime NOT NULL,
+  `forgotten_by` int(11) DEFAULT NULL,
+  `login` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Struktura tabeli dla tabeli `logs`
 --
 
@@ -68,12 +86,14 @@ CREATE TABLE `patients` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `pesel` char(11) NOT NULL,
+  `birth_date` date NOT NULL,
+  `gender` tinyint(1) NOT NULL,
   `country` varchar(50) NOT NULL,
   `city` varchar(50) NOT NULL,
   `postcode` varchar(10) NOT NULL,
   `street` varchar(20) NOT NULL,
   `house_number` int(10) UNSIGNED NOT NULL,
-  `apartment_number` int(10) UNSIGNED NOT NULL,
+  `apartment_number` int(10) UNSIGNED DEFAULT NULL,
   `name` varchar(40) NOT NULL,
   `lastname` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -82,12 +102,12 @@ CREATE TABLE `patients` (
 -- Dumping data for table `patients`
 --
 
-INSERT INTO `patients` (`id`, `user_id`, `pesel`, `country`, `city`, `postcode`, `street`, `house_number`, `apartment_number`, `name`, `lastname`) VALUES
-(1, 2, '25232665296', 'Poland', 'Lodz', '91-022', 'Rewolucji', 45, 14, 'Kacper', 'Augustyniak'),
-(4, 5, '25233135444', 'Poland', 'Stoki', '69-690', '', 69, 0, 'Ada', 'Zimoląg'),
-(5, 6, '25240197127', 'Poland', 'Rzeczna', '69-690', '', 69, 0, 'Julia', 'Kubik'),
-(6, 7, '76061221452', 'Poland', 'Dziadowo', '69-690', '', 69, 0, 'Andrzej', 'Kapituła'),
-(7, 8, '00412035951', 'Poland', 'Lodz', '95-050', '', 10, 0, 'Krzysztof', 'Sobolewski');
+INSERT INTO `patients` (`id`, `user_id`, `pesel`, `birth_date`, `gender`, `country`, `city`, `postcode`, `street`, `house_number`, `apartment_number`, `name`, `lastname`) VALUES
+(1, 2, '65041724445', '2025-03-26', 0, 'Poland', 'Gdańsk', '80-175', 'Leśna', 7, 0, 'Elżbieta', 'Krawczyk'),
+(5, 6, '79112342973', '2025-04-01', 1, 'Poland', 'Poznań', '60-123', '', 45, 10, 'Michał', 'Nowak'),
+(7, 8, '88061234567', '2100-01-20', 0, 'Poland', 'Wrocław', '50-301', 'Słoneczna', 18, 4, 'Anna', 'Adamczyk'),
+(9, 10, '91072261389', '1991-07-22', 0, 'Poland', 'Warszawa', '00-125', 'Akacjowa', 8, 12, 'Agata', 'Lewandowska'),
+(11, 12, '92111407829', '1992-11-14', 0, 'Poland', 'Lublin', '20-001', '', 7, 0, 'Aleksandra', 'Mazur');
 
 -- --------------------------------------------------------
 
@@ -174,11 +194,15 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `login`, `role`, `email`, `phonenumber`, `status`, `regdate`) VALUES
-(2, 'kacperos', 'patient', 'kacperos@o2.pl', '666999666', 1, '2025-03-26 16:46:12'),
-(5, 'Madzia', 'patient', 'Madzia@adzia.pl', '666999666', 1, '2025-03-31 23:59:25'),
-(6, 'loless', 'patient', 'loless@wp.pl', '999666999', 1, '2025-04-01 00:08:04'),
-(7, 'Dziad', 'patient', 'dziad@dziadyga.pl', '999666999', 1, '2025-04-01 00:30:49'),
-(8, 'Gruby', 'patient', 'Sobol@wp.pl', '666999666', 1, '2025-04-01 00:37:30');
+(2, 'elzbieta.krawczyk1965', 'patient', 'elzbieta.kraw@zdrowie.pl', '503246789', 1, '2025-03-26 16:46:12'),
+(5, 'anonim_00275594', '', 'anonim_d9abf2fe@example.com', '0002251633', NULL, '2025-03-31 23:59:25'),
+(6, 'michal.nowak1979', 'patient', 'michal.nowak@zdrowie.pl', '504987321', 1, '2025-04-01 00:08:04'),
+(7, '', 'patient', '', '', NULL, '2025-04-01 00:30:49'),
+(8, 'anna.adamczyk1988', 'patient', 'anna.adam@zdrowie.pl', '505987654', 1, '2025-04-01 00:37:30'),
+(9, 'iwud', 'patient', 'kscub@skcdjbu.pl', '503456789', 1, '2025-04-08 21:55:03'),
+(10, 'agata.lewandowska91', 'patient', 'aga.lewa@zdrowie.pl', '509876321', 1, '2025-04-08 22:17:39'),
+(12, 'aleksandra.wojcik92', 'patient', 'aleksandra.wojcik@zdrowie.pl', '504128768', 1, '2025-04-09 14:20:18'),
+(13, 'anonim_310838b4', '', 'anonim_cb70ce92@example.com', '0006726907', NULL, '2025-04-09 14:57:16');
 
 -- --------------------------------------------------------
 
@@ -225,6 +249,13 @@ ALTER TABLE `doctors_specializations`
   ADD KEY `doctor_id` (`doctor_id`);
 
 --
+-- Indeksy dla tabeli `forgotten_users`
+--
+ALTER TABLE `forgotten_users`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `forgotten_by` (`forgotten_by`);
+
+--
 -- Indeksy dla tabeli `logs`
 --
 ALTER TABLE `logs`
@@ -236,6 +267,7 @@ ALTER TABLE `logs`
 --
 ALTER TABLE `patients`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `pesel` (`pesel`),
   ADD KEY `user_id` (`user_id`,`city`);
 
 --
@@ -275,7 +307,10 @@ ALTER TABLE `specializations`
 -- Indeksy dla tabeli `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `login` (`login`),
+  ADD UNIQUE KEY `email` (`email`,`phonenumber`),
+  ADD UNIQUE KEY `phonenumber` (`phonenumber`);
 
 --
 -- Indeksy dla tabeli `user_permissions`
@@ -283,7 +318,7 @@ ALTER TABLE `users`
 ALTER TABLE `user_permissions`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user_id` (`user_id`),
-  ADD KEY `permissions_id` (`permission_id`);
+  ADD KEY `permission_id` (`permission_id`);
 
 --
 -- Indeksy dla tabeli `visits`
@@ -304,6 +339,12 @@ ALTER TABLE `doctors`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `forgotten_users`
+--
+ALTER TABLE `forgotten_users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `logs`
 --
 ALTER TABLE `logs`
@@ -313,7 +354,7 @@ ALTER TABLE `logs`
 -- AUTO_INCREMENT for table `patients`
 --
 ALTER TABLE `patients`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `permissions`
@@ -349,7 +390,7 @@ ALTER TABLE `specializations`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `user_permissions`
@@ -414,7 +455,7 @@ ALTER TABLE `sessions`
 -- Constraints for table `user_permissions`
 --
 ALTER TABLE `user_permissions`
-  ADD CONSTRAINT `permissions_id` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`),
+  ADD CONSTRAINT `permission_id` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`),
   ADD CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 --
