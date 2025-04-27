@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 27, 2025 at 07:14 PM
+-- Generation Time: Apr 27, 2025 at 08:04 PM
 -- Wersja serwera: 10.4.32-MariaDB
 -- Wersja PHP: 8.2.12
 
@@ -121,6 +121,16 @@ CREATE TABLE `permissions` (
   `description` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `permissions`
+--
+
+INSERT INTO `permissions` (`id`, `name`, `description`) VALUES
+(1, 'VIEW_USERS', 'Możliwość przeglądania listy użytkowników'),
+(2, 'EDIT_USERS', 'Możliwość edytowania danych użytkowników'),
+(3, 'VIEW_PERMISSIONS', 'Możliwość przeglądania dostępnych uprawnień'),
+(4, 'ASSIGN_PERMISSIONS', 'Możliwość przypisywania uprawnień użytkownikom');
+
 -- --------------------------------------------------------
 
 --
@@ -215,6 +225,18 @@ CREATE TABLE `user_permissions` (
   `user_id` int(11) NOT NULL,
   `permission_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `user_permissions`
+--
+
+INSERT INTO `user_permissions` (`id`, `user_id`, `permission_id`) VALUES
+(1, 2, 1),
+(2, 6, 1),
+(3, 8, 1),
+(4, 9, 1),
+(5, 10, 1),
+(6, 12, 1);
 
 -- --------------------------------------------------------
 
@@ -360,7 +382,7 @@ ALTER TABLE `patients`
 -- AUTO_INCREMENT for table `permissions`
 --
 ALTER TABLE `permissions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `prescriptions`
@@ -396,7 +418,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `user_permissions`
 --
 ALTER TABLE `user_permissions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `visits`
