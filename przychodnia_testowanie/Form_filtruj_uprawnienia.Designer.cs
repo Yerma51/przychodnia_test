@@ -37,9 +37,9 @@
             // lbl_wybor_uprawnien
             // 
             this.lbl_wybor_uprawnien.AutoSize = true;
-            this.lbl_wybor_uprawnien.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.lbl_wybor_uprawnien.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(250)))), ((int)(((byte)(255)))));
             this.lbl_wybor_uprawnien.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lbl_wybor_uprawnien.Location = new System.Drawing.Point(28, 34);
+            this.lbl_wybor_uprawnien.Location = new System.Drawing.Point(28, 38);
             this.lbl_wybor_uprawnien.Name = "lbl_wybor_uprawnien";
             this.lbl_wybor_uprawnien.Size = new System.Drawing.Size(200, 25);
             this.lbl_wybor_uprawnien.TabIndex = 94;
@@ -85,12 +85,16 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(250)))), ((int)(((byte)(255)))));
             this.ClientSize = new System.Drawing.Size(438, 183);
             this.Controls.Add(this.btn_anuluj);
             this.Controls.Add(this.btn_filtruj);
             this.Controls.Add(this.cmb_uprawnienia);
             this.Controls.Add(this.lbl_wybor_uprawnien);
+            this.DoubleBuffered = true;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "Form_filtruj_uprawnienia";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Filtruj uprawnienia";
             this.ResumeLayout(false);
             this.PerformLayout();

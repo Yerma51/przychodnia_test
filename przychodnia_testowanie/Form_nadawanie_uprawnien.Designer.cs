@@ -38,7 +38,7 @@
             // clb_uprawnienia
             // 
             this.clb_uprawnienia.FormattingEnabled = true;
-            this.clb_uprawnienia.Location = new System.Drawing.Point(59, 150);
+            this.clb_uprawnienia.Location = new System.Drawing.Point(70, 154);
             this.clb_uprawnienia.Name = "clb_uprawnienia";
             this.clb_uprawnienia.Size = new System.Drawing.Size(295, 361);
             this.clb_uprawnienia.TabIndex = 1;
@@ -46,9 +46,9 @@
             // lbl_wybor_uprawnien
             // 
             this.lbl_wybor_uprawnien.AutoSize = true;
-            this.lbl_wybor_uprawnien.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.lbl_wybor_uprawnien.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(250)))), ((int)(((byte)(255)))));
             this.lbl_wybor_uprawnien.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lbl_wybor_uprawnien.Location = new System.Drawing.Point(54, 112);
+            this.lbl_wybor_uprawnien.Location = new System.Drawing.Point(65, 116);
             this.lbl_wybor_uprawnien.Name = "lbl_wybor_uprawnien";
             this.lbl_wybor_uprawnien.Size = new System.Drawing.Size(200, 25);
             this.lbl_wybor_uprawnien.TabIndex = 93;
@@ -57,7 +57,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(244)))), ((int)(((byte)(255)))));
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label1.Location = new System.Drawing.Point(42, 37);
             this.label1.Name = "label1";
@@ -71,7 +71,7 @@
             this.btn_zapisz_uprawnienia.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btn_zapisz_uprawnienia.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.btn_zapisz_uprawnienia.ForeColor = System.Drawing.Color.Black;
-            this.btn_zapisz_uprawnienia.Location = new System.Drawing.Point(215, 535);
+            this.btn_zapisz_uprawnienia.Location = new System.Drawing.Point(226, 539);
             this.btn_zapisz_uprawnienia.Name = "btn_zapisz_uprawnienia";
             this.btn_zapisz_uprawnienia.Size = new System.Drawing.Size(139, 50);
             this.btn_zapisz_uprawnienia.TabIndex = 95;
@@ -86,7 +86,7 @@
             this.btn_anuluj_uprawnienia.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btn_anuluj_uprawnienia.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.btn_anuluj_uprawnienia.ForeColor = System.Drawing.Color.Black;
-            this.btn_anuluj_uprawnienia.Location = new System.Drawing.Point(59, 535);
+            this.btn_anuluj_uprawnienia.Location = new System.Drawing.Point(70, 539);
             this.btn_anuluj_uprawnienia.Name = "btn_anuluj_uprawnienia";
             this.btn_anuluj_uprawnienia.Size = new System.Drawing.Size(139, 50);
             this.btn_anuluj_uprawnienia.TabIndex = 96;
@@ -97,13 +97,17 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(415, 791);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(250)))), ((int)(((byte)(255)))));
+            this.ClientSize = new System.Drawing.Size(432, 653);
             this.Controls.Add(this.btn_anuluj_uprawnienia);
             this.Controls.Add(this.btn_zapisz_uprawnienia);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lbl_wybor_uprawnien);
             this.Controls.Add(this.clb_uprawnienia);
+            this.DoubleBuffered = true;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "Form_nadawanie_uprawnien";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Nadawanie uprawnień użytkownikowi";
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -584,6 +584,8 @@ namespace przychodnia_testowanie
                 MessageBox.Show("Błąd podczas czyszczenia filtru: " + ex.Message, "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        
     }
 }
 

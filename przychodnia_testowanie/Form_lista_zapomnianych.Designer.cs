@@ -4,6 +4,7 @@
 
     private void InitializeComponent()
     {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_lista_zapomnianych));
             this.btn_strona_glowna = new System.Windows.Forms.Button();
             this.anuluj_wyszukiwarka = new System.Windows.Forms.Button();
             this.dtGrdVw_lista_uż = new System.Windows.Forms.DataGridView();
@@ -29,7 +30,7 @@
             // 
             // anuluj_wyszukiwarka
             // 
-            this.anuluj_wyszukiwarka.Location = new System.Drawing.Point(742, 180);
+            this.anuluj_wyszukiwarka.Location = new System.Drawing.Point(706, 241);
             this.anuluj_wyszukiwarka.Name = "anuluj_wyszukiwarka";
             this.anuluj_wyszukiwarka.Size = new System.Drawing.Size(79, 25);
             this.anuluj_wyszukiwarka.TabIndex = 18;
@@ -41,18 +42,18 @@
             // 
             this.dtGrdVw_lista_uż.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(167)))), ((int)(((byte)(202)))), ((int)(((byte)(224)))));
             this.dtGrdVw_lista_uż.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dtGrdVw_lista_uż.Location = new System.Drawing.Point(42, 303);
+            this.dtGrdVw_lista_uż.Location = new System.Drawing.Point(42, 409);
             this.dtGrdVw_lista_uż.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dtGrdVw_lista_uż.Name = "dtGrdVw_lista_uż";
             this.dtGrdVw_lista_uż.ReadOnly = true;
             this.dtGrdVw_lista_uż.RowHeadersWidth = 51;
             this.dtGrdVw_lista_uż.RowTemplate.Height = 24;
-            this.dtGrdVw_lista_uż.Size = new System.Drawing.Size(1086, 461);
+            this.dtGrdVw_lista_uż.Size = new System.Drawing.Size(1086, 355);
             this.dtGrdVw_lista_uż.TabIndex = 17;
             // 
             // btn_wyszukiwarka
             // 
-            this.btn_wyszukiwarka.Location = new System.Drawing.Point(742, 150);
+            this.btn_wyszukiwarka.Location = new System.Drawing.Point(706, 211);
             this.btn_wyszukiwarka.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btn_wyszukiwarka.Name = "btn_wyszukiwarka";
             this.btn_wyszukiwarka.Size = new System.Drawing.Size(79, 25);
@@ -65,16 +66,16 @@
             // 
             this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(227)))), ((int)(((byte)(235)))), ((int)(((byte)(242)))));
             this.label1.Font = new System.Drawing.Font("Mongolian Baiti", 22.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(321, 77);
+            this.label1.Location = new System.Drawing.Point(292, 112);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(560, 46);
+            this.label1.Size = new System.Drawing.Size(589, 46);
             this.label1.TabIndex = 15;
             this.label1.Text = "Lista zapomnianych użytkowników ";
             this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // txb_search
             // 
-            this.txb_search.Location = new System.Drawing.Point(439, 153);
+            this.txb_search.Location = new System.Drawing.Point(403, 214);
             this.txb_search.Name = "txb_search";
             this.txb_search.Size = new System.Drawing.Size(297, 22);
             this.txb_search.TabIndex = 20;
@@ -83,6 +84,11 @@
             // 
             // Form_lista_zapomnianych
             // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(227)))), ((int)(((byte)(235)))), ((int)(((byte)(242)))));
+            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1168, 791);
             this.Controls.Add(this.txb_search);
             this.Controls.Add(this.btn_strona_glowna);
@@ -90,7 +96,11 @@
             this.Controls.Add(this.dtGrdVw_lista_uż);
             this.Controls.Add(this.btn_wyszukiwarka);
             this.Controls.Add(this.label1);
+            this.DoubleBuffered = true;
+            this.ForeColor = System.Drawing.Color.Black;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "Form_lista_zapomnianych";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Lista zapomnianych użytkowników";
             ((System.ComponentModel.ISupportInitialize)(this.dtGrdVw_lista_uż)).EndInit();
             this.ResumeLayout(false);

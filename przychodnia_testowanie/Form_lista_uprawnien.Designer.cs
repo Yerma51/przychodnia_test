@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_lista_uprawnien));
             this.btn_strona_glowna = new System.Windows.Forms.Button();
             this.dtGrdVw_lista_uprawnien = new System.Windows.Forms.DataGridView();
             this.lblTytul = new System.Windows.Forms.Label();
@@ -52,13 +53,13 @@
             // 
             this.dtGrdVw_lista_uprawnien.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(167)))), ((int)(((byte)(202)))), ((int)(((byte)(224)))));
             this.dtGrdVw_lista_uprawnien.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dtGrdVw_lista_uprawnien.Location = new System.Drawing.Point(41, 178);
+            this.dtGrdVw_lista_uprawnien.Location = new System.Drawing.Point(41, 411);
             this.dtGrdVw_lista_uprawnien.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dtGrdVw_lista_uprawnien.Name = "dtGrdVw_lista_uprawnien";
             this.dtGrdVw_lista_uprawnien.ReadOnly = true;
             this.dtGrdVw_lista_uprawnien.RowHeadersWidth = 51;
             this.dtGrdVw_lista_uprawnien.RowTemplate.Height = 24;
-            this.dtGrdVw_lista_uprawnien.Size = new System.Drawing.Size(1086, 594);
+            this.dtGrdVw_lista_uprawnien.Size = new System.Drawing.Size(1086, 361);
             this.dtGrdVw_lista_uprawnien.TabIndex = 23;
             this.dtGrdVw_lista_uprawnien.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvListaUprawnien_CellContentClick);
             // 
@@ -66,9 +67,9 @@
             // 
             this.lblTytul.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(227)))), ((int)(((byte)(235)))), ((int)(((byte)(242)))));
             this.lblTytul.Font = new System.Drawing.Font("Mongolian Baiti", 22.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTytul.Location = new System.Drawing.Point(261, 110);
+            this.lblTytul.Location = new System.Drawing.Point(255, 110);
             this.lblTytul.Name = "lblTytul";
-            this.lblTytul.Size = new System.Drawing.Size(665, 46);
+            this.lblTytul.Size = new System.Drawing.Size(660, 46);
             this.lblTytul.TabIndex = 21;
             this.lblTytul.Text = "Lista uprawnień dostępnych w systemie";
             this.lblTytul.Click += new System.EventHandler(this.label1_Click);
@@ -77,11 +78,17 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(227)))), ((int)(((byte)(235)))), ((int)(((byte)(242)))));
+            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1168, 791);
             this.Controls.Add(this.btn_strona_glowna);
             this.Controls.Add(this.dtGrdVw_lista_uprawnien);
             this.Controls.Add(this.lblTytul);
+            this.DoubleBuffered = true;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "Form_lista_uprawnien";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Lista uprawnień";
             ((System.ComponentModel.ISupportInitialize)(this.dtGrdVw_lista_uprawnien)).EndInit();
             this.ResumeLayout(false);
