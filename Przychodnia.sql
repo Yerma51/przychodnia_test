@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 27, 2025 at 08:04 PM
+-- Generation Time: Apr 29, 2025 at 06:53 PM
 -- Wersja serwera: 10.4.32-MariaDB
 -- Wersja PHP: 8.2.12
 
@@ -442,6 +442,12 @@ ALTER TABLE `doctors`
 ALTER TABLE `doctors_specializations`
   ADD CONSTRAINT `fk_doc_spec_doctor` FOREIGN KEY (`doctor_id`) REFERENCES `doctors` (`id`),
   ADD CONSTRAINT `fk_doc_spec_specialization` FOREIGN KEY (`specialization_id`) REFERENCES `specializations` (`id`);
+
+--
+-- Constraints for table `forgotten_users`
+--
+ALTER TABLE `forgotten_users`
+  ADD CONSTRAINT `forgotten_by` FOREIGN KEY (`forgotten_by`) REFERENCES `users` (`id`);
 
 --
 -- Constraints for table `logs`
