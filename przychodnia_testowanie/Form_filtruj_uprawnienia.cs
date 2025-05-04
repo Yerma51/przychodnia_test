@@ -26,7 +26,20 @@ namespace przychodnia_testowanie
             try
             {
                 DataTable permissions = DBconn.ExecuteQuery("SELECT id, name FROM permissions;");
-                cmb_uprawnienia.DataSource = permissions;
+
+                DataTable permissionsWithEmpty = new DataTable();
+                permissionsWithEmpty.Columns.Add("id", typeof(int));
+                permissionsWithEmpty.Columns.Add("name", typeof(string));
+
+                permissionsWithEmpty.Rows.Add(-1, "Brak");
+
+                
+                foreach (DataRow row in permissions.Rows)
+                {
+                    permissionsWithEmpty.ImportRow(row);
+                }
+
+                cmb_uprawnienia.DataSource = permissionsWithEmpty;
                 cmb_uprawnienia.DisplayMember = "name";
                 cmb_uprawnienia.ValueMember = "id";
             }
@@ -35,6 +48,7 @@ namespace przychodnia_testowanie
                 MessageBox.Show("Błąd podczas ładowania uprawnień: " + ex.Message);
             }
         }
+
 
         private void btn_filtruj_Click(object sender, EventArgs e)
         {
@@ -50,7 +64,17 @@ namespace przychodnia_testowanie
         {
             if (cmb_uprawnienia.SelectedItem != null)
             {
-                WybraneUprawnienieId = Convert.ToInt32(cmb_uprawnienia.SelectedValue);
+                int selectedId = Convert.ToInt32(cmb_uprawnienia.SelectedValue);
+
+                if (selectedId == -1)
+                {
+                    WybraneUprawnienieId = -1;
+                }
+                else
+                {
+                    WybraneUprawnienieId = selectedId;
+                }
+
                 this.DialogResult = DialogResult.OK;
             }
             else
@@ -58,5 +82,6 @@ namespace przychodnia_testowanie
                 MessageBox.Show("Wybierz uprawnienie!");
             }
         }
+
     }
 }

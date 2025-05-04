@@ -18,6 +18,7 @@ namespace przychodnia_testowanie
 
     public partial class Form_lista_uzytkownikow : Form
     {
+        private int aktualnieWybraneUprawnienieId = -1;
         Laczenie_z_baza_danych DBconn = new Laczenie_z_baza_danych();
         public Form_lista_uzytkownikow()
         {
@@ -40,16 +41,18 @@ namespace przychodnia_testowanie
             }
         }*/         //hashowanie hasła
 
-        void refresh()
+        public void refresh()
         {
-            //DataTable result = DBconn.ExecuteQuery("SELECT p.name as Imię, p.lastname as Nazwisko, u.login, u.role as Rola, u.email, u.phonenumber as 'Numer Telefonu', u.regdate as 'Data Rejestracji', p.pesel as Pesel, p.country as Kraj, p.city as Miasto, p.postcode as 'Kod pocztowy', p.street as Ulica, p.house_number as 'Numer domu', p.apartment_number as 'Numer apartamentu', u.id FROM users as u JOIN patients as p ON u.id = p.user_id;");
-            //dtGrdVw_lista_uż.DataSource = result;
-
-            string query =
-                    @"SELECT p.name as Imię, p.lastname as Nazwisko, u.login, p.pesel as Pesel, u.status, u.id                      
-
-                    FROM users as u 
-                    JOIN patients as p ON u.id = p.user_id";
+            string query = @"
+                        SELECT p.name as Imię, p.lastname as Nazwisko, u.login, p.pesel as Pesel, 
+                       u.status, u.id,
+                       GROUP_CONCAT(per.name SEPARATOR ', ') AS Uprawnienia
+                FROM users u
+                JOIN patients p ON u.id = p.user_id
+                LEFT JOIN user_permissions up ON u.id = up.user_id
+                LEFT JOIN permissions per ON up.permission_id = per.id
+                GROUP BY u.id
+                ;";
 
             DataTable result = DBconn.ExecuteQuery(query);
             dtGrdVw_lista_uż.DataSource = result;
@@ -70,8 +73,8 @@ namespace przychodnia_testowanie
                 dtGrdVw_lista_uż.Columns["status"].Visible = false;
             if (dtGrdVw_lista_uż.Columns.Contains("id"))
                 dtGrdVw_lista_uż.Columns["id"].Visible = false;
-
         }
+
         //PropertyInfo[] properties = uzytkownik.GetType().GetProperties();
         /*public bool AreAllPropertiesSet(Użytkownik uzytkownik, out string missingPropertyName)
         {
@@ -93,6 +96,47 @@ namespace przychodnia_testowanie
             missingPropertyName = null;
             return true;
         }*/     //walidacja danych (ale lepiej)
+
+
+        private void Wyszukaj(string szukany, int permissionId)
+        {
+            DataTable result;
+
+            if (permissionId == -1)
+            {
+                result = DBconn.ExecuteQuery(
+                    @"SELECT u.id AS id, u.status AS status, u.login, p.name AS 'Imię', p.lastname AS 'Nazwisko', p.pesel AS 'Pesel', 
+              GROUP_CONCAT(per.name SEPARATOR ', ') AS 'Uprawnienia'
+              FROM users u
+              JOIN patients p ON u.id = p.user_id
+              LEFT JOIN user_permissions up ON u.id = up.user_id
+              LEFT JOIN permissions per ON up.permission_id = per.id
+              WHERE p.name LIKE @search OR p.lastname LIKE @search OR u.login LIKE @search
+              GROUP BY u.id;",
+                    new MySqlParameter("@search", "%" + szukany + "%")
+                );
+            }
+            else
+            {
+                result = DBconn.ExecuteQuery(
+                    @"SELECT u.id AS id, u.status AS status, u.login, p.name AS 'Imię', p.lastname AS 'Nazwisko', p.pesel AS 'Pesel',
+              GROUP_CONCAT(per.name SEPARATOR ', ') AS 'Uprawnienia'
+              FROM users u
+              JOIN patients p ON u.id = p.user_id
+              LEFT JOIN user_permissions up ON u.id = up.user_id
+              LEFT JOIN permissions per ON up.permission_id = per.id
+              WHERE (p.name LIKE @search OR p.lastname LIKE @search OR u.login LIKE @search)
+                AND EXISTS (SELECT 1 FROM user_permissions up2 WHERE up2.user_id = u.id AND up2.permission_id = @permissionId)
+              GROUP BY u.id;",
+                    new MySqlParameter("@search", "%" + szukany + "%"),
+                    new MySqlParameter("@permissionId", permissionId)
+                );
+            }
+
+            dtGrdVw_lista_uż.DataSource = result;
+        }
+
+
 
 
         private void btn_nowy_użytkow_Click(object sender, EventArgs e)
@@ -158,61 +202,42 @@ namespace przychodnia_testowanie
         private void btn_wyszukiwarka_Click(object sender, EventArgs e)
         {
             string szukany = txb_search.Text.Trim();
-
-            // Sprawdzamy, czy użytkownik nie pozostawił pola z tekstem-podpowiedzią
             if (string.IsNullOrWhiteSpace(szukany) || szukany == "Podaj imię, nazwisko lub login")
             {
                 MessageBox.Show("Proszę podać imię, nazwisko lub login do wyszukiwania.", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // Dzielimy tekst na imię i nazwisko
-            string[] searchParts = szukany.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            string searchName = searchParts.Length > 0 ? searchParts[0] : "";
-            string searchLastname = searchParts.Length > 1 ? searchParts[1] : "";
-
-            DataTable result;
-
-            if (searchParts.Length == 2)
-            {
-                result = DBconn.ExecuteQuery(
-                    @"SELECT p.name as Imię, p.lastname as Nazwisko, u.login, p.pesel as Pesel, u.status, u.id                      
-                    FROM users as u
-                    JOIN patients as p ON u.id = p.user_id
-                    WHERE (p.name LIKE @name AND p.lastname LIKE @lastname) OR (p.name LIKE @lastname AND p.lastname LIKE @name)",
-                    new MySqlParameter("@name", "%" + searchName + "%"),
-                    new MySqlParameter("@lastname", "%" + searchLastname + "%"));
-            }
-            else
-            {
-                result = DBconn.ExecuteQuery(
-                    @"SELECT p.name as Imię, p.lastname as Nazwisko, u.login, p.pesel as Pesel, u.status, u.id                       
-                    FROM users as u 
-                    JOIN patients as p ON u.id = p.user_id 
-                    WHERE p.name LIKE @szukany OR p.lastname LIKE @szukany OR u.login LIKE @szukany;",
-                    new MySqlParameter("@szukany", "%" + szukany + "%"));
-            }
-
-            dtGrdVw_lista_uż.DataSource = result;
+            Wyszukaj(szukany, aktualnieWybraneUprawnienieId);
         }
 
 
 
         private void anuluj_wyszukiwarka_Click(object sender, EventArgs e)
         {
-            // Czyszczenie pola wyszukiwania, ale pozostawienie tekstu-podpowiedzi
             txb_search.Text = "Podaj imię, nazwisko lub login";
             txb_search.ForeColor = Color.Silver;
 
-            // Pełna lista użytkowników
             DataTable result = DBconn.ExecuteQuery(
-                    @"SELECT p.name as Imię, p.lastname as Nazwisko, u.login, p.pesel as Pesel, u.status, u.id                       
-                    FROM users as u 
-                    JOIN patients as p ON u.id = p.user_id;"
+                @"SELECT 
+              u.id AS id,
+              u.status AS status,
+              p.name AS 'Imię',
+              p.lastname AS 'Nazwisko',
+              u.login AS 'Login',
+              p.pesel AS 'Pesel',
+              GROUP_CONCAT(per.name SEPARATOR ', ') AS 'Uprawnienia'
+          FROM users u
+          JOIN patients p ON u.id = p.user_id
+          LEFT JOIN user_permissions up ON u.id = up.user_id
+          LEFT JOIN permissions per ON up.permission_id = per.id
+          GROUP BY u.id;"
             );
 
             dtGrdVw_lista_uż.DataSource = result;
         }
+
+
 
         //Podpowiedź do wyszukiwania
         private void txb_search_Leave(object sender, EventArgs e)
@@ -535,7 +560,7 @@ namespace przychodnia_testowanie
 
             int userId = Convert.ToInt32(dtGrdVw_lista_uż.SelectedRows[0].Cells["id"].Value);
 
-            Form_nadawanie_uprawnien form = new Form_nadawanie_uprawnien(userId);
+            Form_nadawanie_uprawnien form = new Form_nadawanie_uprawnien(userId, this);
             form.ShowDialog();
         }
 
@@ -544,25 +569,10 @@ namespace przychodnia_testowanie
             Form_filtruj_uprawnienia filtrForm = new Form_filtruj_uprawnienia();
             if (filtrForm.ShowDialog() == DialogResult.OK)
             {
-                int permissionId = filtrForm.WybraneUprawnienieId;
+                aktualnieWybraneUprawnienieId = filtrForm.WybraneUprawnienieId;
 
-                try
-                {
-                    DataTable result = DBconn.ExecuteQuery(
-                        @"SELECT p.name as 'Imię', p.lastname as 'Nazwisko', u.login, p.pesel as 'Pesel', u.status, u.id
-                          FROM users u
-                          JOIN patients p ON u.id = p.user_id
-                          JOIN user_permissions up ON u.id = up.user_id
-                          WHERE up.permission_id = @permissionId;",
-                        new MySqlParameter("@permissionId", permissionId)
-                    );
-
-                    dtGrdVw_lista_uż.DataSource = result;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Błąd podczas filtrowania użytkowników: " + ex.Message, "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                // Відобразити відфільтрованих користувачів
+                Wyszukaj("", aktualnieWybraneUprawnienieId);
             }
         }
 
@@ -570,14 +580,8 @@ namespace przychodnia_testowanie
         {
             try
             {
-                string query = @"
-                SELECT p.name as 'Imię', p.lastname as 'Nazwisko', u.login, p.pesel as 'Pesel', u.status, u.id
-                FROM users u
-                JOIN patients p ON u.id = p.user_id
-                WHERE u.status IS NOT NULL;";
-
-                DataTable result = DBconn.ExecuteQuery(query);
-                dtGrdVw_lista_uż.DataSource = result;
+                aktualnieWybraneUprawnienieId = -1; // Скидаємо вибране uprawnienie
+                Wyszukaj("", aktualnieWybraneUprawnienieId);
             }
             catch (Exception ex)
             {

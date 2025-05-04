@@ -15,12 +15,24 @@ namespace przychodnia_testowanie
     public partial class Form_nadawanie_uprawnien : Form
     {
         private int _userId;
+        private Form_lista_uzytkownikow _parentForm;
         Laczenie_z_baza_danych DBconn = new Laczenie_z_baza_danych();
-        public Form_nadawanie_uprawnien(int userId)
+        public Form_nadawanie_uprawnien(int userId, Form_lista_uzytkownikow parentForm)
         {
             InitializeComponent();
+
+            lbl_info_uprawnienia.AutoSize = false;
+            lbl_info_uprawnienia.MaximumSize = new Size(this.ClientSize.Width - 40, 0);
+            lbl_info_uprawnienia.Width = this.ClientSize.Width - 40;
+            lbl_info_uprawnienia.AutoEllipsis = false;
+            lbl_info_uprawnienia.TextAlign = ContentAlignment.TopLeft;
+            lbl_info_uprawnienia.UseCompatibleTextRendering = true;
+
+
             _userId = userId;
+            _parentForm = parentForm;
             WczytajUprawnienia();
+            UpdateInfoLabel();
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -74,6 +86,25 @@ namespace przychodnia_testowanie
                 return Name;
             }
         }
+
+        private void UpdateInfoLabel()
+        {
+            if (clb_uprawnienia.CheckedItems.Count == 0)
+            {
+                lbl_info_uprawnienia.Text = "Brak wybranych uprawnień";
+            }
+            else
+            {
+                var selectedNames = clb_uprawnienia.CheckedItems
+                    .Cast<PermissionItem>()
+                    .Select(p => p.Name);
+
+                lbl_info_uprawnienia.Text = "Wybrano:\n" + string.Join(", ", selectedNames);
+            }
+
+            lbl_info_uprawnienia.Height = TextRenderer.MeasureText(lbl_info_uprawnienia.Text, lbl_info_uprawnienia.Font, lbl_info_uprawnienia.MaximumSize, TextFormatFlags.WordBreak).Height + 10;
+        }
+
 
         private void btn_zapisz_uprawnienia_Click(object sender, EventArgs e)
         {
@@ -177,11 +208,27 @@ namespace przychodnia_testowanie
                 }
 
                 MessageBox.Show("Uprawnienia zostały nadane pomyślnie!", "Sukces", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                _parentForm.refresh();
                 this.Close();
+
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Błąd podczas nadawania uprawnień: " + ex.Message, "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private void clb_uprawnienia_ItemCheck_1(object sender, ItemCheckEventArgs e)
+        {
+            if (this.IsHandleCreated)
+            {
+                this.BeginInvoke((MethodInvoker)delegate
+                {
+                    UpdateInfoLabel();
+                });
+            }
+            else
+            {
+                UpdateInfoLabel();
             }
         }
     }

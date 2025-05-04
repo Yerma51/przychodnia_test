@@ -47,7 +47,7 @@
             // 
             // btn_wyszukiwarka
             // 
-            this.btn_wyszukiwarka.Location = new System.Drawing.Point(780, 231);
+            this.btn_wyszukiwarka.Location = new System.Drawing.Point(765, 204);
             this.btn_wyszukiwarka.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btn_wyszukiwarka.Name = "btn_wyszukiwarka";
             this.btn_wyszukiwarka.Size = new System.Drawing.Size(79, 25);
@@ -84,7 +84,7 @@
             // 
             this.txb_search.Cursor = System.Windows.Forms.Cursors.Help;
             this.txb_search.ForeColor = System.Drawing.Color.Black;
-            this.txb_search.Location = new System.Drawing.Point(421, 231);
+            this.txb_search.Location = new System.Drawing.Point(422, 204);
             this.txb_search.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txb_search.Name = "txb_search";
             this.txb_search.Size = new System.Drawing.Size(337, 22);
@@ -136,7 +136,7 @@
             // 
             // anuluj_wyszukiwarka
             // 
-            this.anuluj_wyszukiwarka.Location = new System.Drawing.Point(780, 265);
+            this.anuluj_wyszukiwarka.Location = new System.Drawing.Point(765, 234);
             this.anuluj_wyszukiwarka.Name = "anuluj_wyszukiwarka";
             this.anuluj_wyszukiwarka.Size = new System.Drawing.Size(79, 25);
             this.anuluj_wyszukiwarka.TabIndex = 12;
@@ -177,18 +177,18 @@
             this.btn_nadaj_uprawnienia.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.btn_nadaj_uprawnienia.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.btn_nadaj_uprawnienia.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.btn_nadaj_uprawnienia.Location = new System.Drawing.Point(285, 12);
+            this.btn_nadaj_uprawnienia.Location = new System.Drawing.Point(265, 12);
             this.btn_nadaj_uprawnienia.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btn_nadaj_uprawnienia.Name = "btn_nadaj_uprawnienia";
-            this.btn_nadaj_uprawnienia.Size = new System.Drawing.Size(147, 44);
+            this.btn_nadaj_uprawnienia.Size = new System.Drawing.Size(167, 44);
             this.btn_nadaj_uprawnienia.TabIndex = 15;
-            this.btn_nadaj_uprawnienia.Text = "Nadaj uprawnienia";
+            this.btn_nadaj_uprawnienia.Text = "Zarządzaj uprawnieniami";
             this.btn_nadaj_uprawnienia.UseVisualStyleBackColor = false;
             this.btn_nadaj_uprawnienia.Click += new System.EventHandler(this.btn_nadaj_uprawnienia_Click);
             // 
             // btn_filtruj_uprawnienia
             // 
-            this.btn_filtruj_uprawnienia.Location = new System.Drawing.Point(421, 265);
+            this.btn_filtruj_uprawnienia.Location = new System.Drawing.Point(422, 234);
             this.btn_filtruj_uprawnienia.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btn_filtruj_uprawnienia.Name = "btn_filtruj_uprawnienia";
             this.btn_filtruj_uprawnienia.Size = new System.Drawing.Size(180, 25);
@@ -199,7 +199,7 @@
             // 
             // btn_wyczysc_filtr
             // 
-            this.btn_wyczysc_filtr.Location = new System.Drawing.Point(607, 265);
+            this.btn_wyczysc_filtr.Location = new System.Drawing.Point(608, 234);
             this.btn_wyczysc_filtr.Name = "btn_wyczysc_filtr";
             this.btn_wyczysc_filtr.Size = new System.Drawing.Size(98, 25);
             this.btn_wyczysc_filtr.TabIndex = 17;
