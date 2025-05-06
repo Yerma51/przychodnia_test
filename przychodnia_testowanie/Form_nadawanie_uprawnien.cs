@@ -176,7 +176,7 @@ namespace przychodnia_testowanie
             }
 
             DialogResult confirmation = MessageBox.Show(
-                "Czy na pewno chcesz nadać te uprawnienia użytkownikowi?",
+                "Czy na pewno chcesz zapisać zmiany w uprawnieniach użytkownika?",
                 "Potwierdzenie",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question
@@ -207,14 +207,14 @@ namespace przychodnia_testowanie
                     }
                 }
 
-                MessageBox.Show("Uprawnienia zostały nadane pomyślnie!", "Sukces", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Uprawnienia użytkownika zostały zaktualizowane pomyślnie!", "Sukces", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 _parentForm.refresh();
                 this.Close();
 
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Błąd podczas nadawania uprawnień: " + ex.Message, "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Błąd podczas zapisywania zmian w uprawnieniach: " + ex.Message, "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         private void clb_uprawnienia_ItemCheck_1(object sender, ItemCheckEventArgs e)

@@ -235,6 +235,7 @@ namespace przychodnia_testowanie
             );
 
             dtGrdVw_lista_uż.DataSource = result;
+            lbl_filtr_info.Text = "Brak wybranego filtru uprawnień";
         }
 
 
@@ -571,17 +572,41 @@ namespace przychodnia_testowanie
             {
                 aktualnieWybraneUprawnienieId = filtrForm.WybraneUprawnienieId;
 
-                // Відобразити відфільтрованих користувачів
                 Wyszukaj("", aktualnieWybraneUprawnienieId);
+
+                if (aktualnieWybraneUprawnienieId == -1)
+                {
+                    lbl_filtr_info.Text = "Brak wybranego filtru uprawnień";
+                }
+                else
+                {
+                    DataTable permissionNameTable = DBconn.ExecuteQuery(
+                        "SELECT name FROM permissions WHERE id = @id;",
+                        new MySqlParameter("@id", aktualnieWybraneUprawnienieId)
+                    );
+
+                    if (permissionNameTable.Rows.Count > 0)
+                    {
+                        string permissionName = permissionNameTable.Rows[0]["name"].ToString();
+                        lbl_filtr_info.Text = $"Filtruj według: {permissionName}";
+                    }
+                    else
+                    {
+                        lbl_filtr_info.Text = "Filtruj według: (nieznane uprawnienie)";
+                    }
+                }
             }
         }
+
 
         private void btn_wyczysc_filtr_Click(object sender, EventArgs e)
         {
             try
             {
-                aktualnieWybraneUprawnienieId = -1; // Скидаємо вибране uprawnienie
+                aktualnieWybraneUprawnienieId = -1;
                 Wyszukaj("", aktualnieWybraneUprawnienieId);
+
+                lbl_filtr_info.Text = "Brak wybranego filtru uprawnień";
             }
             catch (Exception ex)
             {
@@ -589,7 +614,8 @@ namespace przychodnia_testowanie
             }
         }
 
-        
+
+
     }
 }
 

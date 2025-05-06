@@ -42,6 +42,7 @@
             this.btn_nadaj_uprawnienia = new System.Windows.Forms.Button();
             this.btn_filtruj_uprawnienia = new System.Windows.Forms.Button();
             this.btn_wyczysc_filtr = new System.Windows.Forms.Button();
+            this.lbl_filtr_info = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dtGrdVw_lista_uż)).BeginInit();
             this.SuspendLayout();
             // 
@@ -207,6 +208,16 @@
             this.btn_wyczysc_filtr.UseVisualStyleBackColor = true;
             this.btn_wyczysc_filtr.Click += new System.EventHandler(this.btn_wyczysc_filtr_Click);
             // 
+            // lbl_filtr_info
+            // 
+            this.lbl_filtr_info.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(227)))), ((int)(((byte)(235)))), ((int)(((byte)(242)))));
+            this.lbl_filtr_info.Font = new System.Drawing.Font("Mongolian Baiti", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_filtr_info.Location = new System.Drawing.Point(419, 272);
+            this.lbl_filtr_info.Name = "lbl_filtr_info";
+            this.lbl_filtr_info.Size = new System.Drawing.Size(425, 22);
+            this.lbl_filtr_info.TabIndex = 18;
+            this.lbl_filtr_info.Text = "Brak wybranego filtru uprawień";
+            // 
             // Form_lista_uzytkownikow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -215,6 +226,7 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1168, 791);
+            this.Controls.Add(this.lbl_filtr_info);
             this.Controls.Add(this.btn_wyczysc_filtr);
             this.Controls.Add(this.btn_filtruj_uprawnienia);
             this.Controls.Add(this.btn_nadaj_uprawnienia);
@@ -257,5 +269,6 @@
         private System.Windows.Forms.Button btn_nadaj_uprawnienia;
         private System.Windows.Forms.Button btn_filtruj_uprawnienia;
         private System.Windows.Forms.Button btn_wyczysc_filtr;
+        private System.Windows.Forms.Label lbl_filtr_info;
     }
 }
