@@ -24,6 +24,11 @@ namespace przychodnia_testowanie
         public string Numer_lokalu { get; set; }
         public string Kod_pocztowy { get; set; }
         public string Numer_telefonu { get; set; }
+        public List<string> Uprawnienia { get; set; } = new List<string>();
+        public bool MaUprawnienie(string kod)
+        {
+            return Uprawnienia.Contains(kod);
+        }
 
 
 

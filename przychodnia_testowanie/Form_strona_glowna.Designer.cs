@@ -32,6 +32,7 @@
             this.btn_zapom = new System.Windows.Forms.Button();
             this.btn_zarzad = new System.Windows.Forms.Button();
             this.btn_uprawn = new System.Windows.Forms.Button();
+            this.button_mojProfil = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btn_zapom
@@ -39,7 +40,7 @@
             this.btn_zapom.BackColor = System.Drawing.Color.White;
             this.btn_zapom.Font = new System.Drawing.Font("Segoe Script", 12F);
             this.btn_zapom.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.btn_zapom.Location = new System.Drawing.Point(480, 443);
+            this.btn_zapom.Location = new System.Drawing.Point(480, 338);
             this.btn_zapom.Name = "btn_zapom";
             this.btn_zapom.Size = new System.Drawing.Size(216, 47);
             this.btn_zapom.TabIndex = 3;
@@ -52,7 +53,7 @@
             this.btn_zarzad.BackColor = System.Drawing.Color.White;
             this.btn_zarzad.Font = new System.Drawing.Font("Segoe Script", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.btn_zarzad.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.btn_zarzad.Location = new System.Drawing.Point(128, 443);
+            this.btn_zarzad.Location = new System.Drawing.Point(128, 338);
             this.btn_zarzad.Name = "btn_zarzad";
             this.btn_zarzad.Size = new System.Drawing.Size(216, 47);
             this.btn_zarzad.TabIndex = 2;
@@ -65,13 +66,26 @@
             this.btn_uprawn.BackColor = System.Drawing.Color.White;
             this.btn_uprawn.Font = new System.Drawing.Font("Segoe Script", 12F);
             this.btn_uprawn.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.btn_uprawn.Location = new System.Drawing.Point(823, 443);
+            this.btn_uprawn.Location = new System.Drawing.Point(823, 338);
             this.btn_uprawn.Name = "btn_uprawn";
             this.btn_uprawn.Size = new System.Drawing.Size(216, 47);
             this.btn_uprawn.TabIndex = 4;
             this.btn_uprawn.Text = "Kliknij";
             this.btn_uprawn.UseVisualStyleBackColor = false;
             this.btn_uprawn.Click += new System.EventHandler(this.btn_uprawn_Click_Click);
+            // 
+            // button_mojProfil
+            // 
+            this.button_mojProfil.BackColor = System.Drawing.Color.White;
+            this.button_mojProfil.Font = new System.Drawing.Font("Segoe Script", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button_mojProfil.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.button_mojProfil.Location = new System.Drawing.Point(128, 669);
+            this.button_mojProfil.Name = "button_mojProfil";
+            this.button_mojProfil.Size = new System.Drawing.Size(216, 47);
+            this.button_mojProfil.TabIndex = 5;
+            this.button_mojProfil.Text = "Kliknij";
+            this.button_mojProfil.UseVisualStyleBackColor = false;
+            this.button_mojProfil.Click += new System.EventHandler(this.button_mojProfil_Click);
             // 
             // Form_strona_glowna
             // 
@@ -80,6 +94,7 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1168, 791);
+            this.Controls.Add(this.button_mojProfil);
             this.Controls.Add(this.btn_uprawn);
             this.Controls.Add(this.btn_zapom);
             this.Controls.Add(this.btn_zarzad);
@@ -88,6 +103,7 @@
             this.Name = "Form_strona_glowna";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Przychodnia";
+            this.Load += new System.EventHandler(this.Form_strona_glowna_Load);
             this.ResumeLayout(false);
 
         }
@@ -97,5 +113,6 @@
         private System.Windows.Forms.Button btn_zapom;
         private System.Windows.Forms.Button btn_zarzad;
         private System.Windows.Forms.Button btn_uprawn;
+        private System.Windows.Forms.Button button_mojProfil;
     }
 }

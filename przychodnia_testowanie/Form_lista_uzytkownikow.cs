@@ -23,6 +23,8 @@ namespace przychodnia_testowanie
         public Form_lista_uzytkownikow()
         {
             InitializeComponent();
+            
+
             refresh();
         }
 
@@ -189,7 +191,7 @@ namespace przychodnia_testowanie
                 Form_lista_uzytkownikow formLista = new Form_lista_uzytkownikow();
                 formLista.Show();
 
-                this.Close();
+                this.Hide();
             }
             else
             {
@@ -494,6 +496,7 @@ namespace przychodnia_testowanie
             Form_strona_glowna form = new Form_strona_glowna();
             form.Show();
             this.Hide();
+            
         }
 
 
@@ -614,8 +617,23 @@ namespace przychodnia_testowanie
             }
         }
 
+        private void Form_lista_uzytkownikow_Load(object sender, EventArgs e)
+        {
+            var user = Session.CurrentUser;
 
-
+            if (user != null)
+            {
+                btn_edycja_użytkownika.Enabled = user.MaUprawnienie("2");
+                btn_nadaj_uprawnienia.Enabled = user.MaUprawnienie("4");
+            }
+            else
+            {
+                // Możesz dodać logikę awaryjną (np. ukrycie przycisków lub wylogowanie)
+                btn_edycja_użytkownika.Enabled = false;
+                btn_nadaj_uprawnienia.Enabled = false;
+            }
+        }
+       
     }
 }
 

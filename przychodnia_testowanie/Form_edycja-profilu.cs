@@ -137,7 +137,7 @@ namespace przychodnia_testowanie
         private void btn_anuluj_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
-            Close();
+            Hide();
         }
 
         private void button1_zapisz_Click(object sender, EventArgs e)
@@ -163,7 +163,7 @@ namespace przychodnia_testowanie
                 użytkownik1.Numer_telefonu = numerTelefonu_textBox.Text;
 
                 DialogResult = DialogResult.OK;
-                Close();
+                Hide();
 
             }
 
@@ -172,7 +172,7 @@ namespace przychodnia_testowanie
         private void btn_lista_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
-            this.Close();
+            this.Hide();
         }
 
         private void ZaładujUżytkownikówZBazy()

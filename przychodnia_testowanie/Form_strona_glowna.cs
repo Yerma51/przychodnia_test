@@ -15,6 +15,8 @@ namespace przychodnia_testowanie
         public Form_strona_glowna()
         {
             InitializeComponent();
+            this.Activated += Form_strona_glowna_Activated;
+
         }
 
         private void btn_zarzad_Click(object sender, EventArgs e)
@@ -36,6 +38,41 @@ namespace przychodnia_testowanie
             Form_lista_uprawnien form = new Form_lista_uprawnien();
             form.Show();
             this.Hide();
+        }
+
+        private void Form_strona_glowna_Load(object sender, EventArgs e)
+        {
+            var user = Session.CurrentUser;
+
+            if (user != null)
+            {
+                btn_zarzad.Enabled = user.MaUprawnienie("1") || user.MaUprawnienie("2") || user.MaUprawnienie("4");
+                btn_uprawn.Enabled = user.MaUprawnienie("3");
+                btn_zapom.Enabled = true; // доступна всегда
+            }
+
+        }
+
+        public void OdswiezUprawnienia()
+        {
+            var user = Session.CurrentUser;
+
+            if (user != null)
+            {
+                btn_zarzad.Enabled = user.MaUprawnienie("1") || user.MaUprawnienie("2") || user.MaUprawnienie("4");
+                btn_uprawn.Enabled = user.MaUprawnienie("3");
+                btn_zapom.Enabled = true;
+            }
+        }
+        private void Form_strona_glowna_Activated(object sender, EventArgs e)
+        {
+            OdswiezUprawnienia(); // odświeża przy każdym powrocie
+        }
+
+        private void button_mojProfil_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            new Form_moj_profil().Show();
         }
     }
 }

@@ -59,6 +59,8 @@
             this.imie_textBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.btn_anuluj = new System.Windows.Forms.Button();
+            this.textBox_haslo = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // txb_login
@@ -346,6 +348,23 @@
             this.btn_anuluj.UseVisualStyleBackColor = false;
             this.btn_anuluj.Click += new System.EventHandler(this.btn_anuluj_Click);
             // 
+            // textBox_haslo
+            // 
+            this.textBox_haslo.Location = new System.Drawing.Point(332, 263);
+            this.textBox_haslo.Name = "textBox_haslo";
+            this.textBox_haslo.Size = new System.Drawing.Size(201, 22);
+            this.textBox_haslo.TabIndex = 64;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label15.Location = new System.Drawing.Point(333, 235);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(70, 25);
+            this.label15.TabIndex = 63;
+            this.label15.Text = "Hasło*";
+            // 
             // Form_profil
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -354,6 +373,8 @@
             this.BackgroundImage = global::przychodnia_testowanie.Properties.Resources.Profil1;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1168, 791);
+            this.Controls.Add(this.textBox_haslo);
+            this.Controls.Add(this.label15);
             this.Controls.Add(this.btn_anuluj);
             this.Controls.Add(this.txb_login);
             this.Controls.Add(this.label16_login);
@@ -429,5 +450,7 @@
         private System.Windows.Forms.TextBox imie_textBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btn_anuluj;
+        private System.Windows.Forms.TextBox textBox_haslo;
+        private System.Windows.Forms.Label label15;
     }
 }

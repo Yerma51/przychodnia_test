@@ -247,6 +247,7 @@
             this.Name = "Form_lista_uzytkownikow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Lista użytkowników";
+            this.Load += new System.EventHandler(this.Form_lista_uzytkownikow_Load);
             this.Shown += new System.EventHandler(this.Form_lista_uzytkownikow_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.dtGrdVw_lista_uż)).EndInit();
             this.ResumeLayout(false);
