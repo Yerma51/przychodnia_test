@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Maj 12, 2025 at 03:35 PM
+-- Generation Time: Maj 13, 2025 at 03:34 PM
 -- Wersja serwera: 10.4.32-MariaDB
 -- Wersja PHP: 8.2.12
 
@@ -192,7 +192,7 @@ CREATE TABLE `specializations` (
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `login` varchar(40) NOT NULL,
-  `password` varchar(255) DEFAULT NULL,
+  `password` varchar(255) NOT NULL,
   `role` enum('patient','doctor','administrator') NOT NULL,
   `email` varchar(100) NOT NULL,
   `phonenumber` varchar(20) NOT NULL,
@@ -205,15 +205,15 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `login`, `password`, `role`, `email`, `phonenumber`, `status`, `regdate`) VALUES
-(2, 'elzbieta.krawczyk1965', NULL, 'patient', 'elzbieta.kraw@zdrowie.pl', '503246789', 1, '2025-03-26 16:46:12'),
-(5, 'anonim_00275594', NULL, '', 'anonim_d9abf2fe@example.com', '0002251633', NULL, '2025-03-31 23:59:25'),
-(6, 'michal.nowak1979', NULL, 'patient', 'michal.nowak@zdrowie.pl', '504987321', 1, '2025-04-01 00:08:04'),
-(7, '', NULL, 'patient', '', '', NULL, '2025-04-01 00:30:49'),
-(8, 'anna.adamczyk1988', NULL, 'patient', 'anna.adam@zdrowie.pl', '505987654', 1, '2025-04-01 00:37:30'),
-(9, 'iwud', NULL, 'patient', 'kscub@skcdjbu.pl', '503456789', 1, '2025-04-08 21:55:03'),
-(10, 'agata.lewandowska91', NULL, 'patient', 'aga.lewa@zdrowie.pl', '509876321', 1, '2025-04-08 22:17:39'),
-(12, 'aleksandra.wojcik92', NULL, 'patient', 'aleksandra.wojcik@zdrowie.pl', '504128768', 1, '2025-04-09 14:20:18'),
-(13, 'anonim_310838b4', NULL, '', 'anonim_cb70ce92@example.com', '0006726907', NULL, '2025-04-09 14:57:16');
+(2, 'elzbieta.krawczyk1965', '', 'patient', 'elzbieta.kraw@zdrowie.pl', '503246789', 1, '2025-03-26 16:46:12'),
+(5, 'anonim_00275594', '', '', 'anonim_d9abf2fe@example.com', '0002251633', NULL, '2025-03-31 23:59:25'),
+(6, 'michal.nowak1979', '', 'patient', 'michal.nowak@zdrowie.pl', '504987321', 1, '2025-04-01 00:08:04'),
+(7, '', '', 'patient', '', '', NULL, '2025-04-01 00:30:49'),
+(8, 'anna.adamczyk1988', '', 'patient', 'anna.adam@zdrowie.pl', '505987654', 1, '2025-04-01 00:37:30'),
+(9, 'iwud', '', 'patient', 'kscub@skcdjbu.pl', '503456789', 1, '2025-04-08 21:55:03'),
+(10, 'agata.lewandowska91', '', 'patient', 'aga.lewa@zdrowie.pl', '509876321', 1, '2025-04-08 22:17:39'),
+(12, 'aleksandra.wojcik92', '', 'patient', 'aleksandra.wojcik@zdrowie.pl', '504128768', 1, '2025-04-09 14:20:18'),
+(13, 'anonim_310838b4', '', '', 'anonim_cb70ce92@example.com', '0006726907', NULL, '2025-04-09 14:57:16');
 
 -- --------------------------------------------------------
 
