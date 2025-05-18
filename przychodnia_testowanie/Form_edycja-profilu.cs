@@ -20,7 +20,7 @@ namespace przychodnia_testowanie
         public Form_Edycja_profilu(Użytkownik użytkownik)
         {
             InitializeComponent();
-            ZaładujUżytkownikówZBazy(); 
+            ZaładujUżytkownikówZBazy();
 
             użytkownik1 = użytkownik;
 
@@ -28,6 +28,7 @@ namespace przychodnia_testowanie
 
 
             txb_login.Text = użytkownik1.Login;
+            textBox_haslo.Text = użytkownik1.Password;
             imie_textBox.Text = użytkownik1.Imię;
             nazwisko_textBox.Text = użytkownik1.Nazwisko;
             plec_comboBox.SelectedItem = użytkownik1.Płec;
@@ -59,6 +60,7 @@ namespace przychodnia_testowanie
 
             // Sprawdzenie wymaganych pól
             if (string.IsNullOrWhiteSpace(txb_login.Text) ||
+                string.IsNullOrWhiteSpace(textBox_haslo.Text) ||
                 string.IsNullOrWhiteSpace(imie_textBox.Text) ||
                 string.IsNullOrWhiteSpace(nazwisko_textBox.Text) ||
                 string.IsNullOrWhiteSpace(miejcowosc_textBox.Text) ||
@@ -79,7 +81,12 @@ namespace przychodnia_testowanie
                 MessageBox.Show("Podany login już istnieje!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
-
+            //haslo
+            if (!Validator.IsValidPassword(textBox_haslo.Text))
+            {
+                MessageBox.Show("Hasło musi mieć od 8 do 15 znaków i zawierać co najmniej jedną wielką literę, małą literę, cyfrę oraz znak specjalny (-, _, !, *, #, $, &)", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
             // Sprawdzenie poprawności adresu e-mail
             if (!Validator.IsValidEmail(mail_textBox.Text))
             {
@@ -147,6 +154,26 @@ namespace przychodnia_testowanie
             if (ValidateForm())
             {
                 użytkownik1.Login = txb_login.Text;
+                użytkownik1.Password = textBox_haslo.Text;
+                if (Session.CurrentUser != null && Session.CurrentUser.Id == użytkownik1.Id)
+                {
+                    Session.CurrentUser.Login = użytkownik1.Login;
+                    Session.CurrentUser.Password = użytkownik1.Password;
+                    Session.CurrentUser.Imię = użytkownik1.Imię;
+                    Session.CurrentUser.Nazwisko = użytkownik1.Nazwisko;
+                    Session.CurrentUser.Płec = użytkownik1.Płec;
+                    Session.CurrentUser.Data_urodzenia = użytkownik1.Data_urodzenia;
+                    Session.CurrentUser.Pesel = użytkownik1.Pesel;
+                    Session.CurrentUser.Adres_email = użytkownik1.Adres_email;
+                    Session.CurrentUser.Miejscowość = użytkownik1.Miejscowość;
+                    Session.CurrentUser.Ulica = użytkownik1.Ulica;
+                    Session.CurrentUser.Numer_pos = użytkownik1.Numer_pos;
+                    Session.CurrentUser.Numer_lokalu = użytkownik1.Numer_lokalu;
+                    Session.CurrentUser.Kod_pocztowy = użytkownik1.Kod_pocztowy;
+                    Session.CurrentUser.Numer_telefonu = użytkownik1.Numer_telefonu;
+                }
+
+
                 użytkownik1.Imię = imie_textBox.Text;
                 użytkownik1.Nazwisko = nazwisko_textBox.Text;
                 użytkownik1.Płec = plec_comboBox.SelectedItem.ToString();
@@ -178,7 +205,7 @@ namespace przychodnia_testowanie
         private void ZaładujUżytkownikówZBazy()
         {
             DataTable dt = new Laczenie_z_baza_danych().ExecuteQuery(
-                "SELECT u.id, u.login, u.email, u.phonenumber, p.name, p.lastname, p.pesel, p.city, p.postcode, p.street, p.house_number, p.apartment_number, p.gender, p.birth_date FROM users u JOIN patients p ON u.id = p.user_id"
+                "SELECT u.id, u.login, u.password, u.email, u.phonenumber, p.name, p.lastname, p.pesel, p.city, p.postcode, p.street, p.house_number, p.apartment_number, p.gender, p.birth_date FROM users u JOIN patients p ON u.id = p.user_id"
             );
 
             Użytkownik.Użytkownicy.Clear(); // Żeby nie było dublikatów
@@ -190,17 +217,18 @@ namespace przychodnia_testowanie
 
                 if (!string.IsNullOrEmpty(rawDate) && DateTime.TryParse(rawDate, out dataUrodzenia))
                 {
-                    
+
                 }
                 else
                 {
-                    dataUrodzenia = DateTime.Today; 
+                    dataUrodzenia = DateTime.Today;
                 }
 
                 Użytkownik.Użytkownicy.Add(new Użytkownik
                 {
                     Id = Convert.ToInt32(row["id"]),
                     Login = row["login"].ToString(),
+                    Password = row["password"].ToString(),
                     Adres_email = row["email"].ToString(),
                     Numer_telefonu = row["phonenumber"].ToString(),
                     Imię = row["name"].ToString(),
@@ -217,6 +245,6 @@ namespace przychodnia_testowanie
             }
         }
 
-       
+
     }
 }

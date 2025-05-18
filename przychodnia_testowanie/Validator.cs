@@ -21,6 +21,31 @@ namespace przychodnia_testowanie
             return Regex.IsMatch(email, pattern);
         }
 
+
+        // sprawdzenie poprawności hasła
+        public static bool IsValidPassword(string password)
+        {
+            if (string.IsNullOrEmpty(password)) return false;
+
+            if (password.Length < 8 || password.Length > 15)
+                return false;
+
+            if (!Regex.IsMatch(password, @"[A-Z]"))
+                return false;
+
+            if (!Regex.IsMatch(password, @"[a-z]"))
+                return false;
+
+            if (!Regex.IsMatch(password, @"[0-9]"))
+                return false;
+
+            if (!Regex.IsMatch(password, @"[-_!*\#$&]"))
+                return false;
+
+            return true;
+        }
+
+
         // Sprawdzanie unikalności adresu e-mail
         public static bool IsUniqueEmail(string email, List<Użytkownik> usersList, Użytkownik aktualnyUżytkownik)
         {
@@ -39,7 +64,7 @@ namespace przychodnia_testowanie
         }
 
         // Walidacja loginu (pole nie może być puste i musi być unikalne)
-       
+
         public static bool IsValidLogin(string login, List<Użytkownik> usersList, Użytkownik aktualnyUżytkownik)
         {
             if (string.IsNullOrWhiteSpace(login)) return false;
@@ -165,20 +190,7 @@ namespace przychodnia_testowanie
         }
 
 
-        public static bool IsUniqueLogin(string login, List<Użytkownik> usersList)
-        {
-            return !usersList.Any(user => user.Login == login);
-        }
 
-        public static bool IsUniqueEmail(string email, List<Użytkownik> usersList)
-        {
-            return !usersList.Any(user => user.Adres_email == email);
-        }
-
-        public static bool IsUniquePESEL(string pesel, List<Użytkownik> usersList)
-        {
-            return !usersList.Any(user => user.Pesel == pesel);
-        }
 
 
 

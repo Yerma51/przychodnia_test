@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace przychodnia_testowanie
 {
-    public partial class Form_moj_profil: Form
+    public partial class Form_moj_profil : Form
     {
         public Form_moj_profil()
         {
@@ -26,13 +26,14 @@ namespace przychodnia_testowanie
                 imie_textBox.Text = user.Imię;
                 nazwisko_textBox.Text = user.Nazwisko;
                 txb_login.Text = user.Login;
+                textBox_haslo.Text = user.Password;
                 mail_textBox.Text = user.Adres_email;
                 numerTelefonu_textBox.Text = user.Numer_telefonu;
                 miejcowosc_textBox.Text = user.Miejscowość;
                 ulica_textBox.Text = user.Ulica;
                 numerPosesji_textBox.Text = user.Numer_pos;
                 numerLokalu_textBox.Text = user.Numer_lokalu;
-                kodPocztowy_textBox.Text =user.Kod_pocztowy;
+                kodPocztowy_textBox.Text = user.Kod_pocztowy;
                 pesel_textBox.Text = user.Pesel;
 
                 plec_comboBox.Items.Add("Kobieta");
@@ -56,6 +57,7 @@ namespace przychodnia_testowanie
                 imie_textBox.ReadOnly = true;
                 nazwisko_textBox.ReadOnly = true;
                 txb_login.ReadOnly = true;
+                textBox_haslo.ReadOnly = true;
                 mail_textBox.ReadOnly = true;
                 numerTelefonu_textBox.ReadOnly = true;
                 pesel_textBox.ReadOnly = true;

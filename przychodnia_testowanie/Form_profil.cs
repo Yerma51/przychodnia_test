@@ -1,9 +1,11 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -39,31 +41,32 @@ namespace przychodnia_testowanie
             ZaładujUżytkownikówZBazy();
 
 
-                txb_login.Text = użytkownik.Login;
-                imie_textBox.Text = użytkownik.Imię;
-                nazwisko_textBox.Text = użytkownik.Nazwisko;
-                plec_comboBox.SelectedItem = użytkownik.Płec;
+            txb_login.Text = użytkownik.Login;
+            textBox_haslo.Text = użytkownik.Password;
+            imie_textBox.Text = użytkownik.Imię;
+            nazwisko_textBox.Text = użytkownik.Nazwisko;
+            plec_comboBox.SelectedItem = użytkownik.Płec;
 
-                dataUrodzenia_dateTimePicker.MinDate = new DateTime(1900, 1, 1);
-                dataUrodzenia_dateTimePicker.MaxDate = DateTime.Today;
-                if (użytkownik.Data_urodzenia < dataUrodzenia_dateTimePicker.MinDate || użytkownik.Data_urodzenia > dataUrodzenia_dateTimePicker.MaxDate)
-                {
-                    dataUrodzenia_dateTimePicker.Value = DateTime.Today;
-                }
-                else
-                {
-                    dataUrodzenia_dateTimePicker.Value = użytkownik.Data_urodzenia;
-                }
+            dataUrodzenia_dateTimePicker.MinDate = new DateTime(1900, 1, 1);
+            dataUrodzenia_dateTimePicker.MaxDate = DateTime.Today;
+            if (użytkownik.Data_urodzenia < dataUrodzenia_dateTimePicker.MinDate || użytkownik.Data_urodzenia > dataUrodzenia_dateTimePicker.MaxDate)
+            {
+                dataUrodzenia_dateTimePicker.Value = DateTime.Today;
+            }
+            else
+            {
+                dataUrodzenia_dateTimePicker.Value = użytkownik.Data_urodzenia;
+            }
 
-                pesel_textBox.Text = użytkownik.Pesel;
-                mail_textBox.Text = użytkownik.Adres_email;
-                miejcowosc_textBox.Text = użytkownik.Miejscowość;
-                ulica_textBox.Text = użytkownik.Ulica;
-                numerPosesji_textBox.Text = użytkownik.Numer_pos;
-                numerLokalu_textBox.Text = użytkownik.Numer_lokalu;
-                kodPocztowy_textBox.Text = użytkownik.Kod_pocztowy;
-                numerTelefonu_textBox.Text = użytkownik.Numer_telefonu;
-            
+            pesel_textBox.Text = użytkownik.Pesel;
+            mail_textBox.Text = użytkownik.Adres_email;
+            miejcowosc_textBox.Text = użytkownik.Miejscowość;
+            ulica_textBox.Text = użytkownik.Ulica;
+            numerPosesji_textBox.Text = użytkownik.Numer_pos;
+            numerLokalu_textBox.Text = użytkownik.Numer_lokalu;
+            kodPocztowy_textBox.Text = użytkownik.Kod_pocztowy;
+            numerTelefonu_textBox.Text = użytkownik.Numer_telefonu;
+
         }
         private void button1_zapisz_Click(object sender, EventArgs e)
         {
@@ -71,6 +74,7 @@ namespace przychodnia_testowanie
 
             // Sprawdzenie wymaganych pól
             if (string.IsNullOrWhiteSpace(txb_login.Text) ||
+                string.IsNullOrWhiteSpace(textBox_haslo.Text) ||
                 string.IsNullOrWhiteSpace(imie_textBox.Text) ||
                 string.IsNullOrWhiteSpace(nazwisko_textBox.Text) ||
                 string.IsNullOrWhiteSpace(miejcowosc_textBox.Text) ||
@@ -99,6 +103,12 @@ namespace przychodnia_testowanie
                 return;
             }
 
+            if (!Validator.IsValidPassword(textBox_haslo.Text))
+            {
+                MessageBox.Show("Hasło musi mieć od 8 do 15 znaków i zawierać co najmniej jedną wielką literę, małą literę, cyfrę oraz znak specjalny (-, _, !, *, #, $, &)", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             // Sprawdzenie unikalności email
             if (!Validator.IsUniqueEmail(mail_textBox.Text, usersList, null))
             {
@@ -114,37 +124,6 @@ namespace przychodnia_testowanie
             }
 
 
-            // Sprawdzenie unikalności adresu e-mail
-            /*if (!Validator.IsUniqueEmail(mail_textBox.Text, usersList))
-            {
-                MessageBox.Show("Podany adres e-mail już istnieje!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }*/
-
-            // Sprawdzenie unikalności pesel
-            /*  if (!Validator.IsUniquePESEL(pesel_textBox.Text, usersList))
-              {
-                  MessageBox.Show("Podany adres e-mail już istnieje!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                  return;
-              }*/
-
-            /* if (!Validator.IsUniqueLogin(txb_login.Text, usersList))
-             {
-                 MessageBox.Show("Podany login już istnieje!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                 return;
-             }
-
-             if (!Validator.IsUniqueEmail(mail_textBox.Text, usersList))
-             {
-                 MessageBox.Show("Podany adres e-mail już istnieje!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                 return;
-             }
-
-             if (!Validator.IsUniquePESEL(pesel_textBox.Text, usersList))
-             {
-                 MessageBox.Show("Podany numer PESEL już istnieje!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                 return;
-             }*/
 
 
             // Sprawdzenie poprawności numeru kodu pocztowege
@@ -175,6 +154,7 @@ namespace przychodnia_testowanie
             }
             // Jeśli wszystkie walidacje zostały zaliczone, zapisujemy dane i zamykamy formularz
             użytkownik.Login = txb_login.Text.Trim();
+            użytkownik.Password = textBox_haslo.Text.Trim();
             użytkownik.Imię = imie_textBox.Text.Trim();
             użytkownik.Nazwisko = nazwisko_textBox.Text.Trim();
             użytkownik.Płec = plec_comboBox.SelectedItem.ToString();
@@ -189,15 +169,22 @@ namespace przychodnia_testowanie
             użytkownik.Kod_pocztowy = kodPocztowy_textBox.Text.Trim();
             użytkownik.Numer_telefonu = numerTelefonu_textBox.Text.Trim();
 
+
+
+
+
             // Zamykamy formularz po zapisaniu danych
             this.DialogResult = DialogResult.OK;
             this.Close();
+
+
+
 
         }
         private void ZaładujUżytkownikówZBazy()
         {
             DataTable dt = new Laczenie_z_baza_danych().ExecuteQuery(
-                "SELECT u.id, u.login, u.email, u.phonenumber, p.name, p.lastname, p.pesel, p.city, p.postcode, p.street, p.house_number, p.apartment_number, p.gender, p.birth_date FROM users u JOIN patients p ON u.id = p.user_id"
+                "SELECT u.id, u.login, u.password, u.email, u.phonenumber, p.name, p.lastname, p.pesel, p.city, p.postcode, p.street, p.house_number, p.apartment_number, p.gender, p.birth_date FROM users u JOIN patients p ON u.id = p.user_id"
             );
 
             Użytkownik.Użytkownicy.Clear();
@@ -219,6 +206,7 @@ namespace przychodnia_testowanie
                 {
                     Id = Convert.ToInt32(row["id"]),
                     Login = row["login"].ToString(),
+                    Password = row["password"].ToString(),
                     Adres_email = row["email"].ToString(),
                     Numer_telefonu = row["phonenumber"].ToString(),
                     Imię = row["name"].ToString(),
@@ -249,6 +237,7 @@ namespace przychodnia_testowanie
             this.Close();
 
         }
+
+
     }
 }
-    

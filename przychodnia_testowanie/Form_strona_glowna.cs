@@ -48,7 +48,7 @@ namespace przychodnia_testowanie
             {
                 btn_zarzad.Enabled = user.MaUprawnienie("1") || user.MaUprawnienie("2") || user.MaUprawnienie("4");
                 btn_uprawn.Enabled = user.MaUprawnienie("3");
-                btn_zapom.Enabled = true; // доступна всегда
+                btn_zapom.Enabled = true; // dostępna zawsze
             }
 
         }

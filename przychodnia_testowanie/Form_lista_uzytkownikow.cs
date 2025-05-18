@@ -23,7 +23,7 @@ namespace przychodnia_testowanie
         public Form_lista_uzytkownikow()
         {
             InitializeComponent();
-            
+
 
             refresh();
         }
@@ -146,7 +146,7 @@ namespace przychodnia_testowanie
             Użytkownik nowy_uzytkownik = new Użytkownik();
             Form_profil form = new Form_profil(nowy_uzytkownik);
 
-            this.Hide(); 
+            this.Hide();
 
             DialogResult result = form.ShowDialog();
             int genderValue = 0;
@@ -161,8 +161,9 @@ namespace przychodnia_testowanie
                 // Dodajemy użytkownika do bazy dopiero jeśli kliknięto OK
 
                 Laczenie_z_baza_danych DBconn = new Laczenie_z_baza_danych();
-                DataTable insertUser = DBconn.ExecuteQuery("INSERT INTO users (id, login, role, email, phonenumber, status, regdate) VALUES (NULL, @login, @role, @email, @phonenumber, @status, NOW())",
+                DataTable insertUser = DBconn.ExecuteQuery("INSERT INTO users (id, login, password, role, email, phonenumber, status, regdate) VALUES (NULL, @login, @password, @role, @email, @phonenumber, @status, NOW())",
                     new MySqlParameter("@login", nowy_uzytkownik.Login),
+                    new MySqlParameter("@password", nowy_uzytkownik.Password),
                     new MySqlParameter("@role", "patient"),
                     new MySqlParameter("@email", nowy_uzytkownik.Adres_email),
                     new MySqlParameter("@phonenumber", nowy_uzytkownik.Numer_telefonu),
@@ -279,7 +280,7 @@ namespace przychodnia_testowanie
             int userId = Convert.ToInt32(dtGrdVw_lista_uż.SelectedRows[0].Cells["id"].Value);
 
             // Pobieramy dane użytkownika z bazy danych
-            DataTable userData = DBconn.ExecuteQuery("SELECT u.id, u.login, u.email, u.phonenumber, p.name, p.lastname, p.pesel, p.city, p.postcode, p.street, p.house_number, p.apartment_number, p.gender, p.birth_date FROM users u JOIN patients p ON u.id = p.user_id WHERE u.id = @id",
+            DataTable userData = DBconn.ExecuteQuery("SELECT u.id, u.login, u.password, u.email, u.phonenumber, p.name, p.lastname, p.pesel, p.city, p.postcode, p.street, p.house_number, p.apartment_number, p.gender, p.birth_date FROM users u JOIN patients p ON u.id = p.user_id WHERE u.id = @id",
                 new MySqlParameter("@id", userId));
 
             if (userData.Rows.Count == 0)
@@ -294,6 +295,7 @@ namespace przychodnia_testowanie
             {
                 Id = Convert.ToInt32(row["id"]),
                 Login = row["login"].ToString(),
+                Password = row["password"].ToString(),
                 Adres_email = row["email"].ToString(),
                 Numer_telefonu = row["phonenumber"].ToString(),
                 Imię = row["name"].ToString(),
@@ -319,8 +321,9 @@ namespace przychodnia_testowanie
             if (result == DialogResult.OK)
             {
                 // Jeśli edycja zakończona sukcesem, aktualizujemy dane w bazie danych
-                DBconn.ExecuteQuery("UPDATE users SET login = @login, email = @email, phonenumber = @phonenumber WHERE id = @id",
+                DBconn.ExecuteQuery("UPDATE users SET login = @login, password = @password, email = @email, phonenumber = @phonenumber WHERE id = @id",
                     new MySqlParameter("@login", selectedUser.Login),
+                    new MySqlParameter("@password", selectedUser.Password),
                     new MySqlParameter("@email", selectedUser.Adres_email),
                     new MySqlParameter("@phonenumber", selectedUser.Numer_telefonu),
                     new MySqlParameter("@id", selectedUser.Id));
@@ -496,7 +499,7 @@ namespace przychodnia_testowanie
             Form_strona_glowna form = new Form_strona_glowna();
             form.Show();
             this.Hide();
-            
+
         }
 
 
@@ -633,7 +636,7 @@ namespace przychodnia_testowanie
                 btn_nadaj_uprawnienia.Enabled = false;
             }
         }
-       
+
     }
 }
 

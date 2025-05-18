@@ -13,7 +13,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace przychodnia_testowanie
 {
-    public partial class Logowanie_fromcs: Form
+    public partial class Logowanie_fromcs : Form
     {
         public Logowanie_fromcs()
         {
@@ -22,73 +22,74 @@ namespace przychodnia_testowanie
 
         private void button_zaloguj_Click(object sender, EventArgs e)
         {
-
-
             string login = textBox_login.Text.Trim();
-            //string pass = textBox2.Text.Trim();
+            string password = textBox_haslo.Text.Trim();
 
-            /*if (string.IsNullOrEmpty(login) && string.IsNullOrEmpty(pass))
+            if (string.IsNullOrEmpty(login) && string.IsNullOrEmpty(password))
             {
                 MessageBox.Show("Proszę podać login i hasło");
                 return;
-            }*/
+            }
             if (string.IsNullOrEmpty(login))
             {
                 MessageBox.Show("Proszę podać login");
                 return;
             }
-            /*else if (string.IsNullOrEmpty(pass))
+            else if (string.IsNullOrEmpty(password))
             {
                 MessageBox.Show("Proszę podać hasło");
                 return;
-            }*/
+            }
 
             try
             {
-                string checkLoginQuery = "SELECT COUNT(*) FROM users WHERE login = @login";
-                MySqlParameter[] checkParams = {
-            new MySqlParameter("@login", login)
-        };
+                // Sprawdzenie czy istnieje użytkownik
+                string userCheckQuery = "SELECT id, failed_attempts, lockout_time FROM users WHERE login = @login";
+                MySqlParameter[] checkParams = { new MySqlParameter("@login", login) };
+                DataTable checkResult = new Laczenie_z_baza_danych().ExecuteQuery(userCheckQuery, checkParams);
 
-                DataTable checkTable = new Laczenie_z_baza_danych().ExecuteQuery(checkLoginQuery, checkParams);
-                int count = Convert.ToInt32(checkTable.Rows[0][0]);
-
-                if (count == 0)
+                if (checkResult.Rows.Count == 0)
                 {
-                    MessageBox.Show("Podany login nie istnieje w systemie");
+                    MessageBox.Show("Podany login nie istnieje w systemie.");
                     return;
                 }
 
-                // SQL: проверка логина и пароля + загрузка данных пациента
-                string query = @"
-            SELECT 
-                u.id, u.login, u.email, u.phonenumber,
-                p.name, p.lastname, p.pesel, p.city, p.postcode, 
-                p.street, p.house_number, p.apartment_number, 
-                p.gender, p.birth_date 
+                DataRow checkRow = checkResult.Rows[0];
+                int userId = Convert.ToInt32(checkRow["id"]);
+                int failedAttempts = checkRow["failed_attempts"] != DBNull.Value ? Convert.ToInt32(checkRow["failed_attempts"]) : 0;
+                DateTime? lockoutTime = checkRow["lockout_time"] != DBNull.Value ? (DateTime?)Convert.ToDateTime(checkRow["lockout_time"]) : null;
+
+                if (lockoutTime != null && DateTime.Now < lockoutTime)
+                {
+                    MessageBox.Show("Konto jest zablokowane. Spróbuj ponownie po " + lockoutTime.Value.ToString("HH:mm:ss"));
+                    return;
+                }
+
+                // Sprawdzenie loginu i hasła 
+                string loginQuery = @"
+            SELECT u.*, p.* 
             FROM users u
             JOIN patients p ON u.id = p.user_id
-            WHERE u.login = @login";
+            WHERE u.login = @login AND u.password = @password";
 
-                MySqlParameter[] parameters = {
-            new MySqlParameter("@login", login)
-
+                MySqlParameter[] loginParams = {
+            new MySqlParameter("@login", login),
+            new MySqlParameter("@password", password)
         };
 
-                DataTable dt = new Laczenie_z_baza_danych().ExecuteQuery(query, parameters);
+                DataTable dt = new Laczenie_z_baza_danych().ExecuteQuery(loginQuery, loginParams);
+
                 if (dt.Rows.Count > 0)
                 {
+                    // udane logowanie
                     DataRow row = dt.Rows[0];
 
-                    DateTime dataUrodzenia;
-                    string rawDate = row["birth_date"].ToString();
-                    if (!DateTime.TryParse(rawDate, out dataUrodzenia))
-                        dataUrodzenia = DateTime.Today;
-
+                    DateTime.TryParse(row["birth_date"].ToString(), out DateTime birthDate);
                     Użytkownik user = new Użytkownik
                     {
                         Id = Convert.ToInt32(row["id"]),
                         Login = row["login"].ToString(),
+                        Password = row["password"].ToString(),
                         Adres_email = row["email"].ToString(),
                         Numer_telefonu = row["phonenumber"].ToString(),
                         Imię = row["name"].ToString(),
@@ -100,36 +101,92 @@ namespace przychodnia_testowanie
                         Numer_pos = row["house_number"].ToString(),
                         Numer_lokalu = row["apartment_number"].ToString(),
                         Płec = row["gender"].ToString(),
-                        Data_urodzenia = dataUrodzenia
+                        Data_urodzenia = birthDate
                     };
 
-                    // Шаг 3: Загрузка прав доступа
+                    // ładowanie uprawnień
                     string uprawnieniaQuery = "SELECT permission_id FROM user_permissions WHERE user_id = @id";
-                    MySqlParameter[] uprawnieniaParams = {
-                new MySqlParameter("@id", user.Id)
-            };
-
+                    MySqlParameter[] uprawnieniaParams = { new MySqlParameter("@id", user.Id) };
                     DataTable permTable = new Laczenie_z_baza_danych().ExecuteQuery(uprawnieniaQuery, uprawnieniaParams);
                     foreach (DataRow permRow in permTable.Rows)
-                    {
                         user.Uprawnienia.Add(permRow["permission_id"].ToString());
-                    }
 
                     Session.CurrentUser = user;
 
-                    MessageBox.Show("Udane logowanie");
+                    // resetowanie udanej próby logowania
+                    string resetAttemptsQuery = "UPDATE users SET failed_attempts = 0, lockout_time = NULL WHERE id = @id";
+                    MySqlParameter[] resetParams = { new MySqlParameter("@id", user.Id) };
+                    new Laczenie_z_baza_danych().ExecuteQuery(resetAttemptsQuery, resetParams);
+
+                    // spawdzenie tymczasowego hasła
+                    if (row["password_expiry"] != DBNull.Value)
+                    {
+                        DateTime.TryParse(row["password_expiry"].ToString(), out DateTime expiryTime);
+
+                        if (DateTime.Now <= expiryTime)
+                        {
+                            MessageBox.Show("Zalogowano tymczasowym hasłem. Zmień hasło.");
+                            this.Hide();
+                            new Nowe_haslo(user.Id).Show();
+                            return;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Hasło tymczasowe wygasło. Skontaktuj się z administratorem lub zresetuj hasło.");
+                            Session.CurrentUser = null;
+                            return;
+                        }
+                    }
+
+                    MessageBox.Show("Udane logowanie.");
                     this.Hide();
                     new Form_strona_glowna().Show();
                 }
                 else
                 {
-                    MessageBox.Show("Błąd: użytkownik istnieje, ale nie można załadować danych");
+                    //nieprawidłowe hasło +1próba
+                    failedAttempts++;
+                    MySqlParameter[] updateParams;
+
+                    if (failedAttempts >= 3)
+                    {
+                        string lockQuery = "UPDATE users SET failed_attempts = @fa, lockout_time = @lt WHERE login = @login";
+                        updateParams = new MySqlParameter[]
+                        {
+                    new MySqlParameter("@fa", failedAttempts),
+                    new MySqlParameter("@lt", DateTime.Now.AddMinutes(15)),
+                    new MySqlParameter("@login", login)
+                        };
+                        MessageBox.Show("Błąd logowania. Konto zablokowane na 15 minut.");
+                    }
+                    else
+                    {
+                        string failQuery = "UPDATE users SET failed_attempts = @fa WHERE login = @login";
+                        updateParams = new MySqlParameter[]
+                        {
+                    new MySqlParameter("@fa", failedAttempts),
+                    new MySqlParameter("@login", login)
+                        };
+                        MessageBox.Show("Błędne hasło. Próba: " + failedAttempts + "/3");
+                    }
+
+                    new Laczenie_z_baza_danych().ExecuteQuery(failedAttempts >= 3 ?
+                        "UPDATE users SET failed_attempts = @fa, lockout_time = @lt WHERE login = @login" :
+                        "UPDATE users SET failed_attempts = @fa WHERE login = @login", updateParams);
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Błąd połączenia z bazą danych: " + ex.Message);
             }
+        }
+
+
+
+        private void button_nie_pamietam_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            new odzyskanie().Show();
         }
     }
 }

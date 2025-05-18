@@ -11,6 +11,7 @@ namespace przychodnia_testowanie
     {
         public int Id { get; set; }
         public string Login { get; set; }
+        public string Password { get; set; }
         public string Imię { get; set; }
         public string Nazwisko { get; set; }
         public string Płec { get; set; }
@@ -68,7 +69,7 @@ namespace przychodnia_testowanie
 
             Laczenie_z_baza_danych DBconn = new Laczenie_z_baza_danych();
 
-            DataTable dt = DBconn.ExecuteQuery("SELECT u.id, u.login, u.email, u.phonenumber, p.name, p.lastname, p.pesel, p.city, p.postcode, p.street, p.house_number, p.apartment_number, p.gender FROM users u JOIN patients p ON u.id = p.user_id");
+            DataTable dt = DBconn.ExecuteQuery("SELECT u.id, u.login, u.password, u.email, u.phonenumber, p.name, p.lastname, p.pesel, p.city, p.postcode, p.street, p.house_number, p.apartment_number, p.gender FROM users u JOIN patients p ON u.id = p.user_id");
 
             foreach (DataRow row in dt.Rows)
             {
@@ -76,6 +77,7 @@ namespace przychodnia_testowanie
                 {
                     Id = Convert.ToInt32(row["id"]),
                     Login = row["login"].ToString(),
+                    Password = row["password"].ToString(),
                     Adres_email = row["email"].ToString(),
                     Numer_telefonu = row["phonenumber"].ToString(),
                     Imię = row["name"].ToString(),
