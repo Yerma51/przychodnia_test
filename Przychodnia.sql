@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Maj 13, 2025 at 03:34 PM
+-- Generation Time: Maj 28, 2025 at 07:09 AM
 -- Wersja serwera: 10.4.32-MariaDB
 -- Wersja PHP: 8.2.12
 
@@ -197,23 +197,27 @@ CREATE TABLE `users` (
   `email` varchar(100) NOT NULL,
   `phonenumber` varchar(20) NOT NULL,
   `status` tinyint(1) DEFAULT NULL,
-  `regdate` datetime NOT NULL
+  `regdate` datetime NOT NULL,
+  `password_expiry` datetime DEFAULT NULL,
+  `failed_attempts` int(11) DEFAULT 0,
+  `Lockout_time` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `login`, `password`, `role`, `email`, `phonenumber`, `status`, `regdate`) VALUES
-(2, 'elzbieta.krawczyk1965', '', 'patient', 'elzbieta.kraw@zdrowie.pl', '503246789', 1, '2025-03-26 16:46:12'),
-(5, 'anonim_00275594', '', '', 'anonim_d9abf2fe@example.com', '0002251633', NULL, '2025-03-31 23:59:25'),
-(6, 'michal.nowak1979', '', 'patient', 'michal.nowak@zdrowie.pl', '504987321', 1, '2025-04-01 00:08:04'),
-(7, '', '', 'patient', '', '', NULL, '2025-04-01 00:30:49'),
-(8, 'anna.adamczyk1988', '', 'patient', 'anna.adam@zdrowie.pl', '505987654', 1, '2025-04-01 00:37:30'),
-(9, 'iwud', '', 'patient', 'kscub@skcdjbu.pl', '503456789', 1, '2025-04-08 21:55:03'),
-(10, 'agata.lewandowska91', '', 'patient', 'aga.lewa@zdrowie.pl', '509876321', 1, '2025-04-08 22:17:39'),
-(12, 'aleksandra.wojcik92', '', 'patient', 'aleksandra.wojcik@zdrowie.pl', '504128768', 1, '2025-04-09 14:20:18'),
-(13, 'anonim_310838b4', '', '', 'anonim_cb70ce92@example.com', '0006726907', NULL, '2025-04-09 14:57:16');
+INSERT INTO `users` (`id`, `login`, `password`, `role`, `email`, `phonenumber`, `status`, `regdate`, `password_expiry`, `failed_attempts`, `Lockout_time`) VALUES
+(2, 'elzbieta.krawczyk1965', '', 'patient', 'elzbieta.kraw@zdrowie.pl', '503246789', 1, '2025-03-26 16:46:12', NULL, 0, NULL),
+(5, 'anonim_00275594', '', '', 'anonim_d9abf2fe@example.com', '0002251633', NULL, '2025-03-31 23:59:25', NULL, 0, NULL),
+(6, 'michal.nowak1979', '', 'patient', 'michal.nowak@zdrowie.pl', '504987321', 1, '2025-04-01 00:08:04', NULL, 0, NULL),
+(7, '', '', 'patient', '', '', NULL, '2025-04-01 00:30:49', NULL, 0, NULL),
+(8, 'anna.adamczyk1988', '', 'patient', 'anna.adam@zdrowie.pl', '505987654', 1, '2025-04-01 00:37:30', NULL, 0, NULL),
+(9, 'iwud', '', 'patient', 'kscub@skcdjbu.pl', '503456789', 1, '2025-04-08 21:55:03', NULL, 0, NULL),
+(10, 'agata.lewandowska91', '', 'patient', 'aga.lewa@zdrowie.pl', '509876321', 1, '2025-04-08 22:17:39', NULL, 0, NULL),
+(12, 'aleksandra.wojcik92', '', 'patient', 'aleksandra.wojcik@zdrowie.pl', '504128768', 1, '2025-04-09 14:20:18', NULL, 0, NULL),
+(13, 'anonim_310838b4', '', '', 'anonim_cb70ce92@example.com', '0006726907', NULL, '2025-04-09 14:57:16', NULL, 0, NULL),
+(14, 'Yehorr', 'Yy-12345', 'patient', 'y.yeromin69@gmail.com', '123-456-789', 1, '2025-05-28 07:04:20', NULL, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -240,7 +244,11 @@ INSERT INTO `user_permissions` (`id`, `user_id`, `permission_id`) VALUES
 (6, 12, 1),
 (8, 6, 2),
 (9, 6, 3),
-(10, 6, 4);
+(10, 6, 4),
+(11, 14, 1),
+(12, 14, 2),
+(13, 14, 3),
+(14, 14, 4);
 
 -- --------------------------------------------------------
 
@@ -416,13 +424,13 @@ ALTER TABLE `specializations`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `user_permissions`
 --
 ALTER TABLE `user_permissions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `visits`
