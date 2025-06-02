@@ -34,6 +34,7 @@
             this.textBox_login = new System.Windows.Forms.TextBox();
             this.textBox_haslo = new System.Windows.Forms.TextBox();
             this.button_zaloguj = new System.Windows.Forms.Button();
+            this.button_nie_pamietam = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label_login
@@ -87,6 +88,19 @@
             this.button_zaloguj.UseVisualStyleBackColor = false;
             this.button_zaloguj.Click += new System.EventHandler(this.button_zaloguj_Click);
             // 
+            // button_nie_pamietam
+            // 
+            this.button_nie_pamietam.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(251)))), ((int)(((byte)(245)))));
+            this.button_nie_pamietam.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button_nie_pamietam.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button_nie_pamietam.Location = new System.Drawing.Point(73, 475);
+            this.button_nie_pamietam.Name = "button_nie_pamietam";
+            this.button_nie_pamietam.Size = new System.Drawing.Size(288, 45);
+            this.button_nie_pamietam.TabIndex = 5;
+            this.button_nie_pamietam.Text = "Nie pamiętam hasła\r\n";
+            this.button_nie_pamietam.UseVisualStyleBackColor = false;
+            this.button_nie_pamietam.Click += new System.EventHandler(this.button_nie_pamietam_Click_1);
+            // 
             // Logowanie_fromcs
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -94,6 +108,7 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1168, 791);
+            this.Controls.Add(this.button_nie_pamietam);
             this.Controls.Add(this.button_zaloguj);
             this.Controls.Add(this.textBox_haslo);
             this.Controls.Add(this.textBox_login);
@@ -116,5 +131,6 @@
         private System.Windows.Forms.TextBox textBox_login;
         private System.Windows.Forms.TextBox textBox_haslo;
         private System.Windows.Forms.Button button_zaloguj;
+        private System.Windows.Forms.Button button_nie_pamietam;
     }
 }

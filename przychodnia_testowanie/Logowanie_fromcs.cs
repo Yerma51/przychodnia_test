@@ -154,10 +154,10 @@ namespace przychodnia_testowanie
                         updateParams = new MySqlParameter[]
                         {
                     new MySqlParameter("@fa", failedAttempts),
-                    new MySqlParameter("@lt", DateTime.Now.AddMinutes(15)),
+                    new MySqlParameter("@lt", DateTime.Now.AddMinutes(1)),
                     new MySqlParameter("@login", login)
                         };
-                        MessageBox.Show("Błąd logowania. Konto zablokowane na 15 minut.");
+                        MessageBox.Show("Błąd logowania. Konto zablokowane na 1 minutę.");
                     }
                     else
                     {
@@ -183,7 +183,9 @@ namespace przychodnia_testowanie
 
 
 
-        private void button_nie_pamietam_Click(object sender, EventArgs e)
+        
+
+        private void button_nie_pamietam_Click_1(object sender, EventArgs e)
         {
             this.Hide();
             new odzyskanie().Show();

@@ -113,7 +113,7 @@ namespace przychodnia_testowanie
             try
             {
                 string fromEmail = "y.yeromin69@gmail.com";
-                string fromPassword = "pstbcjwdxwisfhpo";
+                string fromPassword = "vkqrskazwtapxrke";
 
                 MailMessage mail = new MailMessage();
                 mail.From = new MailAddress(fromEmail);
