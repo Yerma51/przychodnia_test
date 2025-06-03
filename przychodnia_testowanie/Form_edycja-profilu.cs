@@ -147,14 +147,72 @@ namespace przychodnia_testowanie
             Hide();
         }
 
+        private void SavePasswordToHistory(int userId, string password)
+        {
+            var db = new Laczenie_z_baza_danych();
+
+            string insertQuery = "INSERT INTO password_history (user_id, password) VALUES (@userId, @password)";
+            var insertParams = new MySqlParameter[]
+            {
+        new MySqlParameter("@userId", userId),
+        new MySqlParameter("@password", password)
+            };
+            db.ExecuteQuery(insertQuery, insertParams);
+
+            string deleteQuery = @"
+                DELETE FROM password_history 
+                WHERE user_id = @userId 
+                  AND id NOT IN (
+                      SELECT id FROM (
+                          SELECT id FROM password_history 
+                          WHERE user_id = @userId 
+                          ORDER BY created_at DESC 
+                          LIMIT 3
+                      ) AS latest
+                  );";
+            var deleteParams = new MySqlParameter[]
+            {
+        new MySqlParameter("@userId", userId)
+            };
+            db.ExecuteQuery(deleteQuery, deleteParams);
+        }
+
+
         private void button1_zapisz_Click(object sender, EventArgs e)
         {
             List<Użytkownik> usersList = Użytkownik.PobierzWszystkichUżytkownikówZBazy();
 
+            if (!HasChanges())
+            {
+                MessageBox.Show("Nie wprowadzono żadnych zmian.", "Informacja", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                DialogResult = DialogResult.Cancel;
+                Hide();
+                return;
+            }
+
             if (ValidateForm())
             {
+                bool hasPasswordChanged = użytkownik1.Password != textBox_haslo.Text;
+
+                if (hasPasswordChanged)
+                {
+                    if (!Validator.IsPasswordUnique(textBox_haslo.Text, użytkownik1.Id))
+                    {
+                        MessageBox.Show("Nowe hasło nie może być takie samo jak jedno z ostatnich trzech!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    SavePasswordToHistory(użytkownik1.Id, użytkownik1.Password);
+
+                    użytkownik1.Password = textBox_haslo.Text;
+                }
+                else
+                {
+                   
+                }
+
                 użytkownik1.Login = txb_login.Text;
-                użytkownik1.Password = textBox_haslo.Text;
+
                 if (Session.CurrentUser != null && Session.CurrentUser.Id == użytkownik1.Id)
                 {
                     Session.CurrentUser.Login = użytkownik1.Login;
@@ -173,7 +231,6 @@ namespace przychodnia_testowanie
                     Session.CurrentUser.Numer_telefonu = użytkownik1.Numer_telefonu;
                 }
 
-
                 użytkownik1.Imię = imie_textBox.Text;
                 użytkownik1.Nazwisko = nazwisko_textBox.Text;
                 użytkownik1.Płec = plec_comboBox.SelectedItem.ToString();
@@ -191,9 +248,26 @@ namespace przychodnia_testowanie
 
                 DialogResult = DialogResult.OK;
                 Hide();
-
             }
 
+        }
+        private bool HasChanges()
+        {
+            return
+                użytkownik1.Login != txb_login.Text ||
+                użytkownik1.Password != textBox_haslo.Text ||
+                użytkownik1.Imię != imie_textBox.Text ||
+                użytkownik1.Nazwisko != nazwisko_textBox.Text ||
+                użytkownik1.Płec != (plec_comboBox.SelectedItem?.ToString() ?? "") ||
+                użytkownik1.Data_urodzenia != dataUrodzenia_dateTimePicker.Value ||
+                użytkownik1.Pesel != pesel_textBox.Text ||
+                użytkownik1.Adres_email != mail_textBox.Text ||
+                użytkownik1.Miejscowość != miejcowosc_textBox.Text ||
+                użytkownik1.Ulica != ulica_textBox.Text ||
+                użytkownik1.Numer_pos != numerPosesji_textBox.Text ||
+                użytkownik1.Numer_lokalu != numerLokalu_textBox.Text ||
+                użytkownik1.Kod_pocztowy != kodPocztowy_textBox.Text ||
+                użytkownik1.Numer_telefonu != numerTelefonu_textBox.Text;
         }
 
         private void btn_lista_Click(object sender, EventArgs e)

@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -44,6 +45,41 @@ namespace przychodnia_testowanie
 
             return true;
         }
+
+        //unikalnosz hasla 
+        public static bool IsPasswordUnique(string newPassword, int userId)
+        {
+            var db = new Laczenie_z_baza_danych();
+
+            string currentPasswordQuery = "SELECT password FROM users WHERE id = @userId";
+            var currentPasswordParam = new MySqlParameter("@userId", userId);
+            DataTable currentPasswordTable = db.ExecuteQuery(currentPasswordQuery, currentPasswordParam);
+
+            if (currentPasswordTable.Rows.Count > 0)
+            {
+                string currentPassword = currentPasswordTable.Rows[0]["password"].ToString();
+                if (newPassword == currentPassword)
+                {
+                    return false; 
+                }
+            }
+
+            string historyQuery = "SELECT password FROM password_history WHERE user_id = @userId ORDER BY created_at DESC LIMIT 2";
+            DataTable historyTable = db.ExecuteQuery(historyQuery, currentPasswordParam); 
+
+            foreach (DataRow row in historyTable.Rows)
+            {
+                string oldPassword = row["password"].ToString();
+                if (newPassword == oldPassword)
+                {
+                    return false; 
+                }
+            }
+
+            return true;
+        }
+
+
 
 
         // Sprawdzanie unikalności adresu e-mail

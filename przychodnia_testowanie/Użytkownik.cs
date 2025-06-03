@@ -31,6 +31,8 @@ namespace przychodnia_testowanie
             return Uprawnienia.Contains(kod);
         }
 
+        public string PłećTekstowa => Płec == "1" ? "Mężczyzna" : "Kobieta";
+
 
 
 
@@ -88,7 +90,7 @@ namespace przychodnia_testowanie
                     Ulica = row["street"].ToString(),
                     Numer_pos = row["house_number"].ToString(),
                     Numer_lokalu = row["apartment_number"].ToString(),
-                    Płec = row["gender"] != DBNull.Value ? row["gender"].ToString() : "0",
+                    Płec = Convert.ToBoolean(row["gender"]) ? "1" : "0",
                 });
             }
 

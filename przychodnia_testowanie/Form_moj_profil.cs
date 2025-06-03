@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace przychodnia_testowanie
@@ -16,7 +9,6 @@ namespace przychodnia_testowanie
         {
             InitializeComponent();
         }
-
 
         private void Form_moj_profil_Load(object sender, EventArgs e)
         {
@@ -36,11 +28,21 @@ namespace przychodnia_testowanie
                 kodPocztowy_textBox.Text = user.Kod_pocztowy;
                 pesel_textBox.Text = user.Pesel;
 
+
+
+                plec_comboBox.Items.Clear();
                 plec_comboBox.Items.Add("Kobieta");
                 plec_comboBox.Items.Add("Mężczyzna");
 
-                string plecTekstowa = user.Płec == "1" ? "Mężczyzna" : "Kobieta";
-                plec_comboBox.SelectedItem = plecTekstowa;
+                plec_comboBox.SelectedItem = user.PłećTekstowa;
+
+
+
+
+
+
+
+
 
                 dataUrodzenia_dateTimePicker.MinDate = new DateTime(1900, 1, 1);
                 dataUrodzenia_dateTimePicker.MaxDate = DateTime.Today;
@@ -54,6 +56,7 @@ namespace przychodnia_testowanie
                 {
                     dataUrodzenia_dateTimePicker.Value = DateTime.Today;
                 }
+
                 imie_textBox.ReadOnly = true;
                 nazwisko_textBox.ReadOnly = true;
                 txb_login.ReadOnly = true;
