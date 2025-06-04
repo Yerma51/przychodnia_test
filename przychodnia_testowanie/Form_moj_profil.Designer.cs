@@ -410,7 +410,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "Form_moj_profil";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Form_moj_profil";
+            this.Text = "Mój profil";
             this.Load += new System.EventHandler(this.Form_moj_profil_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
